@@ -9,7 +9,7 @@
     - [tstack](architecture/tstack.md)
     - [ifile](architecture/ifile.md)
 - [Instruction Reference](instruction_reference.md)
-    - [Arithmatic](instruction_reference/arithmatic.md)
+    - [Arithmetic](instruction_reference/arithmetic.md)
     - [Stack Manipulation](instruction_reference/stack_manipulation.md)
     - [Memory](instruction_reference/memory.md)
     - [UARC](instruction_reference/uarc.md)
