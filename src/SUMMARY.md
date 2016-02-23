@@ -1,3 +1,13 @@
-# Summary
+# Table of Contents
 
-- [Chapter 1](./chapter_1.md)
+[Table of Contents](SUMMARY.md)
+- [Overview](overview.md)
+- [Architecture](architecture.md)
+    - [dstack](architecture/dstack.md)
+    - [cstack](architecture/cstack.md)
+    - [lstack](architecture/lstack.md)
+- [Instruction Reference](instruction_reference.md)
+    - [Arithmatic](instruction_reference/arithmatic.md)
+    - [Stack Manipulation](instruction_reference/stack_manipulation.md)
+    - [Memory](instruction_reference/memory.md)
+    - [UARC](instruction_reference/uarc.md)
