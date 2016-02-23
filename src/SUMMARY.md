@@ -6,6 +6,8 @@
     - [dstack](architecture/dstack.md)
     - [cstack](architecture/cstack.md)
     - [lstack](architecture/lstack.md)
+    - [tstack](architecture/tstack.md)
+    - [ifile](architecture/ifile.md)
 - [Instruction Reference](instruction_reference.md)
     - [Arithmatic](instruction_reference/arithmatic.md)
     - [Stack Manipulation](instruction_reference/stack_manipulation.md)
