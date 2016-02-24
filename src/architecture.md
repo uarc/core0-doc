@@ -1,5 +1,11 @@
 # Architecture
 
+### Status
+|Symbol|Purpose|
+|:---:|:---:|
+|`c`|Carry bit|
+|`o`|Overflow bit|
+
 c0 is a stack machine, meaning that all parameters are implicit and all destinations are implicit except for stack manipulation and memory access. For comparison, belt machines have an implicit destination and register machines (the most common) have explicit parameters and destination. This means that for many instructions, a stack machine's instruction is entirely composed of an opcode with no extra fields. For c0, half of all instructions only have an opcode field, but the other half (stack manipulation instructions) the instruction contains an opcode and location field. This means that c0 has [two instruction formats](instruction_reference.md).
 
 Since no task switching is required in c0, it is not necessary to be concerned with the amount of state elements in the architecture, except where those elements require random access. Due to this, several stacks are present in the architecture, aside from the main stack on which most of the processor occurs: the [dstack](architecture/dstack.md). For instance, the architecture also has a dedicated [call stack](architecture/cstack.md) so that parameters can be passed orderly to a called routine and be consumed without worrying about the return address. A zero-overhead loop unit is also present that allows automatic conditional branching back to the beginning of the inner-most loop. The stack that contains the various loop parameters is called the [loop stack](architecture/lstack.md).
