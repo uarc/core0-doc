@@ -55,15 +55,15 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`40` - `43`|write#|`v -- `|`memory[dc#] = v`; dc# advances|
 |`44` - `47`|setf#|`a -- `|`dc# = a`; dc# is write post-inc|
 |`48` - `4B`|setb#|`a -- `|`dc# = a`; dc# is write pre-dec|
-|`40`|add|`a b -- (a + b)`|`c`, `o`|
-|`41`|addc|`a b -- (a + b + c)`|`c`, `o`|
-|`42`|sub|`a b -- (a - b)`|`c`, `o`|
-|`43`|subc|`a b -- (a - b + c)`|`c`, `o`|
-|`44`|lsl|`a b -- (a << b)`|`c`, `o`|
-|`45`|lsr|`a b -- (a >> b)`|`c`, `o`|
-|`46`|asr|`a b -- (a >>> b)`|`c`, `o`|
-|`47`|mul|`a b -- (a * b)`|`cv <- (a * b)[2*WORD-1:WORD]`|
-|`48`|mulu|`a b -- (a * b)`|`cv <- (a * b)[2*WORD-1:WORD]`|
+|`4C`|add|`a b -- (a + b)`|`c`, `o`|
+|`4D`|addc|`a b -- (a + b + c)`|`c`, `o`|
+|`4E`|sub|`a b -- (a - b)`|`c`, `o`|
+|`4F`|subc|`a b -- (a - b + c)`|`c`, `o`|
+|`50`|lsl|`a b -- (a << b)`|`c`, `o`|
+|`51`|lsr|`a b -- (a >> b)`|`c`, `o`|
+|`52`|asr|`a b -- (a >>> b)`|`c`, `o`|
+|`53`|mul|`a b -- (a * b)`|`cv <- (a * b)[2*WORD-1:WORD]`|
+|`54`|mulu|`a b -- (a * b)`|`cv <- (a * b)[2*WORD-1:WORD]`|
 |`60` - `63`|rwrite#|`v a -- `|`memory[dc# + a] = v`|
 |`64`|les|`a b -- `|if `a < b` then `dc0 -> pc`|
 |`65`|leq|`a b -- `|if `a <= b` then `dc0 -> pc`|
