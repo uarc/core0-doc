@@ -49,10 +49,15 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |Op|Instruction|dstack|Side Effects|
 |:---:|:---:|:---:|:---:|:---:|
 |`00` - `03`|rread#|`a -- mem[dc# + a]`||
+|`04`|inc|`a -- (a + 1)`|`c`, `o`|
+|`05`|dec|`a -- (a - 1)`|`c`, `o`|
+|`06`|flush|` -- `|Synchronizes cache flush|
+|`07`|reads|`a -- mem[a]`|Synchronous read|
 |`20` - `2F`|cv#|` -- cv#`|cv# synchronizes|
 |`30` - `33`|read#|` -- mem[dc#]`|dc# advances|
 |`34` - `37`|i#|` -- i#`| |
-|`40` - `43`|write#|`v -- `|`memory[dc#] = v`; dc# advances|
+|`38`|p0|` -- 0`| |
+|`40` - `43`|write#|`v -- `|`mem[dc#] = v`; dc# advances|
 |`44` - `47`|setf#|`a -- `|`dc# = a`; dc# is write post-inc|
 |`48` - `4B`|setb#|`a -- `|`dc# = a`; dc# is write pre-dec|
 |`4C`|add|`a b -- (a + b)`|`c`, `o`|
@@ -64,8 +69,12 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`52`|asr|`a b -- (a >>> b)`|`c`, `o`|
 |`53`|mul|`a b -- (a * b)`|`cv <- (a * b)[2*WORD-1:WORD]`|
 |`54`|mulu|`a b -- (a * b)`|`cv <- (a * b)[2*WORD-1:WORD]`|
-|`60` - `63`|rwrite#|`v a -- `|`memory[dc# + a] = v`|
-|`64`|les|`a b -- `|if `a < b` then `dc0 -> pc`|
-|`65`|leq|`a b -- `|if `a <= b` then `dc0 -> pc`|
-|`66`|div|`a b -- `|`cv <- a / b, a % b`|
-|`67`|divi|`a b -- `|`cv <- a / b, a % b`|
+|`55`|reada|`a -- `|`cv <- mem[a]`|
+|`60` - `63`|rwrite#|`v a -- `|`mem[dc# + a] = v`|
+|`64`|write|`v a -- `|`mem[a] = v`|
+|`65`|beq|`a b -- `|if `a == b` then `dc0 -> pc`|
+|`66`|bne|`a b -- `|if `a != b` then `dc0 -> pc`|
+|`67`|les|`a b -- `|if `a < b` then `dc0 -> pc`|
+|`68`|leq|`a b -- `|if `a <= b` then `dc0 -> pc`|
+|`69`|div|`a b -- `|`cv <- a / b, a % b`|
+|`6A`|divu|`a b -- `|`cv <- a / b, a % b`|
