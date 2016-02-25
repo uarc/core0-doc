@@ -8,6 +8,7 @@
     - [lstack](architecture/lstack.md)
     - [tstack](architecture/tstack.md)
     - [ifile](architecture/ifile.md)
+    - [conveyor](architecture/conveyor.md)
 - [Instruction Reference](instruction_reference.md)
     - [Arithmetic](instruction_reference/arithmetic.md)
     - [Stack Manipulation](instruction_reference/stack_manipulation.md)
