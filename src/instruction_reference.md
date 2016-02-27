@@ -24,27 +24,27 @@
 Implicit instructions have no explicit sources or destinations and all can be assumed from state information in the system. Such instructions include `add`, which takes parameters from the stack and places the result back on the stack.
 
 ### `L` - Loop
-Loop instructions allow random read access to the loop index of the top 4 loops in the [lstack](architecture/lstack.md). This means that loops can be nested 4 times and are still able to retrieve the index in one instruction.
+Loop instructions allow random read access to the loop index of the top 4 loops in the [lstack](architecture/lstack.html). This means that loops can be nested 4 times and are still able to retrieve the index in one instruction.
 
 ### `D` - Data Counter
 Data Counter instructions are instructions that operate on a random one of the 4 available DCs. These can be set, read, written, randomly read, and randomly written.
 
 ### `C` - Conveyor
-Conveyor instructions allow random read access to the 16 things on the [conveyor belt](architecture/conveyor.md). The things on the conveyor may actually not be present and when accessed, the completion of the operation corresponding to that spot on the conveyor will be synchronized. This allows several asynchronous operations to be linked to different locations on the conveyor and read randomly when they are needed.
+Conveyor instructions allow random read access to the 16 things on the [conveyor belt](architecture/conveyor.html). The things on the conveyor may actually not be present and when accessed, the completion of the operation corresponding to that spot on the conveyor will be synchronized. This allows several asynchronous operations to be linked to different locations on the conveyor and read randomly when they are needed.
 
 ### `R` - Random
-For R type instructions, 32 locations can be randomly addressed. This means that 32 places can be copied and rotated on the [dstack](architecture/dstack.md) and 32 places can be read and written on the [tstack](architecture/tstack.md).
+For R type instructions, 32 locations can be randomly addressed. This means that 32 places can be copied and rotated on the [dstack](architecture/dstack.html) and 32 places can be read and written on the [tstack](architecture/tstack.html).
 
 ## Key Words
 - `WORD` - Data word width in use
 - `c` - Carry bit
-- `cv` - [Conveyor Belt](architecture/conveyor.md)
+- `cv` - [Conveyor Belt](architecture/conveyor.html)
 - `dc[0-3]` - Data Counters
 - `pc` - Program Counter
 - `i[0-3]` - Loop Indices
-- `cv[0-F]` - [Conveyor Belt](architecture/conveyor.md) Values
-- `ts` - [tstack](architecture/tstack.md)
-- `if` - [ifile](architecture/ifile.md)
+- `cv[0-F]` - [Conveyor Belt](architecture/conveyor.html) Values
+- `ts` - [tstack](architecture/tstack.html)
+- `if` - [ifile](architecture/ifile.html)
 
 ## Instruction Listing By Opcode
 
@@ -55,12 +55,12 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`05`|dec|`a -- (a - 1)`|`c`, `o`|
 |`06`|flush|` -- `|Synchronizes cache flush|
 |`07`|reads|`a -- mem[a]`|Synchronous read|
-|`08`|ret|` -- `|Pops [cstack](architecture/cstack.md)|
+|`08`|ret|` -- `|Pops [cstack](architecture/cstack.html)|
 |`09`|ien|` -- `|Enables selected interrupts|
 |`0A`|idi|` -- `|Disables selected interrupts|
-|`0B`|tcopy|`v -- v`|Pushes a copy of v to [tstack](architecture/tstack.md)|
+|`0B`|tcopy|`v -- v`|Pushes a copy of v to [tstack](architecture/tstack.html)|
 |`0C`|recv|` -- `|Interrupt sync; `cv <- bus, v`|
-|`16`|calli|` -- `|`dc0 -> pc`; push [cstack](architecture/cstack.md)|
+|`16`|calli|` -- `|`dc0 -> pc`; push [cstack](architecture/cstack.html)|
 |`17`|jmpi|` -- `|`dc0 -> pc`|
 |`20` - `2F`|cv#|` -- cv#`|cv# synchronizes|
 |`30` - `33`|read#|` -- mem[dc#]`|dc# advances|
@@ -80,7 +80,7 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`53`|mul|`a b -- (a * b)`|`cv <- (a * b)[2*WORD-1:WORD]`|
 |`54`|mulu|`a b -- (a * b)`|`cv <- (a * b)[2*WORD-1:WORD]`|
 |`55`|reada|`a -- `|`cv <- mem[a]`|
-|`56`|call|`a -- `|`pc = a`; push [cstack](architecture/cstack.md)|
+|`56`|call|`a -- `|`pc = a`; push [cstack](architecture/cstack.html)|
 |`57`|jmp|`a -- `|`pc = a`|
 |`58`|tpush|`a -- `|`t`|
 |`59`|seb|`b -- `|`if[b[WORD-1:WORD/2]] = b[WORD/2-1:0]`|

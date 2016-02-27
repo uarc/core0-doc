@@ -1,6 +1,5 @@
 # Table of Contents
 
-[Table of Contents](SUMMARY.md)
 - [Overview](overview.md)
 - [Architecture](architecture.md)
     - [dstack](architecture/dstack.md)
