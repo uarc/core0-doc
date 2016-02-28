@@ -18,6 +18,8 @@ h7FFFFFFF inc
 - `o` is set to 1 because a positive number became negative by wrapping
 - `c` is set to 0
 
+----------
+
 ## `dec`
 `a -- (a + 1)`
 
@@ -35,6 +37,8 @@ h7FFFFFFF inc
 - `( -- -1)`
 - `o` is set to 0 because no overflow occurred
 - `c` is set to 1 because a borrow was incurred
+
+----------
 
 ## `carry`
 `a -- (a + c)`
@@ -55,6 +59,8 @@ h7FFFFFFF inc
 - `c` is set to 0
 - `o` is set to 0
 
+----------
+
 ## `borrow`
 `a -- (a + c - 1)`
 
@@ -74,6 +80,8 @@ h7FFFFFFF inc
 - `c` is set to 0
 - `o` is set to 0
 
+----------
+
 ## `add`
 `a b -- (a + b)`
 
@@ -90,6 +98,8 @@ h7FFFFFFF inc
 ```
 - `( -- 5)`
 - Carry is set to 0
+
+----------
 
 ## `addc`
 `a b -- (a + b + c)`
@@ -108,6 +118,8 @@ h80000000 h80000000 add
 - `( -- 0 1)`
 - Carry is set to 0
 
+----------
+
 ## `sub`
 `a b -- (a - b)`
 
@@ -124,6 +136,8 @@ h80000000 h80000000 add
 - `( -- -1)`
 - Carry is set to 0
   - Which indicates a borrow
+
+----------
 
 ## `subc`
 `a b -- (a - b + c)`
@@ -142,6 +156,8 @@ h80000000 h80000000 add
 - `( -- -1 0)`
 - Carry is set to 1 (indicating no borrow)
 
+----------
+
 ## `asr`
 `a b -- (a >>> b)`
 
@@ -157,6 +173,8 @@ h80000000 1 asr
 ```
 - `( -- hC000000)`
 - `o` is set to `1` because `0` is a significant bit and is lost
+
+----------
 
 ## `mul`
 `a b -- (a * b)`
@@ -174,6 +192,8 @@ h80000000 2 mul cv1 cv0
 ```
 - `( -- h80000000 hFFFFFFFE)`
 
+----------
+
 ## `mulu`
 `a b -- (a * b)`
 
@@ -189,6 +209,8 @@ h80000000 2 mul cv1 cv0
 ```
 - `( -- ~0 1)`
 
+----------
+
 ## `div`
 `a b -- `
 
@@ -203,6 +225,8 @@ h80000000 2 mul cv1 cv0
 h80000000 2 div cv1 cv0
 ```
 - `( -- hC0000000 hBFFFFFFF)`
+
+----------
 
 ## `divu`
 `a b -- `
