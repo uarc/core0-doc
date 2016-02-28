@@ -219,7 +219,7 @@ h80000000 2 div cv1 cv0
 
 #### Examples (with WORD of 32)
 ```
-~0 2 div cv1 cv0
+~0 2 divu cv1 cv0
 ```
 - `( -- h7FFFFFFF h80000000)`
 - `o` is set to `1` because of the `1` present in the most significant bit position in the low/fractional bits
