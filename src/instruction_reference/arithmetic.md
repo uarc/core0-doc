@@ -1,5 +1,41 @@
 # Arithmetic Instructions
 
+## `inc`
+`a -- (a + 1)`
+
+#### Description
+`inc` increments the top of the [dstack](architecture/dstack.html) by 1. The overflow and carry bits are set, but not consumed.
+
+#### Side Effects
+- `c = (a + 1 == 0)`
+- `o = (a + 1 == 1 << (WORD - 1))`
+
+#### Examples
+```
+h7FFFFFFF inc
+```
+- `( -- h80000000)`
+- `o` is set to 1 because a positive number became negative by wrapping
+- `c` is set to 0
+
+## `dec`
+`a -- (a + 1)`
+
+#### Description
+`dec` decrements the top of the [dstack](architecture/dstack.html) by 1. The overflow and carry bits are set, but not consumed.
+
+#### Side Effects
+- `c = (a - 1 == ~0)`
+- `o = (a + 1 == 1 << (WORD - 1))`
+
+#### Examples
+```
+0 dec
+```
+- `( -- -1)`
+- `o` is set to 0 because no overflow occurred
+- `c` is set to 1 because a borrow was incurred
+
 ## `add`
 `a b -- (a + b)`
 
@@ -10,7 +46,7 @@
 - `c = (a + b)[WORD]`
 - `o = (a[WORD - 1] ^ b[WORD - 1]) ? 0 : a[WORD - 1] ^ (a + b)[WORD - 1]`
 
-#### Example
+#### Examples
 ```
 2 3 add
 ```
@@ -26,7 +62,7 @@
 #### Side Effects
 `c = (a + b)[WORD]`
 
-#### Example (with 32-bit WORD)
+#### Examples (with WORD of 32)
 ```
 h80000000 h80000000 add
 0 0 addc
@@ -43,7 +79,7 @@ h80000000 h80000000 add
 #### Side Effects
 `c = (a - b)[WORD]`
 
-#### Example
+#### Examples
 ```
 2 3 sub
 ```
@@ -60,13 +96,13 @@ h80000000 h80000000 add
 #### Side Effects
 `c = (a - b)[WORD]`
 
-#### Example
+#### Examples
 ```
 2 3 sub
 1 0 subc
 ```
-- `( -- hFFFFFFFF 0)`
-- Carry is set to 0 (indicating a borrow)
+- `( -- -1 0)`
+- Carry is set to 1 (indicating no borrow)
 
 ## `asr`
 `a b -- (a >>> b)`
@@ -76,3 +112,10 @@ h80000000 h80000000 add
 
 #### Side Effects
 - `o` is 1 if any significant bits were lost
+
+#### Examples (with WORD of 32)
+```
+h80000000 1 asr
+```
+- `( -- hC000000)`
+- `o` is set to `1` because `0` is a significant bit and is lost

@@ -35,7 +35,7 @@ Conveyor instructions allow random read access to the 16 things on the [conveyor
 ### `R` - Random
 For R type instructions, 32 locations can be randomly addressed. This means that 32 places can be copied and rotated on the [dstack](architecture/dstack.html) and 32 places can be read and written on the [tstack](architecture/tstack.html).
 
-## Key Words
+## Key
 - `WORD` - Data word width in use
 - `c` - Carry bit
 - `cv` - [Conveyor Belt](architecture/conveyor.html)
@@ -45,6 +45,7 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 - `cv[0-F]` - [Conveyor Belt](architecture/conveyor.html) Values
 - `ts` - [tstack](architecture/tstack.html)
 - `if` - [ifile](architecture/ifile.html)
+- `n..` - `n` anonymous words on the stack
 
 ## Instruction Listing By Opcode
 
@@ -53,6 +54,8 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`00` - `03`|rread#|`a -- mem[dc# + a]`||
 |`04`|inc|`a -- (a + 1)`|`c`, `o`|
 |`05`|dec|`a -- (a - 1)`|`c`, `o`|
+|`06`|carry|`a -- (a + c)`|`c`, `o`|
+|`06`|borrow|`a -- (a + c - 1)`|`c`, `o`|
 |`06`|flush|` -- `|Synchronizes cache flush|
 |`07`|reads|`a -- mem[a]`|Synchronous read|
 |`08`|ret|` -- `|Pops [cstack](architecture/cstack.html)|
@@ -74,26 +77,34 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`4D`|addc|`a b -- (a + b + c)`|`c`, `o`|
 |`4E`|sub|`a b -- (a - b)`|`c`, `o`|
 |`4F`|subc|`a b -- (a - b + c)`|`c`, `o`|
-|`50`|lsl|`a b -- (a << b)`|`c`, `o`|
-|`51`|lsr|`a b -- (a >> b)`|`c`, `o`|
-|`52`|asr|`a b -- (a >>> b)`|`c`, `o`|
-|`53`|mul|`a b -- (a * b)`|`cv <- (a * b)[2*WORD-1:WORD]`|
-|`54`|mulu|`a b -- (a * b)`|`cv <- (a * b)[2*WORD-1:WORD]`|
-|`55`|reada|`a -- `|`cv <- mem[a]`|
-|`56`|call|`a -- `|`pc = a`; push [cstack](architecture/cstack.html)|
-|`57`|jmp|`a -- `|`pc = a`|
-|`58`|tpush|`a -- `|`t`|
-|`59`|seb|`b -- `|`if[b[WORD-1:WORD/2]] = b[WORD/2-1:0]`|
-|`5A`|slb|`b -- `|`b[WORD/2-1:0]` to `if[b[WORD-1:WORD/2]]`|
-|`5B`|iset|`a -- `|Set selected interrupt addresses|
-|`5C`|send|`v -- `|Send value to selected buses|
-|`5D`|in|`n a -- b`|Stream n words in and push bus|
+|`50`|lsl|`a b -- (a << b)`|`o`|
+|`51`|lsr|`a b -- (a >> b)`|`o`|
+|`52`|csl|`a b -- ((a << b) or (a >> (b - WORD)))`| |
+|`53`|csr|`a b -- ((a >> b) or (a << (b - WORD)))`| |
+|`54`|asr|`a b -- (a >>> b)`|`o`|
+|`55`|mul|`a b -- (a * b)`|`cv <- (a * b)[2*WORD-1:WORD]`|
+|`56`|mulu|`a b -- (a * b)`|`cv <- (a * b)[2*WORD-1:WORD]`|
+|`57`|reada|`a -- `|`cv <- mem[a]`|
+|`58`|call|`a -- `|`pc = a`; push [cstack](architecture/cstack.html)|
+|`59`|jmp|`a -- `|`pc = a`|
+|`5A`|tpush|`a -- `|`ts <- a`|
+|`5B`|seb|`b -- `|`if[b[WORD-1:WORD/2]] = b[WORD/2-1:0]`|
+|`5C`|slb|`b -- `|`b[WORD/2-1:0]` to `if[b[WORD-1:WORD/2]]`|
+|`5D`|iset|`a -- `|Set selected interrupt addresses|
+|`5E`|send|`v -- `|Send value to selected buses|
+|`5F`|in|`n a -- b`|Stream n words in and push bus|
 |`60` - `63`|rwrite#|`v a -- `|`mem[dc# + a] = v`|
 |`64`|write|`v a -- `|`mem[a] = v`|
 |`65`|jeq|`a b -- `|if `a == b` then `dc0 -> pc`|
 |`66`|jne|`a b -- `|if `a != b` then `dc0 -> pc`|
 |`67`|les|`a b -- `|if `a < b` then `dc0 -> pc`|
 |`68`|leq|`a b -- `|if `a <= b` then `dc0 -> pc`|
-|`69`|out|`n a -- `|Stream n words to buses from a|
-|`69`|div|`a b -- `|`cv <- a / b, a % b`|
-|`6A`|divu|`a b -- `|`cv <- a / b, a % b`|
+|`69`|lesu|`a b -- `|if `a < b` then `dc0 -> pc`|
+|`6A`|lequ|`a b -- `|if `a <= b` then `dc0 -> pc`|
+|`6B`|out|`n a -- `|Stream n words to buses from a|
+|`6C`|div|`a b -- `|`cv <- a / b, a % b`|
+|`6D`|divu|`a b -- `|`cv <- a / b, a % b`|
+|`80` - `9F`|rot#|`v (# + 1).. -- (# + 1).. v`| |
+|`A0` - `BF`|copy#|`v (# + 1).. -- v (# + 1).. v`| |
+|`C0` - `DF`|tread#|` -- ts[#]`|Address 0 is the top of ts|
+|`E0` - `FF`|twrite#|`v -- `|`ts[#] = v`|
