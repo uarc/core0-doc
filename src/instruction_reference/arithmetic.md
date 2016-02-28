@@ -162,35 +162,32 @@ h80000000 1 asr
 `a b -- (a * b)`
 
 #### Description
-`mul` multiplies two signed numbers (`a` and `b`) with width `WORD` and produces a result with width `2 * WORD`. The lower `WORD` bits of the result are placed on the stack, including a sign bit as the most significant bit. On the other hand, the higher `WORD` bits (also including a sign bit) are placed on the [conveyor](architecture/conveyor.html).
+`mul` multiplies two signed numbers (`a` and `b`) with width `WORD` and produces a result with width `2 * WORD`. The lower `WORD` and the higher `WORD` bits (both including a sign bit) are placed on the [conveyor](architecture/conveyor.html).
 
 #### Side Effects
-- The highest `WORD` bits are placed onto the [conveyor](architecture/conveyor.html)
+- The lowest `WORD` and highest `WORD` bits are placed onto the [conveyor](architecture/conveyor.html) in that order
 - `o` is `1` if any significant bits are placed into the conveyor
 
 #### Examples (with WORD of 32)
 ```
-h80000000 2 mul cv0
+h80000000 2 mul cv1 cv0
 ```
 - `( -- h80000000 hFFFFFFFE)`
-- `o` is set to `1` because of the `0` present in the least significant bit position in the high bits
 
 ## `mulu`
 `a b -- (a * b)`
 
 #### Description
-`mulu` multiplies two unsigned numbers (`a` and `b`) with width `WORD` and produces a result with width `2 * WORD`. The lower `WORD` bits of the result are placed on the stack. On the other hand, the higher `WORD` bits are placed on the [conveyor](architecture/conveyor.html).
+`mulu` multiplies two unsigned numbers (`a` and `b`) with width `WORD` and produces a result with width `2 * WORD`. The lower `WORD` and higher `WORD` bits of the result are placed on the [conveyor](architecture/conveyor.html).
 
 #### Side Effects
-- The highest `WORD` bits are placed onto the [conveyor](architecture/conveyor.html)
-- `o` is `1` if any `1` bits are placed into the conveyor
+- The lowest `WORD` and highest `WORD` bits are placed onto the [conveyor](architecture/conveyor.html) in that order
 
 #### Examples
 ```
-~0 2 mul cv0
+~0 2 mul cv1 cv0
 ```
 - `( -- ~0 1)`
-- `o` is set to `1` because of the `1` present in the least significant bit position in the high bits
 
 ## `div`
 `a b -- `
@@ -206,7 +203,6 @@ h80000000 2 mul cv0
 h80000000 2 div cv1 cv0
 ```
 - `( -- hC0000000 hBFFFFFFF)`
-- `o` is set to `1` because of the significant bit present in the low/fractional bits
 
 ## `divu`
 `a b -- `
@@ -222,4 +218,3 @@ h80000000 2 div cv1 cv0
 ~0 2 divu cv1 cv0
 ```
 - `( -- h7FFFFFFF h80000000)`
-- `o` is set to `1` because of the `1` present in the most significant bit position in the low/fractional bits

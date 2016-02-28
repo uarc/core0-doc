@@ -54,15 +54,16 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`00` - `03`|rread#|`a -- mem[dc# + a]`||
 |`04`|inc|`a -- (a + 1)`|`c`, `o`|
 |`05`|dec|`a -- (a - 1)`|`c`, `o`|
-|`06`|carry|`a -- (a + c)`|`c`, `o`|
-|`06`|borrow|`a -- (a + c - 1)`|`c`, `o`|
-|`06`|flush|` -- `|Synchronizes cache flush|
-|`07`|reads|`a -- mem[a]`|Synchronous read|
-|`08`|ret|` -- `|Pops [cstack](architecture/cstack.html)|
-|`09`|ien|` -- `|Enables selected interrupts|
-|`0A`|idi|` -- `|Disables selected interrupts|
-|`0B`|tcopy|`v -- v`|Pushes a copy of v to [tstack](architecture/tstack.html)|
-|`0C`|recv|` -- `|Interrupt sync; `cv <- bus, v`|
+|`06`|carry|`v -- (v + c)`|`c`, `o`|
+|`07`|borrow|`v -- (v + c - 1)`|`c`, `o`|
+|`08`|inv|`v -- ~v`| |
+|`09`|flush|` -- `|Synchronizes cache flush|
+|`0A`|reads|`a -- mem[a]`|Synchronous read|
+|`0B`|ret|` -- `|Pops [cstack](architecture/cstack.html)|
+|`0C`|ien|` -- `|Enables selected interrupts|
+|`0D`|idi|` -- `|Disables selected interrupts|
+|`0E`|tcopy|`v -- v`|Pushes a copy of v to [tstack](architecture/tstack.html)|
+|`0F`|recv|` -- `|Interrupt sync; `cv <- bus, v`|
 |`16`|calli|` -- `|`dc0 -> pc`; push [cstack](architecture/cstack.html)|
 |`17`|jmpi|` -- `|`dc0 -> pc`|
 |`18`|jc|` -- `|if `c` then `dc0 -> pc`|
@@ -86,8 +87,8 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`52`|csl|`a b -- ((a << b) or (a >> (b - WORD)))`| |
 |`53`|csr|`a b -- ((a >> b) or (a << (b - WORD)))`| |
 |`54`|asr|`a b -- (a >>> b)`|`o`|
-|`55`|mul|`a b -- (a * b)`|`cv <- (a * b)[2*WORD-1:WORD]`; `o`|
-|`56`|mulu|`a b -- (a * b)`|`cv <- (a * b)[2*WORD-1:WORD]`; `o`|
+|`55`|and|`a b -- (a & b)`| |
+|`56`|or|`a b -- (a or b)`| |
 |`57`|reada|`a -- `|`cv <- mem[a]`|
 |`58`|call|`a -- `|`pc = a`; push [cstack](architecture/cstack.html)|
 |`59`|jmp|`a -- `|`pc = a`|
@@ -106,8 +107,10 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`69`|lesu|`a b -- `|if `a < b` then `dc0 -> pc`|
 |`6A`|lequ|`a b -- `|if `a <= b` then `dc0 -> pc`|
 |`6B`|out|`n a -- `|Stream n words to buses from a|
-|`6C`|div|`a b -- `|`cv <- a / b, a % b`|
-|`6D`|divu|`a b -- `|`cv <- a / b, a % b`|
+|`6C`|mul|`a b -- `|`cv <- low(a * b), high(a * b)`|
+|`6D`|mulu|`a b -- `|`cv <- low(a * b), high(a * b)`|
+|`6E`|div|`a b -- `|`cv <- a / b, a % b`|
+|`6F`|divu|`a b -- `|`cv <- a / b, a % b`|
 |`80` - `9F`|rot#|`v (# + 1).. -- (# + 1).. v`| |
 |`A0` - `BF`|copy#|`v (# + 1).. -- v (# + 1).. v`| |
 |`C0` - `DF`|tread#|` -- ts[#]`|Address 0 is the top of ts|
