@@ -25,8 +25,8 @@ h7FFFFFFF inc
 `dec` decrements the top of the [dstack](architecture/dstack.html) by 1. The overflow and carry bits are set, but not consumed.
 
 #### Side Effects
-- `c = (a - 1 == ~0)`
-- `o = (a + 1 == 1 << (WORD - 1))`
+- `c = (a - 1 != ~0)`
+- `o = (a == 1 << (WORD - 1))`
 
 #### Examples
 ```
@@ -35,6 +35,44 @@ h7FFFFFFF inc
 - `( -- -1)`
 - `o` is set to 0 because no overflow occurred
 - `c` is set to 1 because a borrow was incurred
+
+## `carry`
+`a -- (a + c)`
+
+#### Description
+`carry` is used when the carry bit needs to be accumulated to a more significant word after a less significant operation. It affects the `o` and `c` similarly to `inc`.
+
+#### Side Effects
+- `c = c == 1 && (a + c == 0)`
+- `o = c == 1 && (a == -1)`
+
+#### Examples
+```
+~0 inc
+0 carry
+```
+- `( -- 0 1)`
+- `c` is set to 0
+- `o` is set to 0
+
+## `borrow`
+`a -- (a + c - 1)`
+
+#### Description
+`borrow` is used when a borrow must be applied to a more significant word after a less significant operation. It affects the `o` and `c` bits similarly to `dec`.
+
+#### Side Effects
+- `c = c == 1 || (a - 1 != ~0)`
+- `o = c == 1 || (a == 1 << (WORD - 1))`
+
+#### Examples
+```
+0 dec
+1 borrow
+```
+- `( -- 0 0)`
+- `c` is set to 0
+- `o` is set to 0
 
 ## `add`
 `a b -- (a + b)`
@@ -119,3 +157,69 @@ h80000000 1 asr
 ```
 - `( -- hC000000)`
 - `o` is set to `1` because `0` is a significant bit and is lost
+
+## `mul`
+`a b -- (a * b)`
+
+#### Description
+`mul` multiplies two signed numbers (`a` and `b`) with width `WORD` and produces a result with width `2 * WORD`. The lower `WORD` bits of the result are placed on the stack, including a sign bit as the most significant bit. On the other hand, the higher `WORD` bits (also including a sign bit) are placed on the [conveyor](architecture/conveyor.html).
+
+#### Side Effects
+- The highest `WORD` bits are placed onto the [conveyor](architecture/conveyor.html)
+- `o` is `1` if any significant bits are placed into the conveyor
+
+#### Examples (with WORD of 32)
+```
+h80000000 2 mul cv0
+```
+- `( -- h80000000 hFFFFFFFE)`
+- `o` is set to `1` because of the `0` present in the least significant bit position in the high bits
+
+## `mulu`
+`a b -- (a * b)`
+
+#### Description
+`mulu` multiplies two unsigned numbers (`a` and `b`) with width `WORD` and produces a result with width `2 * WORD`. The lower `WORD` bits of the result are placed on the stack. On the other hand, the higher `WORD` bits are placed on the [conveyor](architecture/conveyor.html).
+
+#### Side Effects
+- The highest `WORD` bits are placed onto the [conveyor](architecture/conveyor.html)
+- `o` is `1` if any `1` bits are placed into the conveyor
+
+#### Examples
+```
+~0 2 mul cv0
+```
+- `( -- ~0 1)`
+- `o` is set to `1` because of the `1` present in the least significant bit position in the high bits
+
+## `div`
+`a b -- `
+
+#### Description
+`div` divides two signed numbers (`a` and `b`) with width `WORD` and produces a result with width `2 * WORD`. The higher/whole `WORD` and the lower/fractional `WORD` bits of the result are placed on the [conveyor](architecture/conveyor.html). Both the higher and the lower results are signed.
+
+#### Side Effects
+- The higher/whole `WORD` and lower/fractional `WORD` bits are placed onto the [conveyor](architecture/conveyor.html) in that order
+
+#### Examples (with WORD of 32)
+```
+h80000000 2 div cv1 cv0
+```
+- `( -- hC0000000 hBFFFFFFF)`
+- `o` is set to `1` because of the significant bit present in the low/fractional bits
+
+## `divu`
+`a b -- `
+
+#### Description
+`divu` divides two unsigned numbers (`a` and `b`) with width `WORD` and produces a result with width `2 * WORD`. The higher/whole `WORD` and the lower/fractional `WORD` bits of the result are placed on the [conveyor](architecture/conveyor.html).
+
+#### Side Effects
+- The higher/whole `WORD` and lower/fractional `WORD` bits are placed onto the [conveyor](architecture/conveyor.html) in that order
+
+#### Examples (with WORD of 32)
+```
+~0 2 div cv1 cv0
+```
+- `( -- h7FFFFFFF h80000000)`
+- `o` is set to `1` because of the `1` present in the most significant bit position in the low/fractional bits

@@ -65,6 +65,10 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`0C`|recv|` -- `|Interrupt sync; `cv <- bus, v`|
 |`16`|calli|` -- `|`dc0 -> pc`; push [cstack](architecture/cstack.html)|
 |`17`|jmpi|` -- `|`dc0 -> pc`|
+|`18`|jc|` -- `|if `c` then `dc0 -> pc`|
+|`19`|jnc|` -- `|if `~c` then `dc0 -> pc`|
+|`1A`|jo|` -- `|if `o` then `dc0 -> pc`|
+|`1B`|jno|` -- `|if `~o` then `dc0 -> pc`|
 |`20` - `2F`|cv#|` -- cv#`|cv# synchronizes|
 |`30` - `33`|read#|` -- mem[dc#]`|dc# advances|
 |`34` - `37`|i#|` -- i#`| |
@@ -82,8 +86,8 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`52`|csl|`a b -- ((a << b) or (a >> (b - WORD)))`| |
 |`53`|csr|`a b -- ((a >> b) or (a << (b - WORD)))`| |
 |`54`|asr|`a b -- (a >>> b)`|`o`|
-|`55`|mul|`a b -- (a * b)`|`cv <- (a * b)[2*WORD-1:WORD]`|
-|`56`|mulu|`a b -- (a * b)`|`cv <- (a * b)[2*WORD-1:WORD]`|
+|`55`|mul|`a b -- (a * b)`|`cv <- (a * b)[2*WORD-1:WORD]`; `o`|
+|`56`|mulu|`a b -- (a * b)`|`cv <- (a * b)[2*WORD-1:WORD]`; `o`|
 |`57`|reada|`a -- `|`cv <- mem[a]`|
 |`58`|call|`a -- `|`pc = a`; push [cstack](architecture/cstack.html)|
 |`59`|jmp|`a -- `|`pc = a`|
