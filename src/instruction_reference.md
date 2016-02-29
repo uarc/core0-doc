@@ -62,9 +62,10 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`0A`|reads|`a -- mem[a]`|Synchronous read|
 |`0B`|ret|` -- `|Pops [cstack](architecture/cstack.html)|
 |`0C`|ien|` -- `|Enables selected interrupts|
-|`0D`|idi|` -- `|Disables selected interrupts|
+|`0D`|idi|` -- `|Disables all interrupts|
 |`0E`|tcopy|`v -- v`|Pushes a copy of v to [tstack](architecture/tstack.html)|
 |`0F`|recv|` -- `|Interrupt sync; `cv <- bus, v`|
+|`10`|in|`a -- b`|Stream in to `a`|
 |`16`|calli|` -- `|`dc0 -> pc`; push [cstack](architecture/cstack.html)|
 |`17`|jmpi|` -- `|`dc0 -> pc`|
 |`18`|jc|` -- `|if `c` then `dc0 -> pc`|
@@ -99,7 +100,7 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`5C`|slb|`b -- `|`b[WORD/2-1:0]` to `if[b[WORD-1:WORD/2]]`|
 |`5D`|iset|`a -- `|Set selected interrupt addresses|
 |`5E`|send|`v -- `|Send value to selected buses|
-|`5F`|in|`n a -- b`|Stream n words in and push bus|
+|`5F`|loopi|`n -- `|`ls <- n, dc0, 0`|
 |`60` - `63`|rwrite#|`v a -- `|`mem[dc# + a] = v`|
 |`64`|write|`v a -- `|`mem[a] = v`|
 |`65`|jeq|`a b -- `|if `a == b` then `dc0 -> pc`|
@@ -114,7 +115,6 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`6E`|div|`a b -- `|`cv <- a / b, a % b`|
 |`6F`|divu|`a b -- `|`cv <- a / b, a % b`|
 |`70`|loop|`n e -- `|`ls <- n, e, 0`|
-|`78`|loopi|`n -- `|`ls <- n, dc0, 0`|
 |`80` - `9F`|rot#|`v (# + 1).. -- (# + 1).. v`| |
 |`A0` - `BF`|copy#|`v (# + 1).. -- v (# + 1).. v`| |
 |`C0` - `DF`|tread#|` -- ts[#]`|Address 0 is the top of ts|
