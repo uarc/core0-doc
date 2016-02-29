@@ -10,6 +10,8 @@
     - [conveyor](architecture/conveyor.md)
 - [Instruction Reference](instruction_reference.md)
     - [Arithmetic](instruction_reference/arithmetic.md)
+    - [Bit Manipulation](instruction_reference/bit_manipulation.md)
     - [Stack Manipulation](instruction_reference/stack_manipulation.md)
     - [Memory](instruction_reference/memory.md)
+    - [Control Flow](instruction_reference/control_flow.md)
     - [UARC](instruction_reference/uarc.md)
