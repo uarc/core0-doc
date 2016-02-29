@@ -27,7 +27,7 @@ Implicit instructions have no explicit sources or destinations and all can be as
 Loop instructions allow random read access to the loop index of the top 4 loops in the [lstack](architecture/lstack.html). This means that loops can be nested 4 times and are still able to retrieve the index in one instruction.
 
 ### `D` - Data Counter
-Data Counter instructions are instructions that operate on a random one of the 4 available DCs. These can be set, read, written, randomly read, and randomly written.
+Data Counter instructions are instructions that operate on a random one of the 4 available DCs. These can be set, get, read, written, randomly read, and randomly written.
 
 ### `C` - Conveyor
 Conveyor instructions allow random read access to the 16 things on the [conveyor belt](architecture/conveyor.html). The things on the conveyor may actually not be present and when accessed, the completion of the operation corresponding to that spot on the conveyor will be synchronized. This allows several asynchronous operations to be linked to different locations on the conveyor and read randomly when they are needed.
@@ -72,9 +72,10 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`1B`|jno|` -- `|if `~o` then `dc0 -> pc`|
 |`20` - `2F`|cv#|` -- cv#`|cv# synchronizes|
 |`30` - `33`|read#|` -- mem[dc#]`|dc# advances|
-|`34` - `37`|i#|` -- i#`| |
-|`38`|p0|` -- 0`| |
-|`39`|dup|`a -- a a`| |
+|`34` - `37`|get#|` -- dc#`| |
+|`38` - `3B`|i#|` -- i#`| |
+|`3C`|p0|` -- 0`| |
+|`3D`|dup|`a -- a a`| |
 |`40` - `43`|write#|`v -- `|`mem[dc#] = v`; dc# advances|
 |`44` - `47`|setf#|`a -- `|`dc# = a`; dc# is write post-inc|
 |`48` - `4B`|setb#|`a -- `|`dc# = a`; dc# is write pre-dec|
