@@ -76,7 +76,7 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`34` - `37`|get#|` -- dc#`| |
 |`38` - `3B`|i#|` -- i#`| |
 |`3C`|p0|` -- 0`| |
-|`3D`|dup|`a -- a a`| |
+|`3D`|dup|`v -- v v`| |
 |`40` - `43`|write#|`v -- `|`mem[dc#] = v`; dc# advances|
 |`44` - `47`|setf#|`a -- `|`dc# = a`; dc# is write post-inc|
 |`48` - `4B`|setb#|`a -- `|`dc# = a`; dc# is write pre-dec|
