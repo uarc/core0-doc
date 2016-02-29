@@ -232,3 +232,38 @@ subr:
 #### Side Effects
 - PC is moved to immediate value if `a <= b`
 - `dc0` is incremented always
+
+----------
+
+## `lequ`
+`a b -- `
+
+#### Description
+`lequ` jumps to an immediate value stored at `dc0` if `a` is less than or equal to `b` in an unsigned comparison. This also increments `dc0` in the process.
+
+#### Side Effects
+- PC is moved to immediate value if `a <= b`
+- `dc0` is incremented always
+
+----------
+
+## `loop`
+`n e -- `
+
+#### Description
+`loop` pushes a new loop into onto the [lstack](architecture/lstack.html). `n` represents the number of iterations of the loop, while `e` represents the end address of the loop. The loop index (`i0`) begins at `0`.
+
+#### Side Effects
+- [lstack](architecture/lstack.html) is pushed
+
+----------
+
+## `loopi`
+`n -- `
+
+#### Description
+`loopi` pushes a new loop into onto the [lstack](architecture/lstack.html). `n` represents the number of iterations of the loop. The end address is taken from `dc0` and `dc0` is incremented. The loop index (`i0`) begins at `0`.
+
+#### Side Effects
+- [lstack](architecture/lstack.html) is pushed
+- `dc0` is incremented

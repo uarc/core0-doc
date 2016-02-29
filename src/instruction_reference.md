@@ -44,6 +44,7 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 - `i[0-3]` - Loop Indices
 - `cv[0-F]` - [Conveyor Belt](architecture/conveyor.html) Values
 - `ts` - [tstack](architecture/tstack.html)
+- `ls` - [lstack](architecture/lstack.html)
 - `if` - [ifile](architecture/ifile.html)
 - `n..` - `n` anonymous words on the stack
 
@@ -112,6 +113,8 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`6D`|mulu|`a b -- `|`cv <- low(a * b), high(a * b)`|
 |`6E`|div|`a b -- `|`cv <- a / b, a % b`|
 |`6F`|divu|`a b -- `|`cv <- a / b, a % b`|
+|`70`|loop|`n e -- `|`ls <- n, e, 0`|
+|`78`|loopi|`n -- `|`ls <- n, dc0, 0`|
 |`80` - `9F`|rot#|`v (# + 1).. -- (# + 1).. v`| |
 |`A0` - `BF`|copy#|`v (# + 1).. -- v (# + 1).. v`| |
 |`C0` - `DF`|tread#|` -- ts[#]`|Address 0 is the top of ts|
