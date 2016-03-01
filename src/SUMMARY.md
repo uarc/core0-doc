@@ -15,3 +15,4 @@
     - [Memory](instruction_reference/memory.md)
     - [Control Flow](instruction_reference/control_flow.md)
     - [UARC](instruction_reference/uarc.md)
+- [UARC](uarc.md)
