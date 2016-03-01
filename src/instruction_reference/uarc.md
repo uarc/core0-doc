@@ -44,6 +44,36 @@
 
 ----------
 
+## `kill`
+` -- `
+
+#### Description
+`kill` causes every single core connected to every selected bus and every single one of their children to stop before the instruction completes. This instruction takes `2 * n` cycles, where `n` is the depth of the longest chain of incepted cores. This will not succeed unless the core has [permission](uarc.html) over the target cores. If the target does not have the proper [permission](uarc.html), it will report success without doing anything.
+
+#### Side Effects
+- All selected cores for which this core has permission will be stopped before this instruction finishes.
+
+----------
+
+## `getp`
+` -- priv`
+
+#### Description
+`getp` places the [privilege](uarc.html) of the current core on the stack. This value will range from `0` to `31`.
+
+----------
+
+## `geta`
+` -- addr`
+
+#### Description
+`geta` places the [address](uarc.html) of the current core on the stack. This value is 31 bits and will be placed in the least significant bits of the word.
+
+#### Notes
+- This instruction is not supported for a `WORD` that is less than 32 bits.
+
+----------
+
 ## `seb`
 `b -- `
 
@@ -95,4 +125,15 @@
 `out` sends a stream to all selected UARC buses. `n` is the number of words able to be streamed out and `a` is the address at which those words are to be streamed from.
 
 #### Side Effects
-- Execution is synchronized with the completion of the stream operation
+- Execution is synchronized with the completion of the stream operation.
+
+----------
+
+## `setp`
+`priv addr -- `
+
+#### Description
+`setp` sets the [permission](uarc.html) that is to be delegated to all incepted UARC cores. This value defaults to the same [permission](uarc.html) that this core receives on inception. If the user attempts to set a [permission](uarc.html) that the core doesn't have access to, this instruction will fail without warning.
+
+#### Side Effects
+- All cores incepted after this instruction is executed will have this [permission](uarc.html).
