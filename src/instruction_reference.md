@@ -66,6 +66,7 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`0E`|tcopy|`v -- v`|Pushes a copy of v to [tstack](architecture/tstack.html)|
 |`0F`|recv|` -- `|Interrupt sync; `cv <- bus, v`|
 |`10`|in|`a -- b`|Stream in to `a`|
+|`11`|kill|` -- `|Kill all selected cores|
 |`16`|calli|` -- `|`dc0 -> pc`; push [cstack](architecture/cstack.html)|
 |`17`|jmpi|` -- `|`dc0 -> pc`|
 |`18`|jc|` -- `|if `c` then `dc0 -> pc`|
@@ -78,6 +79,8 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`38` - `3B`|i#|` -- i#`| |
 |`3C`|p0|` -- 0`| |
 |`3D`|dup|`v -- v v`| |
+|`3E`|getp|` -- priv`|Get UARC privilege|
+|`3F`|geta|` -- addr`|Get UARC address|
 |`40` - `43`|write#|`v -- `|`mem[dc#] = v`; dc# advances|
 |`44` - `47`|setf#|`a -- `|`dc# = a`; dc# is write post-inc|
 |`48` - `4B`|setb#|`a -- `|`dc# = a`; dc# is write pre-dec|
@@ -115,6 +118,7 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`6E`|div|`a b -- `|`cv <- a / b, a % b`|
 |`6F`|divu|`a b -- `|`cv <- a / b, a % b`|
 |`70`|loop|`n e -- `|`ls <- n, e, 0`|
+|`71`|setp|`priv addr -- `|Sets UARC permission delegation|
 |`80` - `9F`|rot#|`v (# + 1).. -- (# + 1).. v`| |
 |`A0` - `BF`|copy#|`v (# + 1).. -- v (# + 1).. v`| |
 |`C0` - `DF`|tread#|` -- ts[#]`|Address 0 is the top of ts|
