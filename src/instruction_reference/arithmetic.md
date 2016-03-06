@@ -1,5 +1,17 @@
 # Arithmetic Instructions
 
+## `add#`
+`a -- (a + dc#)`
+
+#### Description
+`add#` adds the top of the [dstack](architecture/dstack.html) with the immediate value from `dc#`. The `o` and `c` bits are set, but not consumed. `dc#` is incremented.
+
+#### Side Effects
+- `c = (a + dc#)[WORD]`
+- `o = (a[WORD - 1] ^ dc#[WORD - 1]) ? 0 : a[WORD - 1] ^ (a + dc#)[WORD - 1]`
+
+----------
+
 ## `inc`
 `a -- (a + 1)`
 

@@ -126,6 +126,32 @@ subr:
 
 ----------
 
+## `ji`
+` -- `
+
+#### Description
+`ji` jumps to an immediate value stored at `dc0` if the `iflag` bit is `1`. This also increments `dc0` in the process. To indicate that the interrupt has been seen, `iflag` is set to `0`.
+
+#### Side Effects
+- PC is moved to immediate value if `iflag` is `1`
+- `dc0` is incremented always
+- `iflag` is set to `0`
+
+----------
+
+## `jni`
+` -- `
+
+#### Description
+`jni` jumps to an immediate value stored at `dc0` if the `iflag` bit is `0`. This also increments `dc0` in the process. To indicate that the interrupt has been seen, `iflag` is set to `0`.
+
+#### Side Effects
+- PC is moved to immediate value if `iflag` is `0`
+- `dc0` is incremented always
+- `iflag` is set to `0`
+
+----------
+
 ## `call`
 `a -- `
 

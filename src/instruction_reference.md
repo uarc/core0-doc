@@ -41,6 +41,7 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 - `cv` - [Conveyor Belt](architecture/conveyor.html)
 - `dc[0-3]` - Data Counters
 - `pc` - Program Counter
+- `iflag` - Interrupt Flag
 - `i[0-3]` - Loop Indices
 - `cv[0-F]` - [Conveyor Belt](architecture/conveyor.html) Values
 - `ts` - [tstack](architecture/tstack.html)
@@ -53,26 +54,30 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |Op|Instruction|dstack|Side Effects|
 |:---:|:---:|:---:|:---:|:---:|
 |`00` - `03`|rread#|`a -- mem[dc# + a]`||
-|`04`|inc|`a -- (a + 1)`|`c`, `o`|
-|`05`|dec|`a -- (a - 1)`|`c`, `o`|
-|`06`|carry|`v -- (v + c)`|`c`, `o`|
-|`07`|borrow|`v -- (v + c - 1)`|`c`, `o`|
-|`08`|inv|`v -- ~v`| |
-|`09`|flush|` -- `|Synchronizes cache flush|
-|`0A`|reads|`a -- mem[a]`|Synchronous read|
-|`0B`|ret|` -- `|Pops [cstack](architecture/cstack.html)|
-|`0C`|ien|` -- `|Enables selected interrupts|
-|`0D`|idi|` -- `|Disables all interrupts|
-|`0E`|tcopy|`v -- v`|Pushes a copy of v to [tstack](architecture/tstack.html)|
-|`0F`|recv|` -- `|Interrupt sync; `cv <- bus, v`|
-|`10`|in|`a -- b`|Stream in to `a`|
-|`11`|kill|` -- `|Kill all selected cores|
-|`16`|calli|` -- `|`dc0 -> pc`; push [cstack](architecture/cstack.html)|
-|`17`|jmpi|` -- `|`dc0 -> pc`|
-|`18`|jc|` -- `|if `c` then `dc0 -> pc`|
-|`19`|jnc|` -- `|if `~c` then `dc0 -> pc`|
-|`1A`|jo|` -- `|if `o` then `dc0 -> pc`|
-|`1B`|jno|` -- `|if `~o` then `dc0 -> pc`|
+|`04` - `07`|add#|`a -- (a + dc#)`|dc# advances; `c`, `o`|
+|`08`|inc|`a -- (a + 1)`|`c`, `o`|
+|`09`|dec|`a -- (a - 1)`|`c`, `o`|
+|`0A`|carry|`v -- (v + c)`|`c`, `o`|
+|`0B`|borrow|`v -- (v + c - 1)`|`c`, `o`|
+|`0C`|inv|`v -- ~v`| |
+|`0D`|flush|` -- `|Synchronizes cache flush|
+|`0E`|reads|`a -- mem[a]`|Synchronous read|
+|`0F`|ret|` -- `|Pops [cstack](architecture/cstack.html)|
+|`10`|ien|` -- `|Enables selected interrupts|
+|`11`|idi|` -- `|Disables all interrupts|
+|`12`|tcopy|`v -- v`|Pushes a copy of v to [tstack](architecture/tstack.html)|
+|`13`|recv|` -- `|Interrupt sync; `cv <- bus, v`|
+|`14`|in|`a -- b`|Stream in to `a`|
+|`15`|kill|` -- `|Kill all selected cores|
+|`16`|wait|` -- `|Waits for an interrupt before continuing|
+|`18`|calli|` -- `|`dc0 -> pc`; push [cstack](architecture/cstack.html)|
+|`19`|jmpi|` -- `|`dc0 -> pc`|
+|`1A`|jc|` -- `|if `c` then `dc0 -> pc`|
+|`1B`|jnc|` -- `|if `~c` then `dc0 -> pc`|
+|`1C`|jo|` -- `|if `o` then `dc0 -> pc`|
+|`1D`|jno|` -- `|if `~o` then `dc0 -> pc`|
+|`1E`|ji|` -- `|if `iflag` then `dc0 -> pc`|
+|`1F`|jni|` -- `|if `~iflag` then `dc0 -> pc`|
 |`20` - `2F`|cv#|` -- cv#`|cv# synchronizes|
 |`30` - `33`|read#|` -- mem[dc#]`|dc# advances|
 |`34` - `37`|get#|` -- dc#`| |
@@ -99,11 +104,9 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`58`|call|`a -- `|`pc = a`; push [cstack](architecture/cstack.html)|
 |`59`|jmp|`a -- `|`pc = a`|
 |`5A`|tpush|`a -- `|`ts <- a`|
-|`5B`|seb|`b -- `|`if[b[WORD-1:WORD/2]] = b[WORD/2-1:0]`|
-|`5C`|slb|`b -- `|`b[WORD/2-1:0]` to `if[b[WORD-1:WORD/2]]`|
-|`5D`|iset|`a -- `|Set selected interrupt addresses|
-|`5E`|send|`v -- `|Send value to selected buses|
-|`5F`|loopi|`n -- `|`ls <- n, dc0, 0`|
+|`5B`|iset|`a -- `|Set selected interrupt addresses|
+|`5C`|send|`v -- `|Send value to selected buses|
+|`5D`|loopi|`n -- `|`ls <- n, dc0, 0`|
 |`60` - `63`|rwrite#|`v a -- `|`mem[dc# + a] = v`|
 |`64`|write|`v a -- `|`mem[a] = v`|
 |`65`|jeq|`a b -- `|if `a == b` then `dc0 -> pc`|
@@ -113,12 +116,14 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`69`|lesu|`a b -- `|if `a < b` then `dc0 -> pc`|
 |`6A`|lequ|`a b -- `|if `a <= b` then `dc0 -> pc`|
 |`6B`|out|`n a -- `|Stream n words to buses from a|
-|`6C`|mul|`a b -- `|`cv <- low(a * b), high(a * b)`|
-|`6D`|mulu|`a b -- `|`cv <- low(a * b), high(a * b)`|
-|`6E`|div|`a b -- `|`cv <- a / b, a % b`|
-|`6F`|divu|`a b -- `|`cv <- a / b, a % b`|
-|`70`|loop|`n e -- `|`ls <- n, e, 0`|
-|`71`|setp|`priv addr -- `|Sets UARC permission delegation|
+|`6C`|seb|`m s -- `|Clear ifile and set register `s` to `m`|
+|`6D`|slb|`m s -- `|Ors `m` with register `s` of ifile|
+|`6E`|mul|`a b -- `|`cv <- low(a * b), high(a * b)`|
+|`6F`|mulu|`a b -- `|`cv <- low(a * b), high(a * b)`|
+|`70`|div|`a b -- `|`cv <- a / b, a % b`|
+|`71`|divu|`a b -- `|`cv <- a / b, a % b`|
+|`72`|loop|`n e -- `|`ls <- n, e, 0`|
+|`73`|setp|`priv addr -- `|Sets UARC permission delegation|
 |`80` - `9F`|rot#|`v (# + 1).. -- (# + 1).. v`| |
 |`A0` - `BF`|copy#|`v (# + 1).. -- v (# + 1).. v`| |
 |`C0` - `DF`|tread#|` -- ts[#]`|Address 0 is the top of ts|

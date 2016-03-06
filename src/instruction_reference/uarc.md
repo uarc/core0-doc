@@ -55,6 +55,18 @@
 
 ----------
 
+## `wait`
+` -- `
+
+#### Description
+`wait` allows the code to synchronously handle interrupts by waiting the core until the next interrupt. If an interrupt had already been received, the `iflag` will already be `1`. After this instruction executes, the `iflag` is set to `0` to indicate that no interrupts have executed that the kernel has not witnessed.
+
+#### Side Effects
+- One interrupt will have been handled before this instruction completes.
+- The `iflag` is set to `0`.
+
+----------
+
 ## `getp`
 ` -- priv`
 
@@ -133,7 +145,7 @@
 `priv addr -- `
 
 #### Description
-`setp` sets the [permission](uarc.html) that is to be delegated to all incepted UARC cores. This value defaults to the same [permission](uarc.html) that this core receives on inception. If the user attempts to set a [permission](uarc.html) that the core doesn't have access to, this instruction will fail without warning.
+`setp` sets the [permission](uarc.html) that is to be delegated to all incepted UARC cores. This value defaults to the same [permission](uarc.html) that this core receives on inception. If the user attempts to set a [permission](uarc.html) that the core doesn't have access to, this instruction will fail without warning. `priv` is the **privilege** from `0` to `31` assigned to incepted cores. `addr` is masked from the most significant values by `priv` bits to get the actual **permission**.
 
 #### Side Effects
 - All cores incepted after this instruction is executed will have this [permission](uarc.html).
