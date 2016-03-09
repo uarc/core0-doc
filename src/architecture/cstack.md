@@ -1,9 +1,9 @@
 # cstack
 
-The cstack is a call stack that contains state information required to return from a subroutine call. This includes things such as the PC, the DCs, and if the last call was to an interrupt. The status bits are not preserved in a call. If an interrupt is issued and accepted or either of the call instructions are executed, the cstack will be pushed. Any time a return instruction is executed, the cstack is popped. The cstack should be accessable on a single-cycle notice and thus should exist in processor memory. Because it is only pushed and popped in regular amounts, it deserves a place on-die as its own processor element, though this is not absolutely necessary, and the stack can be spilled into main memory if the need arise.
-
 |State|Result on Pop|
 |:---:|:--:|
 |PC|Moves PC back to location in caller after the jump/call|
 |DCs|Restores all DCs to previous locations|
 |interrupt|Set the `i` flag to allow checks for interrupt handling|
+
+The cstack is a call stack that contains state information required to return from a subroutine call. This includes things such as the PC, the DCs, and if the last call was to an interrupt. The status bits are not preserved in a call. If an interrupt is issued and accepted or either of the call instructions are executed, the cstack will be pushed. Any time a return instruction is executed, the cstack is popped. The cstack should be accessable on a single-cycle notice and thus should exist in processor memory. Because it is only pushed and popped in regular amounts, it deserves a place on-die as its own processor element, though this is not absolutely necessary, and the stack can be spilled into main memory if the need arise.
