@@ -2,6 +2,7 @@
 
 - [Overview](overview.md)
 - [Architecture](architecture.md)
+    - [Registers](architecture/registers.md)
     - [dstack](architecture/dstack.md)
     - [cstack](architecture/cstack.md)
     - [lstack](architecture/lstack.md)
