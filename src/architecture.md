@@ -5,6 +5,7 @@
 |:---:|:---:|
 |`c`|Carry bit|
 |`o`|Overflow bit|
+|`i`|Interrupt bit|
 
 c0 is a stack machine, meaning that all parameters are implicit and all destinations are implicit except for stack manipulation and memory access. For comparison, belt machines have an implicit destination and register machines (the most common) have explicit parameters and destination. This means that for many instructions, a stack machine's instruction is entirely composed of an opcode with no extra fields. For c0, half of all instructions only have an opcode field, but the other half (stack manipulation instructions) the instruction contains an opcode and location field. This means that c0 has [two instruction formats](instruction_reference.html).
 
