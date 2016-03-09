@@ -1,22 +1,5 @@
 # Stack Manipulation Instructions
 
-## `tcopy`
-`v -- v`
-
-#### Description
-`tcopy` pushes a copy of `v` onto the [tstack](architecture/tstack.html).
-
-#### Side Effects
-- `v` is pushed onto the `tstack`, moving everything down relative to the top
-
-#### Examples
-```
-1 tcopy tread0
-```
-- `( -- 1)`
-
-----------
-
 ## `p0`
 ` -- 0`
 
@@ -30,14 +13,6 @@
 
 #### Description
 `dup` fills a void where `copy#` cannot, which is copying the top of the stack. Since `copy#` and `rot#` address starting from the element directly under the top of stack, this instruction is dedicated to allow copying the top of the stack.
-
-----------
-
-## `tpush`
-`a -- `
-
-#### Description
-`tpush` removes `a` from the stack and places it on the [tstack](architecture/tstack.html). This should be used when a loop is about to execute and requires a temporary value to be accessed repeatedly, but the value is not otherwise consumed from the stack.
 
 ----------
 

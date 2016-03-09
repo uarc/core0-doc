@@ -33,7 +33,7 @@ Data Counter instructions are instructions that operate on a random one of the 4
 Conveyor instructions allow random read access to the 16 things on the [conveyor belt](architecture/conveyor.html). The things on the conveyor may actually not be present and when accessed, the completion of the operation corresponding to that spot on the conveyor will be synchronized. This allows several asynchronous operations to be linked to different locations on the conveyor and read randomly when they are needed.
 
 ### `R` - Random
-For R type instructions, 32 locations can be randomly addressed. This means that 32 places can be copied and rotated on the [dstack](architecture/dstack.html) and 32 places can be read and written on the [tstack](architecture/tstack.html).
+For R type instructions, 64 locations can be randomly addressed. This means that 64 places can be copied and rotated on the [dstack](architecture/dstack.html).
 
 ## Key
 - `WORD` - Data word width in use
@@ -44,7 +44,6 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 - `iflag` - Interrupt Flag
 - `i[0-3]` - Loop Indices
 - `cv[0-F]` - [Conveyor Belt](architecture/conveyor.html) Values
-- `ts` - [tstack](architecture/tstack.html)
 - `ls` - [lstack](architecture/lstack.html)
 - `if` - [ifile](architecture/ifile.html)
 - `n..` - `n` anonymous words on the stack
@@ -65,11 +64,10 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`0F`|ret|` -- `|Pops [cstack](architecture/cstack.html)|
 |`10`|ien|` -- `|Enables selected interrupts|
 |`11`|idi|` -- `|Disables all interrupts|
-|`12`|tcopy|`v -- v`|Pushes a copy of v to [tstack](architecture/tstack.html)|
-|`13`|recv|` -- `|Interrupt sync; `cv <- bus, v`|
-|`14`|in|`a -- b`|Stream in to `a`|
-|`15`|kill|` -- `|Kill all selected cores|
-|`16`|wait|` -- `|Waits for an interrupt before continuing|
+|`12`|recv|` -- `|Interrupt sync; `cv <- bus, v`|
+|`13`|in|`a -- b`|Stream in to `a`|
+|`14`|kill|` -- `|Kill all selected cores|
+|`15`|wait|` -- `|Waits for an interrupt before continuing|
 |`18`|calli|` -- `|`dc0 -> pc`; push [cstack](architecture/cstack.html)|
 |`19`|jmpi|` -- `|`dc0 -> pc`|
 |`1A`|jc|` -- `|if `c` then `dc0 -> pc`|
@@ -103,10 +101,9 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`57`|reada|`a -- `|`cv <- mem[a]`|
 |`58`|call|`a -- `|`pc = a`; push [cstack](architecture/cstack.html)|
 |`59`|jmp|`a -- `|`pc = a`|
-|`5A`|tpush|`a -- `|`ts <- a`|
-|`5B`|iset|`a -- `|Set selected interrupt addresses|
-|`5C`|send|`v -- `|Send value to selected buses|
-|`5D`|loopi|`n -- `|`ls <- n, dc0, 0`|
+|`5A`|iset|`a -- `|Set selected interrupt addresses|
+|`5B`|send|`v -- `|Send value to selected buses|
+|`5C`|loopi|`n -- `|`ls <- n, dc0, 0`|
 |`60` - `63`|rwrite#|`v a -- `|`mem[dc# + a] = v`|
 |`64`|write|`v a -- `|`mem[a] = v`|
 |`65`|jeq|`a b -- `|if `a == b` then `dc0 -> pc`|
@@ -124,7 +121,5 @@ For R type instructions, 32 locations can be randomly addressed. This means that
 |`71`|divu|`a b -- `|`cv <- a / b, a % b`|
 |`72`|loop|`n e -- `|`ls <- n, e, 0`|
 |`73`|setp|`priv addr -- `|Sets UARC permission delegation|
-|`80` - `9F`|rot#|`v (# + 1).. -- (# + 1).. v`| |
-|`A0` - `BF`|copy#|`v (# + 1).. -- v (# + 1).. v`| |
-|`C0` - `DF`|tread#|` -- ts[#]`|Address 0 is the top of ts|
-|`E0` - `FF`|twrite#|`v -- `|`ts[#] = v`|
+|`80` - `BF`|rot#|`v (# + 1).. -- (# + 1).. v`| |
+|`C0` - `FF`|copy#|`v (# + 1).. -- v (# + 1).. v`| |

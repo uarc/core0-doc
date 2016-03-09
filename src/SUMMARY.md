@@ -6,7 +6,6 @@
     - [dstack](architecture/dstack.md)
     - [cstack](architecture/cstack.md)
     - [lstack](architecture/lstack.md)
-    - [tstack](architecture/tstack.md)
     - [ifile](architecture/ifile.md)
     - [conveyor](architecture/conveyor.md)
 - [Instruction Reference](instruction_reference.md)

@@ -4,16 +4,16 @@
 ` -- `
 
 #### Description
-`ret` returns from a subroutine call. It pops the [cstack](architecture/cstack.html), moving the PC, DCs, and [tstack](architecture/tstack.html) back to the position it was at in the caller to continue execution. This instruction returns from interrupts as well as normal subroutines, since an interrupt is a simulated subroutine call. Using `ret` in an interrupt also allows more interrupts to be serviced unless they are explicitly disabled in the interrupt.
+`ret` returns from a subroutine call. It pops the [cstack](architecture/cstack.html), moving the PC and DCs back to the position it was at in the caller to continue execution. This instruction returns from interrupts as well as normal subroutines, since an interrupt is a simulated subroutine call. Using `ret` in an interrupt also allows more interrupts to be serviced unless they are explicitly disabled in the interrupt.
 
 #### Side Effects
 - [cstack](architecture/cstack.html) is popped
   - DCs are returned to their previous values
   - PC is returned to its previous value
-  - [tstack](architecture/tstack.html) is popped until it is at its previous position
   - If this is the initial subroutine of an interrupt
     - It is finished servicing
     - The interrupt [conveyor](architecture/conveyor.html) is replaced with the normal [conveyor](architecture/conveyor.html)
+    - The `i` bit is set
 
 #### Notes
 - The [lstack](architecture/lstack.html) is NOT returned to its previous state.
@@ -50,7 +50,6 @@ subr:
 - [cstack](architecture/cstack.html) is pushed
   - DCs are preserved
   - PC is preserved
-  - [tstack](architecture/tstack.html) position is preserved
   - Whether an interrupt is being serviced or not is preserved
 
 #### Examples
@@ -162,7 +161,6 @@ subr:
 - [cstack](architecture/cstack.html) is pushed
   - DCs are preserved
   - PC is preserved
-  - [tstack](architecture/tstack.html) position is preserved
   - Whether an interrupt is being serviced or not is preserved
 
 #### Examples
