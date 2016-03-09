@@ -8,7 +8,7 @@
 |L (Loop)|`OSSO OOLL`|
 |D (DC)|`OSSO OOLL`|
 |C (Conveyor)|`OSSO LLLL`|
-|R (Random Access)|`OOOL LLLL`|
+|R (Random Access)|`OOLL LLLL`|
 
  - `O` - Opcode bit
  - `S` - Stack bit

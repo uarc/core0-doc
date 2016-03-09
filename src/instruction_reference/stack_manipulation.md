@@ -20,7 +20,7 @@
 `v (# + 1).. -- (# + 1).. v`
 
 #### Description
-`rot#` rotates a value `1` to `32` elements deep in the stack to the top of the stack. The value is removed from that location and elements under that value are not shifted in the stack.
+`rot#` rotates a value `1` to `64` elements deep in the stack to the top of the stack. The value is removed from that location and elements under that value are not shifted in the stack.
 
 #### Examples
 ```
@@ -34,7 +34,7 @@
 `v (# + 1).. -- v (# + 1).. v`
 
 #### Description
-`copy#` copies a value `1` to `32` elements deep in the stack to the top of the stack. This pushes all elements down on the stack.
+`copy#` copies a value `1` to `64` elements deep in the stack to the top of the stack. This pushes all elements down on the stack.
 
 #### Examples
 ```
