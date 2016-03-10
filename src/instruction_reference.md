@@ -102,8 +102,10 @@ For R type instructions, 64 locations can be randomly addressed. This means that
 |`58`|call|`a -- `|`pc = a`; push [cstack](architecture/cstack.html)|
 |`59`|jmp|`a -- `|`pc = a`|
 |`5A`|iset|`a -- `|Set selected interrupt addresses|
-|`5B`|send|`v -- `|Send value to selected buses|
-|`5C`|loopi|`n -- `|`ls <- n, dc0, 0`|
+|`5B`|seb|`b -- `|Set a single UARC bus|
+|`5C`|slb|`b -- `|Select an additional UARC bus|
+|`5D`|send|`v -- `|Send value to selected buses|
+|`5E`|loopi|`n -- `|`ls <- n, dc0, 0`|
 |`60` - `63`|rwrite#|`v a -- `|`mem[dc# + a] = v`|
 |`64`|write|`v a -- `|`mem[a] = v`|
 |`65`|jeq|`a b -- `|if `a == b` then `dc0 -> pc`|
@@ -113,13 +115,14 @@ For R type instructions, 64 locations can be randomly addressed. This means that
 |`69`|lesu|`a b -- `|if `a < b` then `dc0 -> pc`|
 |`6A`|lequ|`a b -- `|if `a <= b` then `dc0 -> pc`|
 |`6B`|out|`n a -- `|Stream n words to buses from a|
-|`6C`|seb|`m s -- `|Clear ifile and set register `s` to `m`|
-|`6D`|slb|`m s -- `|Ors `m` with register `s` of ifile|
-|`6E`|mul|`a b -- `|`cv <- low(a * b), high(a * b)`|
-|`6F`|mulu|`a b -- `|`cv <- low(a * b), high(a * b)`|
-|`70`|div|`a b -- `|`cv <- a / b, a % b`|
-|`71`|divu|`a b -- `|`cv <- a / b, a % b`|
-|`72`|loop|`n e -- `|`ls <- n, e, 0`|
-|`73`|setp|`priv addr -- `|Sets UARC permission delegation|
+|`6C`|incept|`n a -- `|Incept target cores; same as out|
+|`6D`|set|`m s -- `|Clear ifile and set register `s` to `m`|
+|`6E`|sel|`m s -- `|Ors `m` with register `s` of ifile|
+|`6F`|setp|`priv addr -- `|Sets UARC permission delegation|
+|`70`|mul|`a b -- `|`cv <- low(a * b), high(a * b)`|
+|`71`|mulu|`a b -- `|`cv <- low(a * b), high(a * b)`|
+|`72`|div|`a b -- `|`cv <- a / b, a % b`|
+|`73`|divu|`a b -- `|`cv <- a / b, a % b`|
+|`74`|loop|`n e -- `|`ls <- n, e, 0`|
 |`80` - `BF`|rot#|`v (# + 1).. -- (# + 1).. v`| |
 |`C0` - `FF`|copy#|`v (# + 1).. -- v (# + 1).. v`| |

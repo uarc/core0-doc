@@ -86,28 +86,6 @@
 
 ----------
 
-## `seb`
-`b -- `
-
-#### Description
-`seb` clears all buses from being selected and then sets a specific set of UARC buses to be selected. The upper `WORD/2` bits of `b` select randomly from a register file of select registers and the lower `WORD/2` bits are a mask that represent which bits to specifically assign to that select register.
-
-#### Side Effects
-- Specific UARC buses are now selected.
-
-----------
-
-## `slb`
-`b -- `
-
-#### Description
-`seb` selects a specific set of UARC buses. The upper `WORD/2` bits of `b` select randomly from a register file of select registers and the lower `WORD/2` bits are a mask that represent which bits to specifically OR to that select register.
-
-#### Side Effects
-- Specific UARC buses are now added to the selection.
-
-----------
-
 ## `iset`
 `a -- `
 
@@ -116,6 +94,28 @@
 
 #### Side Effects
 - Any further interrupts on the selected UARC buses now call the routine at `a`.
+
+----------
+
+## `seb`
+`b -- `
+
+#### Description
+`seb` sets the only UARC bus to be selected as `b`.
+
+#### Side Effects
+- All UARC calls now affect only `b`.
+
+----------
+
+## `slb`
+`b -- `
+
+#### Description
+`slb` adds the UARC bus `b` to the selected cores.
+
+#### Side Effects
+- All UARC calls now also affect `b`.
 
 ----------
 
@@ -138,6 +138,39 @@
 
 #### Side Effects
 - Execution is synchronized with the completion of the stream operation.
+
+----------
+
+## `incept`
+`n a -- `
+
+#### Description
+`incept` sends a stream to all selected UARC buses. `n` is the number of words able to be streamed out and `a` is the address at which those words are to be streamed from. This will only work on a core which is not presently running and the stream will become the instructions to be executed by the target core.
+
+#### Side Effects
+- Execution is synchronized with the completion of the stream operation.
+
+----------
+
+## `set`
+`b -- `
+
+#### Description
+`set` clears all buses from being selected and then sets a specific set of UARC buses to be selected. The upper `WORD/2` bits of `b` select randomly from a register file of select registers and the lower `WORD/2` bits are a mask that represent which bits to specifically assign to that select register.
+
+#### Side Effects
+- Specific UARC buses are now selected.
+
+----------
+
+## `sel`
+`b -- `
+
+#### Description
+`sel` selects a specific set of UARC buses. The upper `WORD/2` bits of `b` select randomly from a register file of select registers and the lower `WORD/2` bits are a mask that represent which bits to specifically OR to that select register.
+
+#### Side Effects
+- Specific UARC buses are now added to the selection.
 
 ----------
 
