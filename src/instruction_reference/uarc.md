@@ -25,11 +25,11 @@
 ` -- `
 
 #### Description
-`recv` accepts any interrupt synchronously without an interrupt handler from any selected bus. The bus ID and the interrupt value are added to the [conveyor](architecture/conveyor.html) in that order.
+`recv` accepts any interrupt synchronously without an interrupt handler from any selected bus. The bus ID (`bus`), address (`addr`), and the interrupt value (`v`) are added to the [conveyor](architecture/conveyor.html) in that order.
 
 #### Side Effects
-- `cv <- bus, v`
-- Synchronizes execution with the next interrupt
+- `cv <- bus, addr, v`
+- Synchronizes execution with the next interrupt from a selected bus
 
 ----------
 
@@ -145,7 +145,7 @@
 `n a -- `
 
 #### Description
-`incept` sends a stream to all selected UARC buses. `n` is the number of words able to be streamed out and `a` is the address at which those words are to be streamed from. This will only work on a core which is not presently running and the stream will become the instructions to be executed by the target core.
+`incept` sends a stream to all selected UARC buses. `n` is the number of words able to be streamed out and `a` is the address at which those words are to be streamed from. This will only work on a core which is not presently running or the core has **permission** over the core and the stream will become the instructions to be executed by the target core. By incepting cores again, the system can maintain **permission** over cores allocated on a chip for a process and prevent those cores from incepting cores they aren't supposed to. If a chip is to be given up by the system to a process, the system can incept all cores with the **permission** of the process and run an idle routine.
 
 #### Side Effects
 - Execution is synchronized with the completion of the stream operation.
