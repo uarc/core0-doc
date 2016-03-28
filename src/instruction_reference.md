@@ -104,8 +104,9 @@ For R type instructions, 64 locations can be randomly addressed. This means that
 |`5A`|iset|`a -- `|Set selected interrupt addresses|
 |`5B`|seb|`b -- `|Set a single UARC bus|
 |`5C`|slb|`b -- `|Select an additional UARC bus|
-|`5D`|send|`v -- `|Send value to selected buses|
-|`5E`|loopi|`n -- `|`ls <- n, dc0, 0`|
+|`5D`|usb|`b -- `|Unselect a UARC bus|
+|`5E`|send|`v -- `|Send value to selected buses|
+|`5F`|loopi|`n -- `|`ls <- n, dc0, 0`|
 |`60` - `63`|rwrite#|`v a -- `|`mem[dc# + a] = v`|
 |`64`|write|`v a -- `|`mem[a] = v`|
 |`65`|jeq|`a b -- `|if `a == b` then `dc0 -> pc`|

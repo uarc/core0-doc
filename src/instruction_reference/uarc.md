@@ -119,6 +119,17 @@
 
 ----------
 
+## `usb`
+`b -- `
+
+#### Description
+`usb` removes the UARC bus `b` from the selected cores.
+
+#### Side Effects
+- All UARC calls no longer affect `b`.
+
+----------
+
 ## `send`
 `v -- `
 
