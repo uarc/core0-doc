@@ -1,6 +1,6 @@
 # conveyor
 
-The conveyor is a processor element found in conveyor machines in which the destination register does not need to be specified, but the parameters do. Since we are embedding the conveyor into a stack processor, operations occasionally consume parameters from the stack in defined positions and place the result on the conveyor so that it can be retrieved when desired. This allows for two things: It allows asynchronous operations to be synchronized when desired and it allows operations that have multiple outputs to provide their results on the stack in the correct positions.
+The conveyor is a processor element found in belt machines in which the destination register does not need to be specified, but the parameters do. Since we are embedding the conveyor into a stack processor, operations occasionally consume parameters from the stack in defined positions and place the result on the conveyor so that it can be retrieved when desired. This allows for two things: It allows asynchronous operations to be synchronized when desired and it allows operations that have multiple outputs to provide their results on the stack in the correct positions.
 
 As was stated, the conveyor is capable of synchronizing asynchronous operations. For instance, if a division is executed, the result will be placed onto the conveyor, but that doesn't mean it is completed. If the programmer attempts to read the value from the conveyor, it will trigger a synchronization that waits until the division is complete before reading the value from the conveyor.
 
