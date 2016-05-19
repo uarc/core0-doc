@@ -62,6 +62,8 @@
 |`13`|in|`a -- b`|Stream in to `a`|
 |`14`|kill|` -- `|Kill all selected cores|
 |`15`|wait|` -- `|Waits for an interrupt before continuing|
+|`16`|getbp|`b -- perm`|Gets the [permission](uarc.md) on bus `b`|
+|`17`|getba|`b -- addr`|Gets the [address](uarc.md) on bus `b`|
 |`18`|calli|` -- `|`dc0 -> pc`; push [cstack](architecture/cstack.html)|
 |`19`|jmpi|` -- `|`dc0 -> pc`|
 |`1A`|jc|` -- `|if `c` then `dc0 -> pc`|
@@ -76,7 +78,7 @@
 |`38` - `3B`|i#|` -- i#`| |
 |`3C`|p0|` -- 0`| |
 |`3D`|dup|`v -- v v`| |
-|`3E`|getp|` -- priv`|Get UARC privilege|
+|`3E`|getp|` -- perm`|Get UARC permission|
 |`3F`|geta|` -- addr`|Get UARC address|
 |`40` - `43`|write#|`v -- `|`mem[dc#] = v`; dc# advances|
 |`44` - `47`|setf#|`a -- `|`dc# = a`; dc# is write post-inc|
@@ -113,7 +115,7 @@
 |`6C`|incept|`n a -- `|Incept target cores; same as out|
 |`6D`|set|`m s -- `|Clear ifile and set register `s` to `m`|
 |`6E`|sel|`m s -- `|Ors `m` with register `s` of ifile|
-|`6F`|setp|`priv addr -- `|Sets UARC permission delegation|
+|`6F`|seta|`perm addr -- `|Sets UARC permission and address delegation|
 |`70`|mul|`a b -- `|`cv <- low(a * b), high(a * b)`|
 |`71`|mulu|`a b -- `|`cv <- low(a * b), high(a * b)`|
 |`72`|div|`a b -- `|`cv <- a / b, a % b`|
