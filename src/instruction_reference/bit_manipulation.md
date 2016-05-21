@@ -18,14 +18,13 @@
 `a b -- (a << b)`
 
 #### Description
-`lsl` performs a logical shift left. If any `1` bits are lost in the shift, the `o` bit is set to `1`, otherwise `0`. This operation zero-fills.
+`lsl` performs a logical shift left. This operation zero-fills.
 
 #### Examples (with WORD of 32)
 ```
 hFFFFFFFF 1 lsl
 ```
 - `( -- hFFFFFFFE)`
-- `o` is set to `1`
 
 ----------
 
@@ -33,14 +32,13 @@ hFFFFFFFF 1 lsl
 `a b -- (a >> b)`
 
 #### Description
-`lsr` performs a logical shift right. If any `1` bits are lost in the shift, the `o` bit is set to `1`, otherwise `0`. This operation zero-fills.
+`lsr` performs a logical shift right. This operation zero-fills.
 
 #### Examples
 ```
 3 1 lsr
 ```
 - `( -- 1)`
-- `o` is set to `1`
 
 ----------
 

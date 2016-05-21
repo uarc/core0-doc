@@ -91,11 +91,11 @@ For R type instructions, 64 locations can be randomly addressed. This means that
 |`4D`|addc|`a b -- (a + b + c)`|`c`, `o`|
 |`4E`|sub|`a b -- (a - b)`|`c`, `o`|
 |`4F`|subc|`a b -- (a - b + c)`|`c`, `o`|
-|`50`|lsl|`a b -- (a << b)`|`o`|
-|`51`|lsr|`a b -- (a >> b)`|`o`|
+|`50`|lsl|`a b -- (a << b)`||
+|`51`|lsr|`a b -- (a >> b)`||
 |`52`|csl|`a b -- ((a << b) or (a >> (b - WORD)))`| |
 |`53`|csr|`a b -- ((a >> b) or (a << (b - WORD)))`| |
-|`54`|asr|`a b -- (a >>> b)`|`o`|
+|`54`|asr|`a b -- (a >>> b)`||
 |`55`|and|`a b -- (a & b)`| |
 |`56`|or|`a b -- (a or b)`| |
 |`57`|reada|`a -- `|`cv <- mem[a]`|

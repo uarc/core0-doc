@@ -174,17 +174,13 @@ h80000000 h80000000 add
 `a b -- (a >>> b)`
 
 #### Description
-`asr` shifts `a` by `b` bits and sign extends the result. If `-1` is shifted right, it will continue to stay `-1`, but `o` will not be set. The `o` bit is set if any 1 bits are lost in a positive number or 0 bits lost in a negative number.
-
-#### Side Effects
-- `o` is 1 if any significant bits were lost
+`asr` shifts `a` by `b` bits and sign extends the result. If `-1` is shifted right, it will continue to stay `-1`.
 
 #### Examples (with WORD of 32)
 ```
 h80000000 1 asr
 ```
 - `( -- hC000000)`
-- `o` is set to `1` because `0` is a significant bit and is lost
 
 ----------
 
