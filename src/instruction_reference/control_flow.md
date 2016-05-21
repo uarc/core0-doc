@@ -291,3 +291,22 @@ subr:
 #### Side Effects
 - [lstack](architecture/lstack.html) is pushed
 - `dc0` is incremented
+
+----------
+
+## `sef`
+`a f -- `
+
+#### Description
+`sef` sets the fault handler for a particular fault.
+
+#### Side Effects
+- Future faults of type `f` will immediately call `a`
+
+#### Fault types
+|#|Name|Explanation|
+|:---:|:---:|:---:|
+|`00`|Data Stack Overflow|Triggers when an operation would otherwise have overflowed the [dstack](architecture/dstack.html)|
+|`01`|Signed Divide by Zero|Triggers when an operation reads a divide by zero from the [conveyor](architecture/conveyor.html)|
+|`02`|Unsigned Divide by Zero|Triggers when an operation reads a divide by zero from the [conveyor](architecture/conveyor.html)|
+|`03`|Segfault|Triggers when an operation attempts to read from an invalid memory address and places it on the stack|

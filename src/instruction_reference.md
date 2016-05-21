@@ -2,38 +2,32 @@
 
 ### c0 Instruction Formats
 
-| Format | Layout |
-|:------ |:------:|
-|I (Implicit)|`OSSO OOOO`|
-|L (Loop)|`OSSO OOLL`|
-|D (DC)|`OSSO OOLL`|
-|C (Conveyor)|`OSSO LLLL`|
-|R (Random Access)|`OOLL LLLL`|
+- `OOOO OOOO` (All instructions)
+  - `0SSO OOOO` (Normal instructions)
+    - All normal instructions affect the entire stack according to the `S` bits
+    - `0010 LLLL` (Conveyor instruction)
+      - Reads and synchronizes with conveyor index `location`
+    - `0011 10LL` (Loop index)
+      - Places the index from the loop of depth `location` on the [dstack](architecture/dstack.html)
+    - `0SSO OOLL` (DC instructions)
+      - Operates using specifically the DC of index `location`
+  - `1OLL LLLL` (Random access instructions)
+    - `10LL LLLL` (Rotate)
+      - [dstack](architecture/dstack.html) item of depth `location + 1` rotated to top of [dstack](architecture/dstack.html)
+      - Only elements above the rotate are pushed down
+    - `11LL LLLL` (Copy)
+      - [dstack](architecture/dstack.html) item of depth `location + 1` copied to top of [dstack](architecture/dstack.html)
+      - Entire stack is pushed down
 
- - `O` - Opcode bit
- - `S` - Stack bit
- - `L` - Location bit
+- `O` - Opcode bit
+- `S` - Stack bit
+- `L` - Location bit
 
 ### Stack bits
 - `00` - The stack is not popped or pushed.
 - `01` - The stack is pushed once.
 - `10` - The stack is popped once.
 - `11` - The stack is popped twice.
-
-### `I` - Implicit
-Implicit instructions have no explicit sources or destinations and all can be assumed from state information in the system. Such instructions include `add`, which takes parameters from the stack and places the result back on the stack.
-
-### `L` - Loop
-Loop instructions allow random read access to the loop index of the top 4 loops in the [lstack](architecture/lstack.html). This means that loops can be nested 4 times and are still able to retrieve the index in one instruction.
-
-### `D` - Data Counter
-Data Counter instructions are instructions that operate on a random one of the 4 available DCs. These can be set, get, read, written, randomly read, and randomly written.
-
-### `C` - Conveyor
-Conveyor instructions allow random read access to the 16 things on the [conveyor belt](architecture/conveyor.html). The things on the conveyor may actually not be present and when accessed, the completion of the operation corresponding to that spot on the conveyor will be synchronized. This allows several asynchronous operations to be linked to different locations on the conveyor and read randomly when they are needed.
-
-### `R` - Random
-For R type instructions, 64 locations can be randomly addressed. This means that 64 places can be copied and rotated on the [dstack](architecture/dstack.html).
 
 ## Key
 - `WORD` - Data word width in use
@@ -68,6 +62,8 @@ For R type instructions, 64 locations can be randomly addressed. This means that
 |`13`|in|`a -- b`|Stream in to `a`|
 |`14`|kill|` -- `|Kill all selected cores|
 |`15`|wait|` -- `|Waits for an interrupt before continuing|
+|`16`|getbp|`b -- perm`|Gets the [permission](uarc.md) on bus `b`|
+|`17`|getba|`b -- addr`|Gets the [address](uarc.md) on bus `b`|
 |`18`|calli|` -- `|`dc0 -> pc`; push [cstack](architecture/cstack.html)|
 |`19`|jmpi|` -- `|`dc0 -> pc`|
 |`1A`|jc|` -- `|if `c` then `dc0 -> pc`|
@@ -82,7 +78,7 @@ For R type instructions, 64 locations can be randomly addressed. This means that
 |`38` - `3B`|i#|` -- i#`| |
 |`3C`|p0|` -- 0`| |
 |`3D`|dup|`v -- v v`| |
-|`3E`|getp|` -- priv`|Get UARC privilege|
+|`3E`|getp|` -- perm`|Get UARC permission|
 |`3F`|geta|` -- addr`|Get UARC address|
 |`40` - `43`|write#|`v -- `|`mem[dc#] = v`; dc# advances|
 |`44` - `47`|setf#|`a -- `|`dc# = a`; dc# is write post-inc|
@@ -119,11 +115,12 @@ For R type instructions, 64 locations can be randomly addressed. This means that
 |`6C`|incept|`n a -- `|Incept target cores; same as out|
 |`6D`|set|`m s -- `|Clear ifile and set register `s` to `m`|
 |`6E`|sel|`m s -- `|Ors `m` with register `s` of ifile|
-|`6F`|setp|`priv addr -- `|Sets UARC permission delegation|
+|`6F`|seta|`perm addr -- `|Sets UARC permission and address delegation|
 |`70`|mul|`a b -- `|`cv <- low(a * b), high(a * b)`|
 |`71`|mulu|`a b -- `|`cv <- low(a * b), high(a * b)`|
 |`72`|div|`a b -- `|`cv <- a / b, a % b`|
 |`73`|divu|`a b -- `|`cv <- a / b, a % b`|
 |`74`|loop|`n e -- `|`ls <- n, e, 0`|
+|`75`|sef|`a f -- `|Sets fault `f` handler to `a`|
 |`80` - `BF`|rot#|`v (# + 1).. -- (# + 1).. v`| |
 |`C0` - `FF`|copy#|`v (# + 1).. -- v (# + 1).. v`| |

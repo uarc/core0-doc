@@ -67,11 +67,27 @@
 
 ----------
 
-## `getp`
-` -- priv`
+## `getbp`
+`b -- perm`
 
 #### Description
-`getp` places the [privilege](uarc.html) of the current core on the stack. This value will range from `0` to `31`.
+`getbp` places the [permission](uarc.html) of the core on bus `b` onto the stack.
+
+----------
+
+## `getba`
+`b -- addr`
+
+#### Description
+`getba` places the [address](uarc.html) of the core on bus `b` onto the stack. If the `AND` of `addr` with this core's [permission](uarc.html) is equal to this core's [address](uarc.html) with the [permission](uarc.html) then this core has [privilege](uarc.html) over the core on this bus. This check shouldn't need to be performed manually, but that is the process.
+
+----------
+
+## `getp`
+` -- perm`
+
+#### Description
+`getp` places the [permission](uarc.html) of the current core on the stack. This value is a mask of the [address](uarc.html). The core cannot delegate a [permission](uarc.html) on a child core which has any bits unset from its own [permission](uarc.html). Any delegated [address](uarc.html) must have the same [address](uarc.html) bits which are masked by the delegating core's [permission](uarc.html).
 
 ----------
 
@@ -79,7 +95,7 @@
 ` -- addr`
 
 #### Description
-`geta` places the [address](uarc.html) of the current core on the stack. This value is 31 bits and will be placed in the least significant bits of the word.
+`geta` places the [address](uarc.html) of the current core on the stack. This value is 31 bits and will be placed in the least significant bits of the word. The bits of the [address](uarc.html) masked by the [permission](uarc.html) must be the same in all child cores.
 
 #### Notes
 - This instruction is not supported for a `WORD` that is less than 32 bits.
@@ -164,21 +180,21 @@
 ----------
 
 ## `set`
-`b -- `
+`m s -- `
 
 #### Description
-`set` clears all buses from being selected and then sets a specific set of UARC buses to be selected. The upper `WORD/2` bits of `b` select randomly from a register file of select registers and the lower `WORD/2` bits are a mask that represent which bits to specifically assign to that select register.
+`set` clears all buses from being selected and then sets a specific set of UARC buses to be selected. `m` is a mask for which cores to enable using an `OR` operation and `s` is a selector to choose which register to apply the mask to.
 
 #### Side Effects
-- Specific UARC buses are now selected.
+- Specific UARC buses are now selected and all others are unselected.
 
 ----------
 
 ## `sel`
-`b -- `
+`m s -- `
 
 #### Description
-`sel` selects a specific set of UARC buses. The upper `WORD/2` bits of `b` select randomly from a register file of select registers and the lower `WORD/2` bits are a mask that represent which bits to specifically OR to that select register.
+`sel` selects a specific set of UARC buses. `m` is a mask for which cores to enable using an `OR` operation and `s` is a selector to choose which register to apply the mask to.
 
 #### Side Effects
 - Specific UARC buses are now added to the selection.
@@ -186,10 +202,10 @@
 ----------
 
 ## `setp`
-`priv addr -- `
+`perm addr -- `
 
 #### Description
-`setp` sets the [permission](uarc.html) that is to be delegated to all incepted UARC cores. This value defaults to the same [permission](uarc.html) that this core receives on inception. If the user attempts to set a [permission](uarc.html) that the core doesn't have access to, this instruction will fail without warning. `priv` is the **privilege** from `0` to `31` assigned to incepted cores. `addr` is masked from the most significant values by `priv` bits to get the actual **permission**.
+`setp` sets the [permission](uarc.html) that is to be delegated to all incepted UARC cores. This value defaults to the same [permission](uarc.html) and [address](uarc.html) that this core receives on inception. This instruction will only `OR` the bits of the old [permission](uarc.html) with `perm`, so it can only restrict the [permission](uarc.html). Any bits from this core's [address](uarc.html) which are masked by the [permission](uarc.html) will be automatically set the same in the delegation address, while the only bits that will be changed are the ones in `addr` masked by the inverse of the [permission](uarc.html).
 
 #### Side Effects
-- All cores incepted after this instruction is executed will have this [permission](uarc.html).
+- All cores incepted after this instruction is executed will have the set [permission](uarc.html) and [address](uarc.html).
