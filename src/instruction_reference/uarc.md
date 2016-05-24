@@ -59,11 +59,10 @@
 ` -- `
 
 #### Description
-`wait` allows the code to synchronously handle interrupts by waiting the core until the next interrupt. If an interrupt had already been received, the `iflag` will already be `1`. After this instruction executes, the `iflag` is set to `0` to indicate that no interrupts have executed that the kernel has not witnessed.
+`wait` allows the code to synchronously handle interrupts by waiting the core until the next interrupt. This will allow interrupts through from selected buses rather than buses with interrupts enabled. If an interrupt had already been received, the `iflag` will already be `1`. After this instruction executes, the `iflag` is unchanged to indicate that no interrupts have executed that the kernel has not witnessed.
 
 #### Side Effects
-- One interrupt will have been handled before this instruction completes.
-- The `iflag` is set to `0`.
+- One interrupt from a selected bus will have been handled before this instruction completes.
 
 ----------
 
