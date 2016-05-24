@@ -9,6 +9,7 @@
 #### Side Effects
 - [cstack](architecture/cstack.html) is popped
   - DCs are returned to their previous values
+    - DCs can be modified individually if subroutine doesnt set a new DC, but uses the old one
   - PC is returned to its previous value
   - If this is the initial subroutine of an interrupt
     - It is finished servicing
@@ -49,6 +50,7 @@ subr:
 #### Side Effects
 - [cstack](architecture/cstack.html) is pushed
   - DCs are preserved
+    - DCs can be modified individually if subroutine doesnt set a new DC, but uses the old one
   - PC is preserved
   - Whether an interrupt is being serviced or not is preserved
 
@@ -160,6 +162,7 @@ subr:
 #### Side Effects
 - [cstack](architecture/cstack.html) is pushed
   - DCs are preserved
+    - DCs can be modified individually if subroutine doesnt set a new DC, but uses the old one
   - PC is preserved
   - Whether an interrupt is being serviced or not is preserved
 
