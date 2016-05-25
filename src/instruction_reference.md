@@ -86,7 +86,7 @@
 |`4C`|add|`a b -- (a + b)`|`c`, `o`|
 |`4D`|addc|`a b -- (a + b + c)`|`c`, `o`|
 |`4E`|sub|`a b -- (a - b)`|`c`, `o`|
-|`4F`|subc|`a b -- (a - b + c)`|`c`, `o`|
+|`4F`|subc|`a b -- (a - b + c - 1)`|`c`, `o`|
 |`50`|lsl|`a b -- (a << b)`||
 |`51`|lsr|`a b -- (a >> b)`||
 |`52`|csl|`a b -- ((a << b) or (a >> (b - WORD)))`| |

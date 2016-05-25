@@ -152,7 +152,7 @@ h80000000 h80000000 add
 ----------
 
 ## `subc`
-`a b -- (a - b + c)`
+`a b -- (a - b + c - 1)`
 
 #### Description
 `subc` subtracts parameter `b` from `a` and adds `c`. The carry bit is set by this instruction to `1` when no borrow occurs.
