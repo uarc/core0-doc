@@ -11,6 +11,17 @@
 
 ----------
 
+## `continue`
+` -- `
+
+#### Description
+`continue` immediately goes to the next loop iteration and moves the PC to the beginning of the loop. If this is the last iteration it goes to the end of the loop.
+
+#### Side Effects
+- Moves PC to beginning of loop normally or after the loop if this is the last iteration
+
+----------
+
 ## `ret`
 ` -- `
 

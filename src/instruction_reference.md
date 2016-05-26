@@ -56,8 +56,8 @@
 |`0D`|break|` -- `|Pops the lstack and goes to end of loop|
 |`0E`|reads|`a -- mem[a]`|Synchronous read|
 |`0F`|ret|` -- `|Pops [cstack](architecture/cstack.html)|
-|`10`|ien|` -- `|Enables selected interrupts|
-|`11`|idi|` -- `|Disables all interrupts|
+|`10`|continue|` -- `|Goes to the next loop iteration|
+|`11`|ien|` -- `|Enables only selected interrupts|
 |`12`|recv|` -- `|Interrupt sync; `cv <- bus, v`|
 |`13`|in|`a -- b`|Stream in to `a`|
 |`14`|kill|` -- `|Kill all selected cores|

@@ -4,20 +4,11 @@
 ` -- `
 
 #### Description
-`ien` enables interrupts in the [ifile](architecture/ifile.html) for buses which are presently selected.
+`ien` enables interrupts in the [ifile](architecture/ifile.html) only for buses which are presently selected.
 
 #### Side Effects
 - All selected buses now have interrupts enabled.
-
-----------
-
-## `idi`
-` -- `
-#### Description
-`idi` disables all interrupts currently enabled.
-
-#### Side Effects
-- All buses now have interrupts disabled.
+- All non-selected buses now have interrupts disabled.
 
 ----------
 
