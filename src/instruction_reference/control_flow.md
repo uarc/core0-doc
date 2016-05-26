@@ -1,5 +1,16 @@
 # Control Flow
 
+## `break`
+` -- `
+
+#### Description
+`break` immediately pops the [lstack](architecture/lstack.html) and moves the PC to after the loop.
+
+#### Side Effects
+- [lstack](architecture/lstack.html) is popped unconditionally
+
+----------
+
 ## `ret`
 ` -- `
 

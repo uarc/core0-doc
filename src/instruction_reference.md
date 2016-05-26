@@ -53,7 +53,7 @@
 |`0A`|carry|`v -- (v + c)`|`c`, `o`|
 |`0B`|borrow|`v -- (v + c - 1)`|`c`, `o`|
 |`0C`|inv|`v -- ~v`| |
-|`0D`|flush|` -- `|Synchronizes cache flush|
+|`0D`|break|` -- `|Pops the lstack and goes to end of loop|
 |`0E`|reads|`a -- mem[a]`|Synchronous read|
 |`0F`|ret|` -- `|Pops [cstack](architecture/cstack.html)|
 |`10`|ien|` -- `|Enables selected interrupts|
