@@ -47,7 +47,7 @@
 |Op|Instruction|dstack|Side Effects|
 |:---:|:---:|:---:|:---:|:---:|
 |`00` - `03`|rread#|`a -- mem[dc# + a]`||
-|`04` - `07`|add#|`a -- (a + dc#)`|dc# advances; `c`, `o`|
+|`04` - `07`|add#|`a -- (a + mem[dc#])`|dc# advances; `c`, `o`|
 |`08`|inc|`a -- (a + 1)`|`c`, `o`|
 |`09`|dec|`a -- (a - 1)`|`c`, `o`|
 |`0A`|carry|`v -- (v + c)`|`c`, `o`|

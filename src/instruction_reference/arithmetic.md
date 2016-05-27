@@ -1,14 +1,14 @@
 # Arithmetic Instructions
 
 ## `add#`
-`a -- (a + dc#)`
+`a -- (a + mem[dc#])`
 
 #### Description
 `add#` adds the top of the [dstack](architecture/dstack.html) with the immediate value from `dc#`. The `o` and `c` bits are set, but not consumed. `dc#` is incremented.
 
 #### Side Effects
-- `c = (a + dc#)[WORD]`
-- `o = (a[WORD - 1] ^ dc#[WORD - 1]) ? 0 : a[WORD - 1] ^ (a + dc#)[WORD - 1]`
+- `c = (a + mem[dc#])[WORD]`
+- `o = (a[WORD - 1] ^ mem[dc#][WORD - 1]) ? 0 : a[WORD - 1] ^ (a + mem[dc#])[WORD - 1]`
 
 ----------
 
