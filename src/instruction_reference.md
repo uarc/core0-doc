@@ -59,7 +59,6 @@
 |`10`|continue|` -- `|Goes to the next loop iteration|
 |`11`|ien|` -- `|Enables only selected interrupts|
 |`12`|recv|` -- `|Interrupt sync; `cv <- bus, v`|
-|`13`|in|`a -- b`|Stream in to `a`|
 |`14`|kill|` -- `|Kill all selected cores|
 |`15`|wait|` -- `|Waits for an interrupt before continuing|
 |`16`|getbp|`b -- perm`|Gets the [permission](uarc.md) on bus `b`|
@@ -94,11 +93,11 @@
 |`54`|asr|`a b -- (a >>> b)`||
 |`55`|and|`a b -- (a & b)`| |
 |`56`|or|`a b -- (a or b)`| |
-|`57`|reada|`a -- `|`cv <- mem[a]`|
-|`58`|call|`a -- `|`pc = a`; push [cstack](architecture/cstack.html)|
-|`59`|jmp|`a -- `|`pc = a`|
-|`5A`|iset|`a -- `|Set selected interrupt addresses|
-|`5B`|seb|`b -- `|Set a single UARC bus|
+|`57`|xor|`a b -- (a ^ b)`| |
+|`58`|reada|`a -- `|`cv <- mem[a]`|
+|`59`|call|`a -- `|`pc = a`; push [cstack](architecture/cstack.html)|
+|`5A`|jmp|`a -- `|`pc = a`|
+|`5B`|iset|`a -- `|Set selected interrupt addresses|
 |`5C`|slb|`b -- `|Select an additional UARC bus|
 |`5D`|usb|`b -- `|Unselect a UARC bus|
 |`5E`|send|`v -- `|Send value to selected buses|
@@ -111,16 +110,17 @@
 |`68`|leq|`a b -- `|if `a <= b` then `dc0 -> pc`|
 |`69`|lesu|`a b -- `|if `a < b` then `dc0 -> pc`|
 |`6A`|lequ|`a b -- `|if `a <= b` then `dc0 -> pc`|
-|`6B`|out|`n a -- `|Stream n words to buses from a|
-|`6C`|incept|`n a -- `|Incept target cores; same as out|
-|`6D`|set|`m s -- `|Clear ifile and set register `s` to `m`|
-|`6E`|sel|`m s -- `|Ors `m` with register `s` of ifile|
-|`6F`|seta|`perm addr -- `|Sets UARC permission and address delegation|
-|`70`|mul|`a b -- `|`cv <- low(a * b), high(a * b)`|
-|`71`|mulu|`a b -- `|`cv <- low(a * b), high(a * b)`|
-|`72`|div|`a b -- `|`cv <- a / b, a % b`|
-|`73`|divu|`a b -- `|`cv <- a / b, a % b`|
-|`74`|loop|`n e -- `|`ls <- n, e, 0`|
-|`75`|sef|`a f -- `|Sets fault `f` handler to `a`|
+|`6B`|in|`n a -- `|Stream in to `a`; `cv <- bus`|
+|`6C`|out|`n a -- `|Stream n words to buses from a|
+|`6D`|incept|`n a -- `|Incept target cores; same as out|
+|`6E`|set|`m s -- `|Clear ifile and set register `s` to `m`|
+|`6F`|sel|`m s -- `|Ors `m` with register `s` of ifile|
+|`70`|seta|`perm addr -- `|Sets UARC permission and address delegation|
+|`71`|loop|`n e -- `|`ls <- n, e, 0`|
+|`72`|sef|`a f -- `|Sets fault `f` handler to `a`|
+|`73`|mul|`a b -- `|`cv <- low(a * b), high(a * b)`|
+|`74`|mulu|`a b -- `|`cv <- low(a * b), high(a * b)`|
+|`75`|div|`a b -- `|`cv <- a / b, a % b`|
+|`76`|divu|`a b -- `|`cv <- a / b, a % b`|
 |`80` - `BF`|rot#|`v (# + 1).. -- (# + 1).. v`| |
 |`C0` - `FF`|copy#|`v (# + 1).. -- v (# + 1).. v`| |

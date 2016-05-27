@@ -24,17 +24,6 @@
 
 ----------
 
-## `in`
-`a -- b`
-
-#### Description
-`in` receives a stream from any selected UARC bus. `a` is the address at which those words are to be streamed to. `b` is the bus ID of the particular bus that streamed these values.
-
-#### Side Effects
-- Execution is synchronized with the completion of the stream operation
-
-----------
-
 ## `kill`
 ` -- `
 
@@ -104,17 +93,6 @@
 
 ----------
 
-## `seb`
-`b -- `
-
-#### Description
-`seb` sets the only UARC bus to be selected as `b`.
-
-#### Side Effects
-- All UARC calls now affect only `b`.
-
-----------
-
 ## `slb`
 `b -- `
 
@@ -145,6 +123,18 @@
 
 #### Side Effects
 - Execution is synchronized with the acceptance of all interrupts sent.
+
+----------
+
+## `in`
+`n a -- `
+
+#### Description
+`in` receives a stream from any selected UARC bus. `a` is the address at which up to `n` words are to be streamed to. The bus ID of the core that streamed to this core is placed on the conveyor.
+
+#### Side Effects
+- Execution is synchronized with the completion of the stream operation.
+- The bus ID of the sending core is added to the conveyor.
 
 ----------
 

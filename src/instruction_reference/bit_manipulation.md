@@ -95,3 +95,17 @@ hC0000000 1 csl
 5 2 or
 ```
 - `( -- 7)`
+
+----------
+
+## `xor`
+`a b -- (a ^ b)`
+
+#### Description
+`xor` finds the binary XOR of `a` and `b`.
+
+#### Examples
+```
+5 3 xor
+```
+- `( -- 6)`
