@@ -16,11 +16,12 @@
 ` -- `
 
 #### Description
-`recv` accepts any interrupt synchronously without an interrupt handler from any selected bus. The bus ID (`bus`), address (`addr`), and the interrupt value (`v`) are added to the [conveyor](architecture/conveyor.html) in that order.
+`recv` accepts any interrupt synchronously without an interrupt handler from any selected bus. The bus ID (`bus`) and the interrupt value (`v`) are added to the [conveyor](architecture/conveyor.html) in that order.
 
 #### Side Effects
-- `cv <- bus, addr, v`
+- `cv <- bus, v`
 - Synchronizes execution with the next interrupt from a selected bus
+- Until this receives an interrupt, unselected buses cannot interrupt at all
 
 ----------
 
@@ -39,11 +40,10 @@
 ` -- `
 
 #### Description
-`wait` allows the code to synchronously handle interrupts by waiting the core until the next interrupt. This will allow interrupts through from selected buses rather than buses with interrupts enabled. If an interrupt had already been received, the `iflag` will already be `1`. After this instruction executes, the `iflag` is unchanged to indicate that no interrupts have executed that the kernel has not witnessed. Normal interrupts cannot interrupt the core while it is waiting, but they can interrupt the core immediately after `wait` catches an interrupt.
+`wait` allows the code to synchronously handle interrupts by waiting the core until the next interrupt. If an interrupt had already been received, the `i` will already be `1`, thus this will immediately continue.
 
 #### Side Effects
-- One interrupt from a selected bus will have been handled before this instruction completes.
-- While it is waiting it blocks normal interrupts
+- Synchronizes with the first received interrupt or continues if `i` is already set.
 
 ----------
 
