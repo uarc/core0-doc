@@ -83,13 +83,13 @@
 ----------
 
 ## `iset`
-`a -- `
+`d -- `
 
 #### Description
-`iset` sets the interrupt address of all selected UARC buses to `a`.
+`iset` sets the interrupt address of all selected UARC buses to the value at `mem[dc0]` while incrementing the current `dc0` and also sets the corresponding `dc0` which is to be immediately set when the interrupt is handled to `d`. This DC will not be set on a `recv` instruction.
 
 #### Side Effects
-- Any further interrupts on the selected UARC buses now call the routine at `a`.
+- Any further interrupts on the selected UARC buses now call the routine at `mem[dc0]` with a `dc0 = d`.
 
 ----------
 

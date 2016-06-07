@@ -59,6 +59,7 @@
 |`10`|continue|` -- `|Goes to the next loop iteration|
 |`11`|ien|` -- `|Enables only selected interrupts|
 |`12`|recv|` -- `|Interrupt sync; `cv <- bus, v`|
+|`13`|ldi0|` -- `|dc0 = mem[dc0]; preserve dc0|
 |`14`|kill|` -- `|Kill all selected cores|
 |`15`|wait|` -- `|Waits for an interrupt before continuing|
 |`16`|getbp|`b -- perm`|Gets the [permission](uarc.md) on bus `b`|
@@ -97,7 +98,7 @@
 |`58`|reada|`a -- `|`cv <- mem[a]`|
 |`59`|call|`a -- `|`pc = a`; push [cstack](architecture/cstack.html)|
 |`5A`|jmp|`a -- `|`pc = a`|
-|`5B`|iset|`a -- `|Set selected interrupt addresses|
+|`5B`|iset|`d -- `|Set selected interrupt addresses and dc0s|
 |`5C`|slb|`b -- `|Select an additional UARC bus|
 |`5D`|usb|`b -- `|Unselect a UARC bus|
 |`5E`|send|`v -- `|Send value to selected buses|
