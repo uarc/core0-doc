@@ -1,10 +1,10 @@
 # Memory Instructions
 
-## `ldi0`
+## `ld0i`
 ` -- `
 
 #### Description
-`ldi0` loads dc0 from the location pointed to by the current dc0. The old dc0 is incremented before being changed and the restored dc0 when returning from this call will be that value. This means that this instruction can be the first instruction of a function which needs a unique dc0.
+`ld0i` loads dc0 from the location pointed to by the current dc0. The old dc0 is incremented before being changed and the restored dc0 when returning from this call will be that value. This means that this instruction can be the first instruction of a function which needs a unique dc0.
 
 ----------
 

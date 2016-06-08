@@ -59,7 +59,7 @@
 |`10`|continue|` -- `|Goes to the next loop iteration|
 |`11`|ien|` -- `|Enables only selected interrupts|
 |`12`|recv|` -- `|Interrupt sync; `cv <- bus, v`|
-|`13`|ldi0|` -- `|dc0 = mem[dc0]; preserve dc0|
+|`13`|ld0i|` -- `|`dc0 = mem[dc0]`; preserve dc0; `dc0` forwards|
 |`14`|kill|` -- `|Kill all selected cores|
 |`15`|wait|` -- `|Waits for an interrupt before continuing|
 |`16`|getbp|`b -- perm`|Gets the [permission](uarc.md) on bus `b`|
