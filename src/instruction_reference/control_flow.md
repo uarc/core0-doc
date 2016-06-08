@@ -300,10 +300,11 @@ subr:
 `n e -- `
 
 #### Description
-`loop` pushes a new loop into onto the [lstack](architecture/lstack.html). `n` represents the number of iterations of the loop, while `e` represents the end address of the loop. The loop index (`i0`) begins at `0`.
+`loop` pushes a new loop into onto the [lstack](architecture/lstack.html). `n` represents the number of iterations of the loop, while `e` represents the end address of the loop. The loop index (`i0`) begins at `0`. The loop will also track only `dc0` and restore it on each iteration, but on a break `dc0` will not be set to after the loop.
 
 #### Side Effects
 - [lstack](architecture/lstack.html) is pushed
+- `dc0` is preserved on each iteration
 
 ----------
 
@@ -311,11 +312,12 @@ subr:
 `n -- `
 
 #### Description
-`loopi` pushes a new loop into onto the [lstack](architecture/lstack.html). `n` represents the number of iterations of the loop. The end address is taken from `dc0` and `dc0` is incremented. The loop index (`i0`) begins at `0`.
+`loopi` pushes a new loop into onto the [lstack](architecture/lstack.html). `n` represents the number of iterations of the loop. The end address is taken from `dc0` and `dc0` is incremented. The loop index (`i0`) begins at `0`. The loop will also track only `dc0` and restore it on each iteration, but on a break `dc0` will not be set to after the loop.
 
 #### Side Effects
 - [lstack](architecture/lstack.html) is pushed
 - `dc0` is incremented
+- `dc0` is preserved on each iteration
 
 ----------
 
