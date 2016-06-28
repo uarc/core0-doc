@@ -105,23 +105,24 @@
 |`5F`|loopi|`n -- `|`ls <- n, dc0, 0`|
 |`60` - `63`|rwrite#|`v a -- `|`mem[dc# + a] = v`|
 |`64`|write|`v a -- `|`mem[a] = v`|
-|`65`|jeq|`a b -- `|if `a == b` then `dc0 -> pc`|
-|`66`|jne|`a b -- `|if `a != b` then `dc0 -> pc`|
-|`67`|les|`a b -- `|if `a < b` then `dc0 -> pc`|
-|`68`|leq|`a b -- `|if `a <= b` then `dc0 -> pc`|
-|`69`|lesu|`a b -- `|if `a < b` then `dc0 -> pc`|
-|`6A`|lequ|`a b -- `|if `a <= b` then `dc0 -> pc`|
-|`6B`|in|`n a -- `|Stream in to `a`; `cv <- bus`|
-|`6C`|out|`n a -- `|Stream n words to buses from a|
-|`6D`|incept|`n a -- `|Incept target cores; same as out|
-|`6E`|set|`m s -- `|Clear ifile and set register `s` to `m`|
-|`6F`|sel|`m s -- `|Ors `m` with register `s` of ifile|
-|`70`|seta|`perm addr -- `|Sets UARC permission and address delegation|
-|`71`|loop|`n e -- `|`ls <- n, e, 0`|
-|`72`|sef|`a f -- `|Sets fault `f` handler to `a`|
-|`73`|mul|`a b -- `|`cv <- low(a * b), high(a * b)`|
-|`74`|mulu|`a b -- `|`cv <- low(a * b), high(a * b)`|
-|`75`|div|`a b -- `|`cv <- a / b, a % b`|
-|`76`|divu|`a b -- `|`cv <- a / b, a % b`|
+|`65`|writep|`v a -- `|`progmem[a] = v`|
+|`66`|jeq|`a b -- `|if `a == b` then `dc0 -> pc`|
+|`67`|jne|`a b -- `|if `a != b` then `dc0 -> pc`|
+|`68`|les|`a b -- `|if `a < b` then `dc0 -> pc`|
+|`69`|leq|`a b -- `|if `a <= b` then `dc0 -> pc`|
+|`6A`|lesu|`a b -- `|if `a < b` then `dc0 -> pc`|
+|`6B`|lequ|`a b -- `|if `a <= b` then `dc0 -> pc`|
+|`6C`|in|`n a -- `|Stream in to `a`; `cv <- bus`|
+|`6D`|out|`n a -- `|Stream n words to buses from a|
+|`6E`|incept|`n a -- `|Incept target cores; same as out|
+|`6F`|set|`m s -- `|Clear ifile and set register `s` to `m`|
+|`70`|sel|`m s -- `|Ors `m` with register `s` of ifile|
+|`71`|seta|`perm addr -- `|Sets UARC permission and address delegation|
+|`72`|loop|`n e -- `|`ls <- n, e, 0`|
+|`73`|sef|`a f -- `|Sets fault `f` handler to `a`|
+|`74`|mul|`a b -- `|`cv <- low(a * b), high(a * b)`|
+|`75`|mulu|`a b -- `|`cv <- low(a * b), high(a * b)`|
+|`76`|div|`a b -- `|`cv <- a / b, a % b`|
+|`77`|divu|`a b -- `|`cv <- a / b, a % b`|
 |`80` - `BF`|rot#|`v (# + 1).. -- (# + 1).. v`| |
 |`C0` - `FF`|copy#|`v (# + 1).. -- v (# + 1).. v`| |

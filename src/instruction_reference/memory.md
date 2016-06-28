@@ -103,3 +103,14 @@ cv0
 
 #### Side Effects
 - `mem[a] = v`
+
+----------
+
+## `writep`
+`v a -- `
+
+#### Description
+`writep` performs a random write to program memory in little-endian byte-order. This means that `progmem[a] = v`. This may be cached. Program memory is ordered into octets, but this instruction can write several octets in one word, therefore the word byte-order is little-endian.
+
+#### Side Effects
+- `progmem[a] = v`
