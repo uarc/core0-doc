@@ -334,6 +334,15 @@ subr:
 |#|Name|Explanation|
 |:---:|:---:|:---:|
 |`00`|Data Stack Overflow|Triggers when an operation would otherwise have overflowed the [dstack](architecture/dstack.html)|
-|`01`|Signed Divide by Zero|Triggers when an operation reads a divide by zero from the [conveyor](architecture/conveyor.html)|
-|`02`|Unsigned Divide by Zero|Triggers when an operation reads a divide by zero from the [conveyor](architecture/conveyor.html)|
-|`03`|Segfault|Triggers when an operation attempts to read from an invalid memory address and places it on the stack|
+|`01`|Data Stack Underflow|Triggers when an operation would otherwise have underflowed the [dstack](architecture/dstack.html)|
+|`02`|Signed Divide by Zero|Triggers when an operation reads a divide by zero from the [conveyor](architecture/conveyor.html)|
+|`03`|Unsigned Divide by Zero|Triggers when an operation reads a divide by zero from the [conveyor](architecture/conveyor.html)|
+|`04`|Segfault|Triggers when an operation attempts to read from an invalid memory address and places it on the stack|
+
+----------
+
+## `reset`
+`d p -- `
+
+#### Description
+Resets the whole processor, setting `d` as the new DC0 and `p` as the new PC. Everything is reinitialized, such as stack depth.
