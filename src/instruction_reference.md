@@ -77,52 +77,54 @@
 |`34` - `37`|get#|` -- dc#`| |
 |`38` - `3B`|i#|` -- i#`| |
 |`3C`|p0|` -- 0`| |
-|`3D`|dup|`v -- v v`| |
+|`3D`|readi|` -- mem[mem[dc0]]`| |
 |`3E`|getp|` -- perm`|Get UARC permission|
 |`3F`|geta|` -- addr`|Get UARC address|
 |`40` - `43`|write#|`v -- `|`mem[dc#] = v`; dc# advances|
 |`44` - `47`|setf#|`a -- `|`dc# = a`; dc# is write post-inc|
 |`48` - `4B`|setb#|`a -- `|`dc# = a`; dc# is write pre-dec|
 |`4C`|add|`a b -- (a + b)`|`c`, `o`|
-|`4D`|addc|`a b -- (a + b + c)`|`c`, `o`|
-|`4E`|sub|`a b -- (a - b)`|`c`, `o`|
-|`4F`|subc|`a b -- (a - b + c - 1)`|`c`, `o`|
-|`50`|lsl|`a b -- (a << b)`||
-|`51`|lsr|`a b -- (a >> b)`||
-|`52`|csl|`a b -- ((a << b) or (a >> (b - WORD)))`| |
-|`53`|csr|`a b -- ((a >> b) or (a << (b - WORD)))`| |
-|`54`|asr|`a b -- (a >>> b)`||
-|`55`|and|`a b -- (a & b)`| |
-|`56`|or|`a b -- (a or b)`| |
-|`57`|xor|`a b -- (a ^ b)`| |
-|`58`|reada|`a -- `|`cv <- mem[a]`|
-|`59`|call|`a -- `|`pc = a`; push [cstack](architecture/cstack.html)|
-|`5A`|jmp|`a -- `|`pc = a`|
-|`5B`|iset|`d -- `|Set selected interrupt addresses and dc0s|
-|`5C`|slb|`b -- `|Select an additional UARC bus|
-|`5D`|usb|`b -- `|Unselect a UARC bus|
-|`5E`|send|`v -- `|Send value to selected buses|
+|`4D`|sub|`a b -- (a - b)`|`c`, `o`|
+|`4E`|lsl|`a b -- (a << b)`||
+|`4F`|lsr|`a b -- (a >> b)`||
+|`50`|csl|`a b -- ((a << b) or (a >> (b - WORD)))`| |
+|`51`|csr|`a b -- ((a >> b) or (a << (b - WORD)))`| |
+|`52`|asr|`a b -- (a >>> b)`||
+|`53`|and|`a b -- (a & b)`| |
+|`54`|or|`a b -- (a or b)`| |
+|`55`|xor|`a b -- (a ^ b)`| |
+|`56`|reada|`a -- `|`cv <- mem[a]`|
+|`57`|call|`a -- `|`pc = a`; push [cstack](architecture/cstack.html)|
+|`58`|jmp|`a -- `|`pc = a`|
+|`59`|iset|`d -- `|Set selected interrupt addresses and dc0s|
+|`5A`|seb|`b -- `|Set a single bus|
+|`5B`|slb|`b -- `|Select an additional UARC bus|
+|`5C`|usb|`b -- `|Unselect a UARC bus|
+|`5D`|send|`v -- `|Send value to selected buses|
+|`5E`|writei|`v -- `|`mem[mem[dc0]] = v`|
 |`5F`|loopi|`n -- `|`ls <- n, dc0, 0`|
-|`60` - `63`|rwrite#|`v a -- `|`mem[dc# + a] = v`|
-|`64`|write|`v a -- `|`mem[a] = v`|
-|`65`|writep|`v a -- `|`progmem[a] = v`|
-|`66`|jeq|`a b -- `|if `a == b` then `dc0 -> pc`|
-|`67`|jne|`a b -- `|if `a != b` then `dc0 -> pc`|
-|`68`|les|`a b -- `|if `a < b` then `dc0 -> pc`|
-|`69`|leq|`a b -- `|if `a <= b` then `dc0 -> pc`|
-|`6A`|lesu|`a b -- `|if `a < b` then `dc0 -> pc`|
-|`6B`|lequ|`a b -- `|if `a <= b` then `dc0 -> pc`|
-|`6C`|in|`n a -- `|Stream in to `a`; `cv <- bus`|
-|`6D`|out|`n a -- `|Stream n words to buses from a|
-|`6E`|incept|`n a -- `|Incept target cores; same as out|
-|`6F`|set|`m s -- `|Clear ifile and set register `s` to `m`|
-|`70`|sel|`m s -- `|Ors `m` with register `s` of ifile|
-|`71`|seta|`perm addr -- `|Sets UARC permission and address delegation|
-|`72`|loop|`n e -- `|`ls <- n, e, 0`|
-|`73`|sef|`a f -- `|Sets fault `f` handler to `a`|
-|`74`|mul|`a b -- `|`cv <- low(a * b), high(a * b)`|
-|`75`|mulu|`a b -- `|`cv <- low(a * b), high(a * b)`|
-|`76`|div|`a b -- `|`cv <- a / b, a % b`|
-|`77`|divu|`a b -- `|`cv <- a / b, a % b`|
-|`80` - `BF`|rot#|`v (# + 1).. -- (# + 1).. v`| |
-|`C0` - `FF`|copy#|`v (# + 1).. -- v (# + 1).. v`| |
+|`60` - `63`|rawrite#|`v a -- `|`mem[dc# + a] = v`|
+|`64` - `67`|rewrite#|`v a -- `|`mem[mem[dc#] + a] = v`|
+|`68`|write|`v a -- `|`mem[a] = v`|
+|`69`|writep|`v a -- `|`progmem[a] = v`|
+|`6A`|writepi|`ins a -- `|`progmem[a] = ins`|
+|`6B`|jeq|`a b -- `|if `a == b` then `dc0 -> pc`|
+|`6C`|jne|`a b -- `|if `a != b` then `dc0 -> pc`|
+|`6D`|les|`a b -- `|if `a < b` then `dc0 -> pc`|
+|`6E`|leq|`a b -- `|if `a <= b` then `dc0 -> pc`|
+|`6F`|lesu|`a b -- `|if `a < b` then `dc0 -> pc`|
+|`70`|lequ|`a b -- `|if `a <= b` then `dc0 -> pc`|
+|`71`|in|`n a -- `|Stream in to `a`; `cv <- bus`|
+|`72`|out|`n a -- `|Stream n words to buses from a|
+|`73`|incept|`n a -- `|Incept target cores; same as out|
+|`74`|set|`m s -- `|Clear ifile and set register `s` to `m`|
+|`75`|sel|`m s -- `|Ors `m` with register `s` of ifile|
+|`76`|seta|`perm addr -- `|Sets UARC permission and address delegation|
+|`77`|loop|`n e -- `|`ls <- n, e, 0`|
+|`78`|sef|`a f -- `|Sets fault `f` handler to `a`|
+|`79`|mul|`a b -- `|`cv <- low(a * b), high(a * b)`|
+|`7A`|mulu|`a b -- `|`cv <- low(a * b), high(a * b)`|
+|`7B`|div|`a b -- `|`cv <- a / b, a % b`|
+|`7C`|divu|`a b -- `|`cv <- a / b, a % b`|
+|`80` - `BF`|rot#|`v #.. -- #.. v`| |
+|`C0` - `FF`|copy#|`v #.. -- v #.. v`| |

@@ -32,6 +32,14 @@
 
 ----------
 
+## `readi`
+` -- mem[mem[dc#]]`
+
+#### Description
+`readi` performs an indirect, immediate read using the address at `dc0`. Doing this increments `dc0` after the read.
+
+----------
+
 ## `get#`
 ` -- dc#`
 
@@ -84,14 +92,33 @@ cv0
 
 ----------
 
-## `rwrite#`
+## `writei`
+`v -- `
+
+#### Description
+`writei` performs an indirect, immediate write directly at the location `dc0`. Doing this always increments `dc0`. This is treated as an immediate read, despite the name, since an address is read from `dc0`.
+
+----------
+
+## `rawrite#`
 `v a -- `
 
 #### Description
-`rwrite#` performs a random write relative to `dc#`. This means that `mem[dc# + a] = v`. This may be cached.
+`rawrite#` performs a random write relative to `dc#`. This means that `mem[dc# + a] = v`. This may be cached.
 
 #### Side Effects
 - `mem[dc# + a] = v`
+
+----------
+
+## `rewrite#`
+`v a -- `
+
+#### Description
+`rewrite#` performs a random write relative to `a`. This means that `mem[mem[dc#] + a] = v`. This is treated as an immediate read, thus `dc#` will be incremented. This may be cached.
+
+#### Side Effects
+- `mem[mem[dc#] + a] = v`
 
 ----------
 
@@ -114,3 +141,14 @@ cv0
 
 #### Side Effects
 - `progmem[a] = v`
+
+----------
+
+## `writepi`
+`ins a -- `
+
+#### Description
+`writepi` performs a random write of an instruction to program memory using a program address. This means that `progmem[a] = ins`, but only the lowest 8 bits of `ins` are written. This may be cached. Program memory is ordered into octets, which are written and addressed individually by this word.
+
+#### Side Effects
+- `progmem[a] = ins`

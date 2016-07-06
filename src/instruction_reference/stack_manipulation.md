@@ -8,36 +8,28 @@
 
 ----------
 
-## `dup`
-`v -- v v`
-
-#### Description
-`dup` fills a void where `copy#` cannot, which is copying the top of the stack. Since `copy#` and `rot#` address starting from the element directly under the top of stack, this instruction is dedicated to allow copying the top of the stack.
-
-----------
-
 ## `rot#`
-`v (# + 1).. -- (# + 1).. v`
+`v #.. -- #.. v`
 
 #### Description
-`rot#` rotates a value `1` to `64` elements deep in the stack to the top of the stack. The value is removed from that location and elements under that value are not shifted in the stack.
+`rot#` rotates a value `0` to `63` elements deep in the stack to the top of the stack. The value is removed from that location and elements under that value are not shifted in the stack. `rot0` has no effect and uses a cycle doing nothing.
 
 #### Examples
 ```
-1 2 3 rot1
+1 2 3 rot2
 ```
 - `( -- 2 3 1)`
 
 ----------
 
 ## `copy#`
-`v (# + 1).. -- v (# + 1).. v`
+`v #.. -- v #.. v`
 
 #### Description
-`copy#` copies a value `1` to `64` elements deep in the stack to the top of the stack. This pushes all elements down on the stack.
+`copy#` copies a value `0` to `63` elements deep in the stack to the top of the stack. This pushes all elements down on the stack. `copy0` is a duplicate operation.
 
 #### Examples
 ```
-1 2 3 copy1
+1 2 3 copy2
 ```
 - `( -- 1 2 3 1)`

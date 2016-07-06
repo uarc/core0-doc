@@ -93,6 +93,17 @@
 
 ----------
 
+## `seb`
+`b -- `
+
+#### Description
+`seb` sets the only UARC bus to be selected as `b`.
+
+#### Side Effects
+- All UARC calls now affect only `b`.
+
+----------
+
 ## `slb`
 `b -- `
 

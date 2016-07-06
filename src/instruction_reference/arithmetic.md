@@ -113,25 +113,6 @@ h7FFFFFFF inc
 
 ----------
 
-## `addc`
-`a b -- (a + b + c)`
-
-#### Description
-`addc` takes parameters `a` and `b` from the stack and adds them with `c`. Unlike `add`, `addc` consumes the carry, so ensure it is correctly set before issuing this instruction.
-
-#### Side Effects
-`c = (a + b)[WORD]`
-
-#### Examples (with WORD of 32)
-```
-h80000000 h80000000 add
-0 0 addc
-```
-- `( -- 0 1)`
-- Carry is set to 0
-
-----------
-
 ## `sub`
 `a b -- (a - b)`
 
@@ -148,25 +129,6 @@ h80000000 h80000000 add
 - `( -- -1)`
 - Carry is set to 0
   - Which indicates a borrow
-
-----------
-
-## `subc`
-`a b -- (a - b + c - 1)`
-
-#### Description
-`subc` subtracts parameter `b` from `a` and adds `c`. The carry bit is set by this instruction to `1` when no borrow occurs.
-
-#### Side Effects
-`c = (a - b)[WORD]`
-
-#### Examples
-```
-2 3 sub
-1 0 subc
-```
-- `( -- -1 0)`
-- Carry is set to 1 (indicating no borrow)
 
 ----------
 
