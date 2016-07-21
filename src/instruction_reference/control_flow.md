@@ -105,11 +105,11 @@ subr:
 ` -- `
 
 #### Description
-`jc` jumps to an immediate value stored at `dc0` if the `c` bit is `1`. This also increments `dc0` in the process.
+`jc` jumps to an immediate value stored at `dc0` if the `c` bit is `1`. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path.
 
 #### Side Effects
 - PC is moved to immediate value if `c` is `1`
-- `dc0` is incremented always
+- `dc0` is incremented by `1` or `2`
 
 ----------
 
@@ -117,11 +117,11 @@ subr:
 ` -- `
 
 #### Description
-`jnc` jumps to an immediate value stored at `dc0` if the `c` bit is `0`. This also increments `dc0` in the process.
+`jnc` jumps to an immediate value stored at `dc0` if the `c` bit is `0`. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path.
 
 #### Side Effects
 - PC is moved to immediate value if `c` is `0`
-- `dc0` is incremented always
+- `dc0` is incremented by `1` or `2`
 
 ----------
 
@@ -129,11 +129,11 @@ subr:
 ` -- `
 
 #### Description
-`jo` jumps to an immediate value stored at `dc0` if the `o` bit is `1`. This also increments `dc0` in the process.
+`jo` jumps to an immediate value stored at `dc0` if the `o` bit is `1`. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path.
 
 #### Side Effects
 - PC is moved to immediate value if `o` is `1`
-- `dc0` is incremented always
+- `dc0` is incremented by `1` or `2`
 
 ----------
 
@@ -141,11 +141,11 @@ subr:
 ` -- `
 
 #### Description
-`jno` jumps to an immediate value stored at `dc0` if the `o` bit is `0`. This also increments `dc0` in the process.
+`jno` jumps to an immediate value stored at `dc0` if the `o` bit is `0`. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path.
 
 #### Side Effects
 - PC is moved to immediate value if `o` is `0`
-- `dc0` is incremented always
+- `dc0` is incremented by `1` or `2`
 
 ----------
 
@@ -153,11 +153,11 @@ subr:
 ` -- `
 
 #### Description
-`ji` jumps to an immediate value stored at `dc0` if the `iflag` bit is `1`. This also increments `dc0` in the process. To indicate that the interrupt has been seen, `iflag` is set to `0`.
+`ji` jumps to an immediate value stored at `dc0` if the `iflag` bit is `1`. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path. To indicate that the interrupt has been seen, `iflag` is set to `0`.
 
 #### Side Effects
 - PC is moved to immediate value if `iflag` is `1`
-- `dc0` is incremented always
+- `dc0` is incremented by `1` or `2`
 - `iflag` is set to `0`
 
 ----------
@@ -166,11 +166,11 @@ subr:
 ` -- `
 
 #### Description
-`jni` jumps to an immediate value stored at `dc0` if the `iflag` bit is `0`. This also increments `dc0` in the process. To indicate that the interrupt has been seen, `iflag` is set to `0`.
+`jni` jumps to an immediate value stored at `dc0` if the `iflag` bit is `0`. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path. To indicate that the interrupt has been seen, `iflag` is set to `0`.
 
 #### Side Effects
 - PC is moved to immediate value if `iflag` is `0`
-- `dc0` is incremented always
+- `dc0` is incremented by `1` or `2`
 - `iflag` is set to `0`
 
 ----------
@@ -216,11 +216,11 @@ subr:
 `a b -- `
 
 #### Description
-`jeq` jumps to an immediate value stored at `dc0` if `a` and `b` are equal. This also increments `dc0` in the process.
+`jeq` jumps to an immediate value stored at `dc0` if `a` and `b` are equal. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path.
 
 #### Side Effects
 - PC is moved to immediate value if `a == b`
-- `dc0` is incremented always
+- `dc0` is incremented by `1` or `2`
 
 ----------
 
@@ -228,11 +228,11 @@ subr:
 `a b -- `
 
 #### Description
-`jne` jumps to an immediate value stored at `dc0` if `a` and `b` are not equal. This also increments `dc0` in the process.
+`jne` jumps to an immediate value stored at `dc0` if `a` and `b` are not equal. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path.
 
 #### Side Effects
 - PC is moved to immediate value if `a != b`
-- `dc0` is incremented always
+- `dc0` is incremented by `1` or `2`
 
 ----------
 
@@ -240,11 +240,11 @@ subr:
 `a b -- `
 
 #### Description
-`les` jumps to an immediate value stored at `dc0` if `a` is less than `b` in a signed comparison. This also increments `dc0` in the process.
+`les` jumps to an immediate value stored at `dc0` if `a` is less than `b` in a signed comparison. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path.
 
 #### Side Effects
 - PC is moved to immediate value if `a < b`
-- `dc0` is incremented always
+- `dc0` is incremented by `1` or `2`
 
 ----------
 
@@ -252,11 +252,11 @@ subr:
 `a b -- `
 
 #### Description
-`leq` jumps to an immediate value stored at `dc0` if `a` is less than or equal to `b` in a signed comparison. This also increments `dc0` in the process.
+`leq` jumps to an immediate value stored at `dc0` if `a` is less than or equal to `b` in a signed comparison. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path.
 
 #### Side Effects
 - PC is moved to immediate value if `a <= b`
-- `dc0` is incremented always
+- `dc0` is incremented by `1` or `2`
 
 ----------
 
@@ -264,11 +264,11 @@ subr:
 `a b -- `
 
 #### Description
-`lesu` jumps to an immediate value stored at `dc0` if `a` is less than `b` in an unsigned comparison. This also increments `dc0` in the process.
+`lesu` jumps to an immediate value stored at `dc0` if `a` is less than `b` in an unsigned comparison. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path.
 
 #### Side Effects
 - PC is moved to immediate value if `a < b`
-- `dc0` is incremented always
+- `dc0` is incremented by `1` or `2`
 
 ----------
 
@@ -276,23 +276,11 @@ subr:
 `a b -- `
 
 #### Description
-`lequ` jumps to an immediate value stored at `dc0` if `a` is less than or equal to `b` in an unsigned comparison. This also increments `dc0` in the process.
+`lequ` jumps to an immediate value stored at `dc0` if `a` is less than or equal to `b` in an unsigned comparison. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path.
 
 #### Side Effects
 - PC is moved to immediate value if `a <= b`
-- `dc0` is incremented always
-
-----------
-
-## `lequ`
-`a b -- `
-
-#### Description
-`lequ` jumps to an immediate value stored at `dc0` if `a` is less than or equal to `b` in an unsigned comparison. This also increments `dc0` in the process.
-
-#### Side Effects
-- PC is moved to immediate value if `a <= b`
-- `dc0` is incremented always
+- `dc0` is incremented by `1` or `2`
 
 ----------
 
