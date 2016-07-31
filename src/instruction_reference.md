@@ -127,5 +127,5 @@
 |`7B`|div|`a b -- `|`cv <- a / b, a % b`|
 |`7C`|divu|`a b -- `|`cv <- a / b, a % b`|
 |`7F`|reset|`d p -- `|`pc = p, dc0 = d`|
-|`80` - `BF`|rot#|`v #.. -- #.. v`| |
-|`C0` - `FF`|copy#|`v #.. -- v #.. v`| |
+|`C0` - `DF`|rot#|`v #.. -- #.. v`| |
+|`E0` - `FF`|copy#|`v #.. -- v #.. v`| |
