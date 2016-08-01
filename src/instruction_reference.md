@@ -46,8 +46,8 @@
 
 |Op|Instruction|dstack|Side Effects|
 |:---:|:---:|:---:|:---:|:---:|
-|`00` - `03`|rread#|`a -- mem[dc# + a]`||
-|`04` - `07`|add#|`a -- (a + mem[dc#])`|dc# advances; `c`, `o`|
+|`00` - `03`|raread#|`a -- mem[dc# + a]`| |
+|`04` - `07`|addi#|`a -- (a + mem[dc#])`|dc# advances; `c`, `o`|
 |`08`|inc|`a -- (a + 1)`|`c`, `o`|
 |`09`|dec|`a -- (a - 1)`|`c`, `o`|
 |`0A`|carry|`v -- (v + c)`|`c`, `o`|
@@ -55,29 +55,29 @@
 |`0C`|inv|`v -- ~v`| |
 |`0D`|break|` -- `|Pops the lstack and goes to end of loop|
 |`0E`|reads|`a -- mem[a]`|Synchronous read|
-|`0F`|ret|` -- `|Pops [cstack](architecture/cstack.html)|
+|`0F`|iloopi|` -- `|dc0 = mem[dc0]; push [lstack](architecture/lstack.html)|
 |`10`|continue|` -- `|Goes to the next loop iteration|
-|`11`|ien|` -- `|Enables only selected interrupts|
-|`12`|recv|` -- `|Interrupt sync; `cv <- bus, v`|
-|`13`|ld0i|` -- `|`dc0 = mem[dc0]`; preserve dc0; `dc0` forwards|
+|`11`|inten|` -- `|Enables only selected interrupts|
+|`12`|intrecv|` -- `|Interrupt sync; `cv <- bus, v`|
+|`13`|set0i|` -- `|`dc0 = mem[dc0]`; preserve dc0; `dc0` forwards|
 |`14`|kill|` -- `|Kill all selected cores|
-|`15`|wait|` -- `|Waits for an interrupt before continuing|
+|`15`|intwait|` -- `|Waits for an interrupt before continuing|
 |`16`|getbp|`b -- perm`|Gets the [permission](uarc.md) on bus `b`|
 |`17`|getba|`b -- addr`|Gets the [address](uarc.md) on bus `b`|
-|`18`|calli|` -- `|`dc0 -> pc`; push [cstack](architecture/cstack.html)|
+|`18`|calli|` -- `|`dc0 -> pc`; push [lstack](architecture/lstack.html)|
 |`19`|jmpi|` -- `|`dc0 -> pc`|
-|`1A`|jc|` -- `|if `c` then `dc0 -> pc`|
-|`1B`|jnc|` -- `|if `~c` then `dc0 -> pc`|
-|`1C`|jo|` -- `|if `o` then `dc0 -> pc`|
-|`1D`|jno|` -- `|if `~o` then `dc0 -> pc`|
-|`1E`|ji|` -- `|if `iflag` then `dc0 -> pc`|
-|`1F`|jni|` -- `|if `~iflag` then `dc0 -> pc`|
+|`1A`|jci|` -- `|if `c` then `dc0 -> pc`|
+|`1B`|jnci|` -- `|if `~c` then `dc0 -> pc`|
+|`1C`|joi|` -- `|if `o` then `dc0 -> pc`|
+|`1D`|jnoi|` -- `|if `~o` then `dc0 -> pc`|
+|`1E`|jinti|` -- `|if `iflag` then `dc0 -> pc`|
+|`1F`|jninti|` -- `|if `~iflag` then `dc0 -> pc`|
 |`20` - `2F`|cv#|` -- cv#`|cv# synchronizes|
 |`30` - `33`|read#|` -- mem[dc#]`|dc# advances|
 |`34` - `37`|get#|` -- dc#`| |
 |`38` - `3B`|i#|` -- i#`| |
 |`3C`|p0|` -- 0`| |
-|`3D`|readi|` -- mem[mem[dc0]]`| |
+|`3D`|ireadi|` -- mem[mem[dc0]]`| |
 |`3E`|getp|` -- perm`|Get UARC permission|
 |`3F`|geta|` -- addr`|Get UARC address|
 |`40` - `43`|write#|`v -- `|`mem[dc#] = v`; dc# advances|
@@ -85,8 +85,8 @@
 |`48` - `4B`|setb#|`a -- `|`dc# = a`; dc# is write pre-dec|
 |`4C`|add|`a b -- (a + b)`|`c`, `o`|
 |`4D`|sub|`a b -- (a - b)`|`c`, `o`|
-|`4E`|lsl|`a b -- (a << b)`||
-|`4F`|lsr|`a b -- (a >> b)`||
+|`4E`|lsl|`a b -- (a << b)`| |
+|`4F`|lsr|`a b -- (a >> b)`| |
 |`50`|csl|`a b -- ((a << b) or (a >> (b - WORD)))`| |
 |`51`|csr|`a b -- ((a >> b) or (a << (b - WORD)))`| |
 |`52`|asr|`a b -- (a >>> b)`||
@@ -94,33 +94,33 @@
 |`54`|or|`a b -- (a or b)`| |
 |`55`|xor|`a b -- (a ^ b)`| |
 |`56`|reada|`a -- `|`cv <- mem[a]`|
-|`57`|call|`a -- `|`pc = a`; push [cstack](architecture/cstack.html)|
+|`57`|call|`a -- `|`pc = a`; push [lstack](architecture/lstack.html)|
 |`58`|jmp|`a -- `|`pc = a`|
-|`59`|iset|`d -- `|Set selected interrupt addresses and dc0s|
+|`59`|iseti|`d -- `|Set selected interrupt addresses and dc0s|
 |`5A`|seb|`b -- `|Set a single bus|
 |`5B`|slb|`b -- `|Select an additional UARC bus|
 |`5C`|usb|`b -- `|Unselect a UARC bus|
-|`5D`|send|`v -- `|Send value to selected buses|
-|`5E`|writei|`v -- `|`mem[mem[dc0]] = v`|
-|`5F`|loopi|`n -- `|`ls <- n, dc0, 0`|
+|`5D`|intsend|`v -- `|Send value to selected buses|
+|`5E`|iwritei|`v -- `|`mem[mem[dc0]] = v`|
+|`5F`|RESRRVED NOP|` -- `| |
 |`60` - `63`|rawrite#|`v a -- `|`mem[dc# + a] = v`|
 |`64` - `67`|rewrite#|`v a -- `|`mem[mem[dc#] + a] = v`|
 |`68`|write|`v a -- `|`mem[a] = v`|
 |`69`|writep|`v a -- `|`progmem[a] = v`|
 |`6A`|writepi|`ins a -- `|`progmem[a] = ins`|
-|`6B`|jeq|`a b -- `|if `a == b` then `dc0 -> pc`|
-|`6C`|jne|`a b -- `|if `a != b` then `dc0 -> pc`|
-|`6D`|les|`a b -- `|if `a < b` then `dc0 -> pc`|
-|`6E`|leq|`a b -- `|if `a <= b` then `dc0 -> pc`|
-|`6F`|lesu|`a b -- `|if `a < b` then `dc0 -> pc`|
-|`70`|lequ|`a b -- `|if `a <= b` then `dc0 -> pc`|
-|`71`|in|`n a -- `|Stream in to `a`; `cv <- bus`|
-|`72`|out|`n a -- `|Stream n words to buses from a|
-|`73`|incept|`n a -- `|Incept target cores; same as out|
+|`6B`|jeqi|`a b -- `|if `a == b` then `dc0 -> pc`|
+|`6C`|jnei|`a b -- `|if `a != b` then `dc0 -> pc`|
+|`6D`|jlesi|`a b -- `|if `a < b` then `dc0 -> pc`|
+|`6E`|jleqi|`a b -- `|if `a <= b` then `dc0 -> pc`|
+|`6F`|jlesui|`a b -- `|if `a < b` then `dc0 -> pc`|
+|`70`|jlequi|`a b -- `|if `a <= b` then `dc0 -> pc`|
+|`71`|recv|`n a -- `|Stream in to `a`; `cv <- bus`|
+|`72`|send|`n a -- `|Stream n words to buses from a|
+|`73`|incept|`n a -- `|Incept target cores; see send|
 |`74`|set|`m s -- `|Clear ifile and set register `s` to `m`|
 |`75`|sel|`m s -- `|Ors `m` with register `s` of ifile|
-|`76`|seta|`perm addr -- `|Sets UARC permission and address delegation|
-|`77`|loop|`n e -- `|`ls <- n, e, 0`|
+|`76`|setpa|`perm addr -- `|Sets UARC permission and address delegation|
+|`77`|loopi|`n d -- `|`ls <- n, dc0, 0`; `dc0 = d`; end from DC0|
 |`78`|sef|`a f -- `|Sets fault `f` handler to `a`|
 |`79`|mul|`a b -- `|`cv <- low(a * b), high(a * b)`|
 |`7A`|mulu|`a b -- `|`cv <- low(a * b), high(a * b)`|
