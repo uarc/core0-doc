@@ -92,7 +92,7 @@
 |`60` - `63`|rewrite#|1|`v a -- `|`mem[mem[dc#] + a] = v`|
 |`64`|write|1|`v a -- `|`mem[a] = v`|
 |`65`|writep|1|`v a -- `|`progmem[a] = v`|
-|`66`|writepi|1|`ins a -- `|`progmem[a] = ins`|
+|`66`|iwritep|1|`ins a -- `|`progmem[a] = ins`|
 |`67`|beq|3|`a b -- `|if `a == b` then `pc += imm`|
 |`68`|bne|3|`a b -- `|if `a != b` then `pc += imm`|
 |`69`|bles|3|`a b -- `|if `a < b` then `pc += imm`|
@@ -105,11 +105,16 @@
 |`70`|set|1|`m s -- `|Clear ifile and set register `s` to `m`|
 |`71`|sel|1|`m s -- `|Ors `m` with register `s` of ifile|
 |`72`|setpa|1|`perm addr -- `|Sets UARC permission and address delegation|
-|`73`|ddrop|1|`_ _ -- `|Drops two elements from the stack|
-|`74`|mul|1|`a b -- `|`cv <- low(a * b), high(a * b)`|
-|`75`|mulu|1|`a b -- `|`cv <- low(a * b), high(a * b)`|
-|`76`|div|1|`a b -- `|`cv <- a / b, a % b`|
-|`77`|divu|1|`a b -- `|`cv <- a / b, a % b`|
+|`73`|sef|1|`a f -- `|Sets fault `f` handler to `a`|
+|`74`|ddrop|1|`_ _ -- `|Drops two elements from the stack|
+|`75`|RESERVED|1|`_ _ -- `| |
+|`76`|RESERVED|1|`_ _ -- `| |
+|`77`|RESERVED|1|`_ _ -- `| |
+|`78`|RESERVED|1|`_ _ -- `| |
+|`79`|RESERVED|1|`_ _ -- `| |
+|`7A`|RESERVED|1|`_ _ -- `| |
+|`7B`|RESERVED|1|`_ _ -- `| |
+|`7C`|RESERVED|1|`_ _ -- `| |
 |`7D`|RESERVED|1|`_ _ -- `| |
 |`7E`|RESERVED|1|`_ _ -- `| |
 |`7F`|RESERVED|1|`_ _ -- `| |
@@ -155,7 +160,7 @@
 |`AA`|loop|3|`n -- `|`ls <- pc + 1, pc + imm, n, 0`|
 |`AB`|bzi|3|`n -- `|if `n == 0` then `pc += imm`|
 |`AC`|bnzi|3|`n -- `|if `n != 0` then `pc += imm`|
-|`AD`|sef|2|`a -- `|Sets fault `imm` handler to `a`|
+|`AD`|writep|5|`v -- `|Writes `v` to instruction memory at `imm`|
 |`AE`|reset|1|`p -- `|`pc = p`|
 |`AF`|drop|1|`_ -- `|Drops one element from the stack|
 |`B0`|RESERVED|1|`_ _ -- `| |
