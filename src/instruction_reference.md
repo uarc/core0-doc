@@ -39,7 +39,7 @@
 - `i[0-3]` - Loop Indices
 - `cv[0-F]` - [Conveyor Belt](architecture/conveyor.html) Values
 - `ls` - [lstack](architecture/lstack.html)
-  - Format is (beginning)
+  - Format is (beginning, end, iterations, iterator)
 - `if` - [ifile](architecture/ifile.html)
 - `n..` - `n` anonymous words on the stack
 - `imm` - Immediate value
@@ -50,7 +50,7 @@
 |:---:|:---:|:---:|:---:|:---:|
 |`00` - `03`|skip#|2|` -- `|`dc# += imm`|
 |`04` - `07`|raread#|1|`a -- mem[dc# + a]`| |
-|`08` - `0B`|reread#|1|`a -- mem[mem[dc#] + a]`| |
+|`38` - `3B`|rereadi#|2|` -- `|`cv <- mem[mem[dc#] + imm]`|
 |`0C`|inc|1|`a -- (a + 1)`|`c`, `o`|
 |`0D`|dec|1|`a -- (a - 1)`|`c`, `o`|
 |`0E`|carry|1|`v -- (v + c)`|`c`, `o`|
@@ -73,26 +73,22 @@
 |`1F`|RESERVED|1|` -- `| |
 |`20` - `2F`|cv#|1|` -- cv#`|cv# synchronizes|
 |`30` - `33`|read#|2|` -- mem[dc#]`|`dc# += imm`|
-|`34` - `37`|rareadi#|3|` -- mem[dc# + imm[0]]`|`dc# += imm[1]`|
-|`38` - `3B`|rereadi#|3|` -- mem[mem[dc#] + imm[0]]`|`dc# += imm[1]`|
+|`34` - `37`|rareadi#|2|` -- mem[dc# + imm]`| |
 |`3C` - `3F`|get#|1|` -- dc#`| |
 |`40` - `43`|writepre#|2|`v -- `|`dc# += imm`; `mem[dc#] = v`|
 |`43` - `47`|writepst#|2|`v -- `|`mem[dc#] = v`; `dc# += imm`|
 |`48` - `4B`|set#|1|`a -- `|`dc# = a`|
-|`4C` - `4F`|rawrite#|3|`v -- `|`mem[dc# + imm[0]] = v`; `dc# += imm[1]`|
-|`50` - `53`|rewritei#|3|`v -- `|`mem[mem[dc#] + imm[0]] = v`; `dc# += imm[1]`|
-|`54`|add|1|`a b -- (a + b)`|`c`, `o`|
-|`55`|sub|1|`a b -- (a - b)`|`c`, `o`|
-|`56`|lsl|1|`a b -- (a << b)`| |
-|`57`|lsr|1|`a b -- (a >> b)`| |
-|`58`|csl|1|`a b -- ((a << b) or (a >> (b - WORD)))`| |
-|`59`|csr|1|`a b -- ((a >> b) or (a << (b - WORD)))`| |
-|`5A`|asr|1|`a b -- (a >>> b)`| |
-|`5B`|and|1|`a b -- (a & b)`| |
-|`5C`|or|1|`a b -- (a or b)`| |
-|`5D`|xor|1|`a b -- (a ^ b)`| |
-|`5E`|reada|1|`a -- `|`cv <- mem[a]`|
-|`5F`|RESERVED|1|`_ -- `| |
+|`4C` - `4F`|rawrite#|2|`v -- `|`mem[dc# + imm] = v`|
+|`50` - `53`|rewritei#|2|`v -- `|`mem[mem[dc#] + imm] = v`|
+|`54` - `57`|reread#|1|`a -- `|`cv <- mem[mem[dc#] + a]`|
+|`58`|add|1|`a b -- (a + b)`|`c`, `o`|
+|`59`|sub|1|`a b -- (a - b)`|`c`, `o`|
+|`5A`|lsl|1|`a b -- (a << b)`| |
+|`5B`|lsr|1|`a b -- (a >> b)`| |
+|`5C`|csl|1|`a b -- ((a << b) or (a >> (b - WORD)))`| |
+|`5D`|csr|1|`a b -- ((a >> b) or (a << (b - WORD)))`| |
+|`5E`|asr|1|`a b -- (a >>> b)`| |
+|`5F`|and|1|`a b -- (a & b)`| |
 |`60` - `63`|rewrite#|1|`v a -- `|`mem[mem[dc#] + a] = v`|
 |`64`|write|1|`v a -- `|`mem[a] = v`|
 |`65`|writep|1|`v a -- `|`progmem[a] = v`|
@@ -146,22 +142,22 @@
 |`9D`|RESERVED|1|` -- _`| |
 |`9E`|RESERVED|1|` -- _`| |
 |`9F`|RESERVED|1|` -- _`| |
-|`A0`|call|1|`a -- `|`pc = a`; push [cstack](architecture/cstack.html)|
-|`A1`|jmp|1|`a -- `|`pc = a`|
-|`A2`|iset|1|`p -- `|Set selected interrupt addresses to `p`|
-|`A3`|seb|1|`b -- `|Set a single bus|
-|`A4`|slb|1|`b -- `|Select an additional UARC bus|
-|`A5`|usb|1|`b -- `|Unselect a UARC bus|
-|`A6`|intsend|1|`v -- `|Send value to selected buses|
-|`A7`|loop|3|`n -- `|`ls <- pc + 1, pc + imm, n, 0`|
-|`A8`|bzi|3|`n -- `|if `n == 0` then `pc += imm`|
-|`A9`|bnzi|3|`n -- `|if `n != 0` then `pc += imm`|
-|`AA`|sef|2|`a -- `|Sets fault `imm` handler to `a`|
-|`AB`|reset|1|`p -- `|`pc = p`|
-|`AC`|drop|1|`_ -- `|Drops one element from the stack|
-|`AD`|RESERVED|1|`_ -- `| |
-|`AE`|RESERVED|1|`_ -- `| |
-|`AF`|RESERVED|1|`_ -- `| |
+|`A0`|or|1|`a b -- (a or b)`| |
+|`A1`|xor|1|`a b -- (a ^ b)`| |
+|`A2`|reada|1|`a -- `|`cv <- mem[a]`|
+|`A3`|call|1|`a -- `|`pc = a`; push [cstack](architecture/cstack.html)|
+|`A4`|jmp|1|`a -- `|`pc = a`|
+|`A5`|iset|1|`p -- `|Set selected interrupt addresses to `p`|
+|`A6`|seb|1|`b -- `|Set a single bus|
+|`A7`|slb|1|`b -- `|Select an additional UARC bus|
+|`A8`|usb|1|`b -- `|Unselect a UARC bus|
+|`A9`|intsend|1|`v -- `|Send value to selected buses|
+|`AA`|loop|3|`n -- `|`ls <- pc + 1, pc + imm, n, 0`|
+|`AB`|bzi|3|`n -- `|if `n == 0` then `pc += imm`|
+|`AC`|bnzi|3|`n -- `|if `n != 0` then `pc += imm`|
+|`AD`|sef|2|`a -- `|Sets fault `imm` handler to `a`|
+|`AE`|reset|1|`p -- `|`pc = p`|
+|`AF`|drop|1|`_ -- `|Drops one element from the stack|
 |`B0`|RESERVED|1|`_ _ -- `| |
 |`B1`|RESERVED|1|`_ _ -- `| |
 |`B2`|RESERVED|1|`_ _ -- `| |
