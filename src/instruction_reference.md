@@ -48,133 +48,117 @@
 
 |Op|Instruction|Octets|dstack|Side Effects|
 |:---:|:---:|:---:|:---:|:---:|
-|`00` - `03`|raread#|1|`a -- mem[dc# + a]`| |
-|`04`|inc|1|`a -- (a + 1)`|`c`, `o`|
-|`05`|dec|1|`a -- (a - 1)`|`c`, `o`|
-|`06`|carry|1|`v -- (v + c)`|`c`, `o`|
-|`07`|borrow|1|`v -- (v + c - 1)`|`c`, `o`|
-|`08`|inv|1|`v -- ~v`| |
-|`09`|break|1|` -- `|Pops the cstack and goes to end of loop|
-|`0A`|reads|1|`a -- mem[a]`|Synchronous read|
-|`0B`|return|1|` -- `|pop [cstack](architecture/cstack.html)|
-|`0C`|continue|1|` -- `|Goes to the next loop iteration|
-|`0D`|inten|1|` -- `|Enables only selected interrupts|
-|`0E`|intrecv|1|` -- `|Interrupt sync; `cv <- bus, v`|
-|`0F`|iloop|3|` -- `|`ls <- pc + 1, pc + imm, ∞, 0`|
-|`10`|kill|1|` -- `|Kill all selected cores|
-|`11`|intwait|1|` -- `|Waits for an interrupt before continuing|
-|`12`|getbp|1|`b -- perm`|Gets the [permission](uarc.md) on bus `b`|
-|`13`|getba|1|`b -- addr`|Gets the [address](uarc.md) on bus `b`|
-|`14`|calli|5|` -- `|`pc = imm`; push [cstack](architecture/cstack.html)|
-|`15`|jmpi|5|` -- `|`pc = imm`|
-|`16`|bc|3|` -- `|if `c` then `pc += imm`|
-|`17`|bnc|3|` -- `|if `~c` then `pc += imm`|
-|`18`|bo|3|` -- `|if `o` then `pc += imm`|
-|`19`|bno|3|` -- `|if `~o` then `pc += imm`|
-|`1A`|bi|3|` -- `|if `i` then `pc += imm`; `i = 0`|
-|`1B`|bni|3|` -- `|if `~i` then `pc += imm`; `i = 0`|
-|`1C`|RESERVED|1|` -- `| |
-|`1D`|RESERVED|1|` -- `| |
-|`1E`|RESERVED|1|` -- `| |
+|`00` - `03`|skip#|2|` -- `|`dc# += imm`|
+|`04` - `07`|raread#|1|`a -- mem[dc# + a]`| |
+|`08` - `0B`|reread#|1|`a -- mem[mem[dc#] + a]`| |
+|`0C`|inc|1|`a -- (a + 1)`|`c`, `o`|
+|`0D`|dec|1|`a -- (a - 1)`|`c`, `o`|
+|`0E`|carry|1|`v -- (v + c)`|`c`, `o`|
+|`0F`|borrow|1|`v -- (v + c - 1)`|`c`, `o`|
+|`10`|inv|1|`v -- ~v`| |
+|`11`|break|1|` -- `|Pops the [lstack](architecture/lstack.html) and goes to end of loop|
+|`12`|reads|1|`a -- mem[a]`|Synchronous read|
+|`13`|return|1|` -- `|pop [cstack](architecture/cstack.html)|
+|`14`|continue|1|` -- `|Goes to the next loop iteration|
+|`15`|inten|1|` -- `|Enables only selected interrupts|
+|`16`|intrecv|1|` -- `|Interrupt sync; `cv <- bus, v`|
+|`17`|iloop|3|` -- `|`ls <- pc + 1, pc + imm, ∞, 0`|
+|`18`|kill|1|` -- `|Kill all selected cores|
+|`19`|intwait|1|` -- `|Waits for an interrupt before continuing|
+|`1A`|getbp|1|`b -- perm`|Gets the [permission](uarc.md) on bus `b`|
+|`1B`|getba|1|`b -- addr`|Gets the [address](uarc.md) on bus `b`|
+|`1C`|calli|1 + WORD|` -- `|`pc = imm`; push [cstack](architecture/cstack.html)|
+|`1D`|jmpi|1 + WORD|` -- `|`pc = imm`|
+|`1E`|bra|3|` -- `|`pc += imm`|
 |`1F`|RESERVED|1|` -- `| |
 |`20` - `2F`|cv#|1|` -- cv#`|cv# synchronizes|
-|`30` - `33`|read#|2|` -- mem[dc#]`|after: `dc# += imm`|
-|`34` - `37`|rareadi#|2|` -- mem[dc# + imm]`| |
-|`38` - `3B`|get#|1|` -- dc#`| |
-|`3C` - `3F`|i#|1|` -- i#`| |
+|`30` - `33`|read#|2|` -- mem[dc#]`|`dc# += imm`|
+|`34` - `37`|rareadi#|3|` -- mem[dc# + imm[0]]`|`dc# += imm[1]`|
+|`38` - `3B`|rereadi#|3|` -- mem[mem[dc#] + imm[0]]`|`dc# += imm[1]`|
+|`3C` - `3F`|get#|1|` -- dc#`| |
 |`40` - `43`|writepre#|2|`v -- `|`dc# += imm`; `mem[dc#] = v`|
 |`43` - `47`|writepst#|2|`v -- `|`mem[dc#] = v`; `dc# += imm`|
 |`48` - `4B`|set#|1|`a -- `|`dc# = a`|
-|`4C` - `4F`|rawrite#|2|`v -- `|`mem[dc# + imm] = v`|
-|`4C`|add|1|`a b -- (a + b)`|`c`, `o`|
-|`4D`|sub|1|`a b -- (a - b)`|`c`, `o`|
-|`4E`|lsl|1|`a b -- (a << b)`| |
-|`4F`|lsr|1|`a b -- (a >> b)`| |
-|`50`|csl|1|`a b -- ((a << b) or (a >> (b - WORD)))`| |
-|`51`|csr|1|`a b -- ((a >> b) or (a << (b - WORD)))`| |
-|`52`|asr|1|`a b -- (a >>> b)`||
-|`53`|and|1|`a b -- (a & b)`| |
-|`54`|or|1|`a b -- (a or b)`| |
-|`55`|xor|1|`a b -- (a ^ b)`| |
-|`56`|reada|1|`a -- `|`cv <- mem[a]`|
-|`57`|call|1|`a -- `|`pc = a`; push [cstack](architecture/cstack.html)|
-|`58`|jmp|1|`a -- `|`pc = a`|
-|`59`|iseti|1|`d -- `|Set selected interrupt addresses and dc0s|
-|`5A`|seb|1|`b -- `|Set a single bus|
-|`5B`|slb|1|`b -- `|Select an additional UARC bus|
-|`5C`|usb|1|`b -- `|Unselect a UARC bus|
-|`5D`|intsend|1|`v -- `|Send value to selected buses|
-|`5E`|iwritei|1|`v -- `|`mem[mem[dc0]] = v`|
-|`5F`|loop|3|`n -- `|`ls <- pc + 1, pc + imm, n, 0`|
-|`64` - `67`|rewrite#|1|`v a -- `|`mem[mem[dc#] + a] = v`|
-|`68`|write|1|`v a -- `|`mem[a] = v`|
-|`69`|writep|1|`v a -- `|`progmem[a] = v`|
-|`6A`|writepi|1|`ins a -- `|`progmem[a] = ins`|
-|`6B`|beq|3|`a b -- `|if `a == b` then `pc += imm`|
-|`6C`|bne|3|`a b -- `|if `a != b` then `pc += imm`|
-|`6D`|bles|3|`a b -- `|if `a < b` then `pc += imm`|
-|`6E`|bleq|3|`a b -- `|if `a <= b` then `pc += imm`|
-|`6F`|blesu|3|`a b -- `|if `a < b` then `pc += imm`|
-|`70`|blequ|3|`a b -- `|if `a <= b` then `pc += imm`|
-|`71`|recv|1|`n a -- `|Stream in to `a`; `cv <- bus`|
-|`72`|send|1|`n a -- `|Stream n words to buses from a|
-|`73`|incept|1|`n a -- `|Incept target cores; see send|
-|`74`|set|1|`m s -- `|Clear ifile and set register `s` to `m`|
-|`75`|sel|1|`m s -- `|Ors `m` with register `s` of ifile|
-|`76`|setpa|1|`perm addr -- `|Sets UARC permission and address delegation|
-|`77`|RESERVED|1|`_ -- `| |
-|`79`|mul|1|`a b -- `|`cv <- low(a * b), high(a * b)`|
-|`7A`|mulu|1|`a b -- `|`cv <- low(a * b), high(a * b)`|
-|`7B`|div|1|`a b -- `|`cv <- a / b, a % b`|
-|`7C`|divu|1|`a b -- `|`cv <- a / b, a % b`|
+|`4C` - `4F`|rawrite#|3|`v -- `|`mem[dc# + imm[0]] = v`; `dc# += imm[1]`|
+|`50` - `53`|rewritei#|3|`v -- `|`mem[mem[dc#] + imm[0]] = v`; `dc# += imm[1]`|
+|`54`|add|1|`a b -- (a + b)`|`c`, `o`|
+|`55`|sub|1|`a b -- (a - b)`|`c`, `o`|
+|`56`|lsl|1|`a b -- (a << b)`| |
+|`57`|lsr|1|`a b -- (a >> b)`| |
+|`58`|csl|1|`a b -- ((a << b) or (a >> (b - WORD)))`| |
+|`59`|csr|1|`a b -- ((a >> b) or (a << (b - WORD)))`| |
+|`5A`|asr|1|`a b -- (a >>> b)`| |
+|`5B`|and|1|`a b -- (a & b)`| |
+|`5C`|or|1|`a b -- (a or b)`| |
+|`5D`|xor|1|`a b -- (a ^ b)`| |
+|`5E`|reada|1|`a -- `|`cv <- mem[a]`|
+|`5F`|RESERVED|1|`_ -- `| |
+|`60` - `63`|rewrite#|1|`v a -- `|`mem[mem[dc#] + a] = v`|
+|`64`|write|1|`v a -- `|`mem[a] = v`|
+|`65`|writep|1|`v a -- `|`progmem[a] = v`|
+|`66`|writepi|1|`ins a -- `|`progmem[a] = ins`|
+|`67`|beq|3|`a b -- `|if `a == b` then `pc += imm`|
+|`68`|bne|3|`a b -- `|if `a != b` then `pc += imm`|
+|`69`|bles|3|`a b -- `|if `a < b` then `pc += imm`|
+|`6A`|bleq|3|`a b -- `|if `a <= b` then `pc += imm`|
+|`6B`|blesu|3|`a b -- `|if `a < b` then `pc += imm`|
+|`6C`|blequ|3|`a b -- `|if `a <= b` then `pc += imm`|
+|`6D`|recv|1|`n a -- `|Stream in to `a`; `cv <- bus`|
+|`6E`|send|1|`n a -- `|Stream n words to buses from a|
+|`6F`|incept|1|`n a -- `|Incept target cores; see send|
+|`70`|set|1|`m s -- `|Clear ifile and set register `s` to `m`|
+|`71`|sel|1|`m s -- `|Ors `m` with register `s` of ifile|
+|`72`|setpa|1|`perm addr -- `|Sets UARC permission and address delegation|
+|`73`|ddrop|1|`_ _ -- `|Drops two elements from the stack|
+|`74`|mul|1|`a b -- `|`cv <- low(a * b), high(a * b)`|
+|`75`|mulu|1|`a b -- `|`cv <- low(a * b), high(a * b)`|
+|`76`|div|1|`a b -- `|`cv <- a / b, a % b`|
+|`77`|divu|1|`a b -- `|`cv <- a / b, a % b`|
 |`7D`|RESERVED|1|`_ _ -- `| |
 |`7E`|RESERVED|1|`_ _ -- `| |
-|`7F`|reset|1|`d p -- `|`pc = p, dc0 = d`|
-|`80`|addi|5|`a b -- (a + b)`|`c`, `o`|
-|`81`|subi|5|`a b -- (a - b)`|`c`, `o`|
-|`82`|lsli|2|`a b -- (a << imm)`| |
-|`83`|lsri|2|`a b -- (a >> imm)`| |
-|`84`|csli|2|`a b -- ((a << imm) or (a >> (imm - WORD)))`| |
-|`85`|csri|2|`a b -- ((a >> imm) or (a << (imm - WORD)))`| |
-|`86`|asri|2|`a b -- (a >>> imm)`| |
-|`87`|andi|5|`a b -- (a & b)`| |
-|`88`|ori|5|`a b -- (a or b)`| |
-|`89`|xori|5|`a b -- (a ^ b)`| |
-|`8A`|RESERVED|1|` -- `| |
-|`8B`|RESERVED|1|` -- `| |
-|`8C`|RESERVED|1|` -- `| |
-|`8D`|RESERVED|1|` -- `| |
-|`8E`|RESERVED|1|` -- `| |
-|`8F`|RESERVED|1|` -- `| |
-|`90`|imm8|2|` -- imm`| |
-|`91`|imm16|3|` -- imm`| |
-|`92`|imm32|5|` -- imm`| |
-|`93`|ireadi|1|` -- mem[mem[dc0]]`| |
-|`94`|getp|1|` -- perm`|Get UARC permission|
-|`95`|geta|1|` -- addr`|Get UARC address|
-|`96`|RESERVED|1|` -- _`| |
-|`97`|RESERVED|1|` -- _`| |
-|`98`|RESERVED|1|` -- _`| |
-|`99`|RESERVED|1|` -- _`| |
+|`7F`|RESERVED|1|`_ _ -- `| |
+|`80`|addi|1 + WORD|`a -- (a + imm)`|`c`, `o`|
+|`81`|subi|1 + WORD|`a -- (imm - a)`|`c`, `o`|
+|`82`|lsli|2|`a -- (a << imm)`| |
+|`83`|lsri|2|`a -- (a >> imm)`| |
+|`84`|csli|2|`a -- ((a << imm) or (a >> (imm - WORD)))`| |
+|`85`|asri|2|`a -- (a >>> imm)`| |
+|`86`|andi|1 + WORD|`a -- (a & b)`| |
+|`87`|ori|1 + WORD|`a -- (a or b)`| |
+|`88`|xori|1 + WORD|`a -- (a ^ b)`| |
+|`89`|RESERVED|1|` -- `| |
+|`8A`|bc|3|` -- `|if `c` then `pc += imm`|
+|`8B`|bnc|3|` -- `|if `~c` then `pc += imm`|
+|`8C`|bo|3|` -- `|if `o` then `pc += imm`|
+|`8D`|bno|3|` -- `|if `~o` then `pc += imm`|
+|`8E`|bi|3|` -- `|if `i` then `pc += imm`; `i = 0`|
+|`8F`|bni|3|` -- `|if `~i` then `pc += imm`; `i = 0`|
+|`90` - `93`|i#|1|` -- i#`| |
+|`94`|imm8|2|` -- imm`| |
+|`95`|imm16|3|` -- imm`| |
+|`96`|imm32|5|` -- imm`| |
+|`97`|imm64|9|` -- imm`|Only supported on u0-64|
+|`98`|getp|1|` -- perm`|Get UARC permission|
+|`99`|geta|1|` -- addr`|Get UARC address|
 |`9A`|RESERVED|1|` -- _`| |
 |`9B`|RESERVED|1|` -- _`| |
 |`9C`|RESERVED|1|` -- _`| |
 |`9D`|RESERVED|1|` -- _`| |
 |`9E`|RESERVED|1|` -- _`| |
 |`9F`|RESERVED|1|` -- _`| |
-|`A0`|bzi|3|`n -- `|if `n == 0` then `pc += imm`|
-|`A1`|bnzi|3|`n -- `|if `n != 0` then `pc += imm`|
-|`A2`|sef|2|`a -- `|Sets fault `imm` handler to `a`|
-|`A3`|RESERVED|1|`_ -- `| |
-|`A4`|RESERVED|1|`_ -- `| |
-|`A5`|RESERVED|1|`_ -- `| |
-|`A6`|RESERVED|1|`_ -- `| |
-|`A7`|RESERVED|1|`_ -- `| |
-|`A8`|RESERVED|1|`_ -- `| |
-|`A9`|RESERVED|1|`_ -- `| |
-|`AA`|RESERVED|1|`_ -- `| |
-|`AB`|RESERVED|1|`_ -- `| |
-|`AC`|RESERVED|1|`_ -- `| |
+|`A0`|call|1|`a -- `|`pc = a`; push [cstack](architecture/cstack.html)|
+|`A1`|jmp|1|`a -- `|`pc = a`|
+|`A2`|iset|1|`p -- `|Set selected interrupt addresses to `p`|
+|`A3`|seb|1|`b -- `|Set a single bus|
+|`A4`|slb|1|`b -- `|Select an additional UARC bus|
+|`A5`|usb|1|`b -- `|Unselect a UARC bus|
+|`A6`|intsend|1|`v -- `|Send value to selected buses|
+|`A7`|loop|3|`n -- `|`ls <- pc + 1, pc + imm, n, 0`|
+|`A8`|bzi|3|`n -- `|if `n == 0` then `pc += imm`|
+|`A9`|bnzi|3|`n -- `|if `n != 0` then `pc += imm`|
+|`AA`|sef|2|`a -- `|Sets fault `imm` handler to `a`|
+|`AB`|reset|1|`p -- `|`pc = p`|
+|`AC`|drop|1|`_ -- `|Drops one element from the stack|
 |`AD`|RESERVED|1|`_ -- `| |
 |`AE`|RESERVED|1|`_ -- `| |
 |`AF`|RESERVED|1|`_ -- `| |
