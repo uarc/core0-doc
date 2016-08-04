@@ -66,12 +66,12 @@
 |`17`|getba|`b -- addr`|Gets the [address](uarc.md) on bus `b`|
 |`18`|calli|` -- `|`dc0 -> pc`; push [lstack](architecture/lstack.html)|
 |`19`|jmpi|` -- `|`dc0 -> pc`|
-|`1A`|jci|` -- `|if `c` then `dc0 -> pc`|
-|`1B`|jnci|` -- `|if `~c` then `dc0 -> pc`|
-|`1C`|joi|` -- `|if `o` then `dc0 -> pc`|
-|`1D`|jnoi|` -- `|if `~o` then `dc0 -> pc`|
-|`1E`|jinti|` -- `|if `iflag` then `dc0 -> pc`|
-|`1F`|jninti|` -- `|if `~iflag` then `dc0 -> pc`|
+|`1A`|bci|` -- `|if `c` then `dc0 -> pc`|
+|`1B`|bnci|` -- `|if `~c` then `dc0 -> pc`|
+|`1C`|boi|` -- `|if `o` then `dc0 -> pc`|
+|`1D`|bnoi|` -- `|if `~o` then `dc0 -> pc`|
+|`1E`|binti|` -- `|if `iflag` then `dc0 -> pc`|
+|`1F`|bninti|` -- `|if `~iflag` then `dc0 -> pc`|
 |`20` - `2F`|cv#|` -- cv#`|cv# synchronizes|
 |`30` - `33`|read#|` -- mem[dc#]`|dc# advances|
 |`34` - `37`|get#|` -- dc#`| |
@@ -102,18 +102,18 @@
 |`5C`|usb|`b -- `|Unselect a UARC bus|
 |`5D`|intsend|`v -- `|Send value to selected buses|
 |`5E`|iwritei|`v -- `|`mem[mem[dc0]] = v`|
-|`5F`|RESRRVED NOP|` -- `| |
+|`5F`|RESRRVED|` -- `| |
 |`60` - `63`|rawrite#|`v a -- `|`mem[dc# + a] = v`|
 |`64` - `67`|rewrite#|`v a -- `|`mem[mem[dc#] + a] = v`|
 |`68`|write|`v a -- `|`mem[a] = v`|
 |`69`|writep|`v a -- `|`progmem[a] = v`|
 |`6A`|writepi|`ins a -- `|`progmem[a] = ins`|
-|`6B`|jeqi|`a b -- `|if `a == b` then `dc0 -> pc`|
-|`6C`|jnei|`a b -- `|if `a != b` then `dc0 -> pc`|
-|`6D`|jlesi|`a b -- `|if `a < b` then `dc0 -> pc`|
-|`6E`|jleqi|`a b -- `|if `a <= b` then `dc0 -> pc`|
-|`6F`|jlesui|`a b -- `|if `a < b` then `dc0 -> pc`|
-|`70`|jlequi|`a b -- `|if `a <= b` then `dc0 -> pc`|
+|`6B`|beqi|`a b -- `|if `a == b` then `dc0 -> pc`|
+|`6C`|bnei|`a b -- `|if `a != b` then `dc0 -> pc`|
+|`6D`|blesi|`a b -- `|if `a < b` then `dc0 -> pc`|
+|`6E`|bleqi|`a b -- `|if `a <= b` then `dc0 -> pc`|
+|`6F`|blesui|`a b -- `|if `a < b` then `dc0 -> pc`|
+|`70`|blequi|`a b -- `|if `a <= b` then `dc0 -> pc`|
 |`71`|recv|`n a -- `|Stream in to `a`; `cv <- bus`|
 |`72`|send|`n a -- `|Stream n words to buses from a|
 |`73`|incept|`n a -- `|Incept target cores; see send|
@@ -126,6 +126,72 @@
 |`7A`|mulu|`a b -- `|`cv <- low(a * b), high(a * b)`|
 |`7B`|div|`a b -- `|`cv <- a / b, a % b`|
 |`7C`|divu|`a b -- `|`cv <- a / b, a % b`|
+|`7D`|RESERVED|`_ _ -- `| |
+|`7E`|RESERVED|`_ _ -- `| |
 |`7F`|reset|`d p -- `|`pc = p, dc0 = d`|
+|`80`|RESERVED|` -- `| |
+|`81`|RESERVED|` -- `| |
+|`82`|RESERVED|` -- `| |
+|`83`|RESERVED|` -- `| |
+|`84`|RESERVED|` -- `| |
+|`85`|RESERVED|` -- `| |
+|`86`|RESERVED|` -- `| |
+|`87`|RESERVED|` -- `| |
+|`88`|RESERVED|` -- `| |
+|`89`|RESERVED|` -- `| |
+|`8A`|RESERVED|` -- `| |
+|`8B`|RESERVED|` -- `| |
+|`8C`|RESERVED|` -- `| |
+|`8D`|RESERVED|` -- `| |
+|`8E`|RESERVED|` -- `| |
+|`8F`|RESERVED|` -- `| |
+|`90`|RESERVED|` -- _`| |
+|`91`|RESERVED|` -- _`| |
+|`92`|RESERVED|` -- _`| |
+|`93`|RESERVED|` -- _`| |
+|`94`|RESERVED|` -- _`| |
+|`95`|RESERVED|` -- _`| |
+|`96`|RESERVED|` -- _`| |
+|`97`|RESERVED|` -- _`| |
+|`98`|RESERVED|` -- _`| |
+|`99`|RESERVED|` -- _`| |
+|`9A`|RESERVED|` -- _`| |
+|`9B`|RESERVED|` -- _`| |
+|`9C`|RESERVED|` -- _`| |
+|`9D`|RESERVED|` -- _`| |
+|`9E`|RESERVED|` -- _`| |
+|`9F`|RESERVED|` -- _`| |
+|`A0`|RESERVED|`_ -- `| |
+|`A1`|RESERVED|`_ -- `| |
+|`A2`|RESERVED|`_ -- `| |
+|`A3`|RESERVED|`_ -- `| |
+|`A4`|RESERVED|`_ -- `| |
+|`A5`|RESERVED|`_ -- `| |
+|`A6`|RESERVED|`_ -- `| |
+|`A7`|RESERVED|`_ -- `| |
+|`A8`|RESERVED|`_ -- `| |
+|`A9`|RESERVED|`_ -- `| |
+|`AA`|RESERVED|`_ -- `| |
+|`AB`|RESERVED|`_ -- `| |
+|`AC`|RESERVED|`_ -- `| |
+|`AD`|RESERVED|`_ -- `| |
+|`AE`|RESERVED|`_ -- `| |
+|`AF`|RESERVED|`_ -- `| |
+|`B0`|RESERVED|`_ _ -- `| |
+|`B1`|RESERVED|`_ _ -- `| |
+|`B2`|RESERVED|`_ _ -- `| |
+|`B3`|RESERVED|`_ _ -- `| |
+|`B4`|RESERVED|`_ _ -- `| |
+|`B5`|RESERVED|`_ _ -- `| |
+|`B6`|RESERVED|`_ _ -- `| |
+|`B7`|RESERVED|`_ _ -- `| |
+|`B8`|RESERVED|`_ _ -- `| |
+|`B9`|RESERVED|`_ _ -- `| |
+|`BA`|RESERVED|`_ _ -- `| |
+|`BB`|RESERVED|`_ _ -- `| |
+|`BC`|RESERVED|`_ _ -- `| |
+|`BD`|RESERVED|`_ _ -- `| |
+|`BE`|RESERVED|`_ _ -- `| |
+|`BF`|RESERVED|`_ _ -- `| |
 |`C0` - `DF`|rot#|`v #.. -- #.. v`| |
 |`E0` - `FF`|copy#|`v #.. -- v #.. v`| |
