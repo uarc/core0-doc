@@ -104,7 +104,7 @@
 |`6B`|blesu|3|`a b -- `|if `a < b` then `pc += imm`|
 |`6C`|blequ|3|`a b -- `|if `a <= b` then `pc += imm`|
 |`6D`|recv|1|`n a -- `|Stream in to `a`; `cv <- bus`|
-|`6E`|send|1|`n a -- `|Stream n words to buses from a|
+|`6E`|send|1|`n a -- `|Stream `n` words to buses from `a`|
 |`6F`|incept|1|`n a -- `|Incept target cores; see send|
 |`70`|set|1|`m s -- `|Clear ifile and set register `s` to `m`|
 |`71`|sel|1|`m s -- `|Ors `m` with register `s` of ifile|
