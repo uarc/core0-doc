@@ -78,39 +78,39 @@
 |`40` - `43`|writepre#|2|`v -- `|`dc# += imm`; `mem[dc#] = v`|
 |`43` - `47`|writepst#|2|`v -- `|`mem[dc#] = v`; `dc# += imm`|
 |`48` - `4B`|set#|1|`a -- `|`dc# = a`|
-|`4C` - `4F`|rawrite#|2|`v -- `|`mem[dc# + imm] = v`|
-|`50` - `53`|rewritei#|2|`v -- `|`mem[mem[dc#] + imm] = v`|
-|`54` - `57`|reread#|1|`a -- `|`cv <- mem[mem[dc#] + a]`|
-|`58`|add|1|`a b -- (a + b)`|`c`, `o`|
-|`59`|sub|1|`a b -- (a - b)`|`c`, `o`|
-|`5A`|lsl|1|`a b -- (a << b)`| |
-|`5B`|lsr|1|`a b -- (a >> b)`| |
-|`5C`|csl|1|`a b -- ((a << b) or (a >> (b - WORD)))`| |
-|`5D`|csr|1|`a b -- ((a >> b) or (a << (b - WORD)))`| |
-|`5E`|asr|1|`a b -- (a >>> b)`| |
-|`5F`|and|1|`a b -- (a & b)`| |
+|`4C` - `4F`|rawritei#|2|`v -- `|`mem[dc# + imm] = v`|
+|`50` - `53`|reread#|1|`a -- `|`cv <- mem[mem[dc#] + a]`|
+|`54`|add|1|`a b -- (a + b)`|`c`, `o`|
+|`55`|sub|1|`a b -- (a - b)`|`c`, `o`|
+|`56`|lsl|1|`a b -- (a << b)`| |
+|`57`|lsr|1|`a b -- (a >> b)`| |
+|`58`|csl|1|`a b -- ((a << b) or (a >> (b - WORD)))`| |
+|`59`|csr|1|`a b -- ((a >> b) or (a << (b - WORD)))`| |
+|`5A`|asr|1|`a b -- (a >>> b)`| |
+|`5B`|and|1|`a b -- (a & b)`| |
+|`5C`|or|1|`a b -- (a or b)`| |
+|`5D`|xor|1|`a b -- (a ^ b)`| |
+|`5E`|reada|1|`a -- `|`cv <- mem[a]`|
+|`5F`|call|1|`a -- `|`pc = a`; push [cstack](architecture/cstack.html)|
 |`60` - `63`|rewrite#|1|`v a -- `|`mem[mem[dc#] + a] = v`|
-|`64`|write|1|`v a -- `|`mem[a] = v`|
-|`65`|writep|1|`v a -- `|`progmem[a] = v`|
-|`66`|iwritep|1|`ins a -- `|`progmem[a] = ins`|
-|`67`|beq|3|`a b -- `|if `a == b` then `pc += imm`|
-|`68`|bne|3|`a b -- `|if `a != b` then `pc += imm`|
-|`69`|bles|3|`a b -- `|if `a < b` then `pc += imm`|
-|`6A`|bleq|3|`a b -- `|if `a <= b` then `pc += imm`|
-|`6B`|blesu|3|`a b -- `|if `a < b` then `pc += imm`|
-|`6C`|blequ|3|`a b -- `|if `a <= b` then `pc += imm`|
-|`6D`|recv|1|`n a -- `|Stream in to `a`; `cv <- bus`|
-|`6E`|send|1|`n a -- `|Stream `n` words to buses from `a`|
-|`6F`|incept|1|`n a -- `|Incept target cores; see send|
-|`70`|set|1|`m s -- `|Clear ifile and set register `s` to `m`|
-|`71`|sel|1|`m s -- `|Ors `m` with register `s` of ifile|
-|`72`|setpa|1|`perm addr -- `|Sets UARC permission and address delegation|
-|`73`|sef|1|`a f -- `|Sets fault `f` handler to `a`|
-|`74`|ddrop|1|`_ _ -- `|Drops two elements from the stack|
-|`75`|RESERVED|1|`_ _ -- `| |
-|`76`|RESERVED|1|`_ _ -- `| |
-|`77`|RESERVED|1|`_ _ -- `| |
-|`78`|RESERVED|1|`_ _ -- `| |
+|`64` - `67`|rawrite#|1|`v a -- `|`mem[dc# + a] = v`|
+|`68`|write|1|`v a -- `|`mem[a] = v`|
+|`69`|writep|1|`v a -- `|`progmem[a] = v`|
+|`6A`|iwritep|1|`ins a -- `|`progmem[a] = ins`|
+|`6B`|beq|3|`a b -- `|if `a == b` then `pc += imm`|
+|`6C`|bne|3|`a b -- `|if `a != b` then `pc += imm`|
+|`6D`|bles|3|`a b -- `|if `a < b` then `pc += imm`|
+|`6E`|bleq|3|`a b -- `|if `a <= b` then `pc += imm`|
+|`6F`|blesu|3|`a b -- `|if `a < b` then `pc += imm`|
+|`70`|blequ|3|`a b -- `|if `a <= b` then `pc += imm`|
+|`71`|recv|1|`n a -- `|Stream in to `a`; `cv <- bus`|
+|`72`|send|1|`n a -- `|Stream `n` words to buses from `a`|
+|`73`|incept|1|`n a -- `|Incept target cores; see send|
+|`74`|set|1|`m s -- `|Clear ifile and set register `s` to `m`|
+|`75`|sel|1|`m s -- `|Ors `m` with register `s` of ifile|
+|`76`|setpa|1|`perm addr -- `|Sets UARC permission and address delegation|
+|`77`|sef|1|`a f -- `|Sets fault `f` handler to `a`|
+|`78`|ddrop|1|`_ _ -- `|Drops two elements from the stack|
 |`79`|RESERVED|1|`_ _ -- `| |
 |`7A`|RESERVED|1|`_ _ -- `| |
 |`7B`|RESERVED|1|`_ _ -- `| |
@@ -147,22 +147,22 @@
 |`9D`|RESERVED|1|` -- _`| |
 |`9E`|RESERVED|1|` -- _`| |
 |`9F`|RESERVED|1|` -- _`| |
-|`A0`|or|1|`a b -- (a or b)`| |
-|`A1`|xor|1|`a b -- (a ^ b)`| |
-|`A2`|reada|1|`a -- `|`cv <- mem[a]`|
-|`A3`|call|1|`a -- `|`pc = a`; push [cstack](architecture/cstack.html)|
-|`A4`|jmp|1|`a -- `|`pc = a`|
-|`A5`|iset|1|`p -- `|Set selected interrupt addresses to `p`|
-|`A6`|seb|1|`b -- `|Set a single bus|
-|`A7`|slb|1|`b -- `|Select an additional UARC bus|
-|`A8`|usb|1|`b -- `|Unselect a UARC bus|
-|`A9`|intsend|1|`v -- `|Send value to selected buses|
-|`AA`|loop|3|`n -- `|`ls <- pc + 1, pc + imm, n, 0`|
-|`AB`|bzi|3|`n -- `|if `n == 0` then `pc += imm`|
-|`AC`|bnzi|3|`n -- `|if `n != 0` then `pc += imm`|
-|`AD`|writep|5|`v -- `|Writes `v` to instruction memory at `imm`|
-|`AE`|reset|1|`p -- `|`pc = p`|
-|`AF`|drop|1|`_ -- `|Drops one element from the stack|
+|`A0`|jmp|1|`a -- `|`pc = a`|
+|`A1`|iset|1|`p -- `|Set selected interrupt addresses to `p`|
+|`A2`|seb|1|`b -- `|Set a single bus|
+|`A3`|slb|1|`b -- `|Select an additional UARC bus|
+|`A4`|usb|1|`b -- `|Unselect a UARC bus|
+|`A5`|intsend|1|`v -- `|Send value to selected buses|
+|`A6`|loop|3|`n -- `|`ls <- pc + 1, pc + imm, n, 0`|
+|`A7`|bzi|3|`n -- `|if `n == 0` then `pc += imm`|
+|`A8`|bnzi|3|`n -- `|if `n != 0` then `pc += imm`|
+|`A9`|writep|5|`v -- `|Writes `v` to instruction memory at `imm`|
+|`AA`|reset|1|`p -- `|`pc = p`|
+|`AB`|drop|1|`_ -- `|Drops one element from the stack|
+|`AC`|expect|3|`v -- `|Send v to bus `imm`; `cv <- response`|
+|`AD`|RESERVED|1|`_ -- `| |
+|`AE`|RESERVED|1|`_ -- `| |
+|`AF`|RESERVED|1|`_ -- `| |
 |`B0`|RESERVED|1|`_ _ -- `| |
 |`B1`|RESERVED|1|`_ _ -- `| |
 |`B2`|RESERVED|1|`_ _ -- `| |
