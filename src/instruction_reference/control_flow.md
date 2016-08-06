@@ -11,27 +11,14 @@
 
 ----------
 
-## `continue`
+## `return`
 ` -- `
 
 #### Description
-`continue` immediately goes to the next loop iteration and moves the PC to the beginning of the loop. If this is the last iteration it goes to the end of the loop.
-
-#### Side Effects
-- Moves PC to beginning of loop normally or after the loop if this is the last iteration
-
-----------
-
-## `ret`
-` -- `
-
-#### Description
-`ret` returns from a subroutine call. It pops the [cstack](architecture/cstack.html), moving the PC and DCs back to the position it was at in the caller to continue execution. This instruction returns from interrupts as well as normal subroutines, since an interrupt is a simulated subroutine call. Using `ret` in an interrupt also allows more interrupts to be serviced unless they are explicitly disabled in the interrupt.
+`return` returns from a subroutine call. It pops the [cstack](architecture/cstack.html), moving the PC and DCs back to the position it was at in the caller to continue execution. This instruction returns from interrupts as well as normal subroutines, since an interrupt is a simulated subroutine call. Using `return` in an interrupt also allows more interrupts to be serviced unless they are explicitly disabled in the interrupt.
 
 #### Side Effects
 - [cstack](architecture/cstack.html) is popped
-  - DCs are returned to their previous values
-    - DCs can be modified individually if subroutine doesnt set a new DC, but uses the old one
   - PC is returned to its previous value
   - If this is the initial subroutine of an interrupt
     - It is finished servicing
@@ -43,46 +30,80 @@
 
 #### Examples
 ```
-subr calli
-ret
+calli:subr
+return
 
-subr:
-  ret
+:subr
+  return
 ```
 - `( -- )`
 - The example calls `subr` before returning to the original caller
 
 ```
-subr jumpi
+jumpi:subr
 
 subr:
-  ret
+  return
 ```
 - `( -- )`
 - A more efficient version of the previous example by utilizing tail-call elimination
 
 ----------
 
-## `calli`
+## `continue`
 ` -- `
 
 #### Description
-`calli` is an immediate call. In this situation, immediate means that the PC to jump to is taken from `dc0`. This also increments `dc0` and puts the incremented copy of `dc0` onto the [cstack](architecture/cstack.html), along with the other state elements preserved in a call.
+`continue` immediately goes to the next loop iteration and moves the PC to the beginning of the loop. If this is the last iteration it goes to the end of the loop.
 
 #### Side Effects
-- [cstack](architecture/cstack.html) is pushed
-  - DCs are preserved
-    - DCs can be modified individually if subroutine doesnt set a new DC, but uses the old one
-  - PC is preserved
-  - Whether an interrupt is being serviced or not is preserved
+- Moves PC to beginning of loop normally or after the loop if this is the last iteration.
+
+----------
+
+## `iloop`
+` -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. The immediate value is unsigned and is added to the PC to find the relative position of the end of the loop.
+
+#### Description
+`iloop` pushes a new infinite loop into onto the [lstack](architecture/lstack.html). This loop, being infinite, will never end until the break instruction is issued. The loop index (`i0`) begins at `0` and will wrap around indefinitely.
+
+#### Side Effects
+- [lstack](architecture/lstack.html) is pushed.
 
 #### Examples
 ```
-subr calli
-ret
+iloop:+
+rot:0
+:+
+```
+- Enters an infinite loop with a NOP.
+
+----------
+
+## `calli`
+` -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by a processor word. This word is the address of the function that is being called.
+
+#### Description
+`calli` is an immediate call. The immediate value is the address to call into.
+
+#### Side Effects
+- [cstack](architecture/cstack.html) is pushed
+  - Old PC is preserved.
+  - Whether an interrupt is being serviced or not is preserved.
+
+#### Examples
+```
+calli:subr
+return
 
 subr:
-  ret
+  return
 ```
 - `( -- )`
 - The example calls `subr` before returning to the original caller
@@ -92,86 +113,28 @@ subr:
 ## `jmpi`
 ` -- `
 
+#### Immediate (WORD)
+The initial opcode byte is followed by a processor word. This word is the address to execute next.
+
 #### Description
-`jmpi` jumps to an immediate value stored at `dc0`. This also increments `dc0` in the process.
+`jmpi` jumps to the immediate address `imm`.
 
 #### Side Effects
-- PC is moved to immediate value
-- `dc0` is incremented
+- PC is moved to immediate value.
 
 ----------
 
-## `jc`
+## `bra`
 ` -- `
 
-#### Description
-`jc` jumps to an immediate value stored at `dc0` if the `c` bit is `1`. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path.
-
-#### Side Effects
-- PC is moved to immediate value if `c` is `1`
-- `dc0` is incremented by `1` or `2`
-
-----------
-
-## `jnc`
-` -- `
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. The immediate value is signed and is the relative offset to branch by.
 
 #### Description
-`jnc` jumps to an immediate value stored at `dc0` if the `c` bit is `0`. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path.
+`bra` performs a relative branch to address `pc + imm`.
 
 #### Side Effects
-- PC is moved to immediate value if `c` is `0`
-- `dc0` is incremented by `1` or `2`
-
-----------
-
-## `jo`
-` -- `
-
-#### Description
-`jo` jumps to an immediate value stored at `dc0` if the `o` bit is `1`. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path.
-
-#### Side Effects
-- PC is moved to immediate value if `o` is `1`
-- `dc0` is incremented by `1` or `2`
-
-----------
-
-## `jno`
-` -- `
-
-#### Description
-`jno` jumps to an immediate value stored at `dc0` if the `o` bit is `0`. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path.
-
-#### Side Effects
-- PC is moved to immediate value if `o` is `0`
-- `dc0` is incremented by `1` or `2`
-
-----------
-
-## `ji`
-` -- `
-
-#### Description
-`ji` jumps to an immediate value stored at `dc0` if the `iflag` bit is `1`. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path. To indicate that the interrupt has been seen, `iflag` is set to `0`.
-
-#### Side Effects
-- PC is moved to immediate value if `iflag` is `1`
-- `dc0` is incremented by `1` or `2`
-- `iflag` is set to `0`
-
-----------
-
-## `jni`
-` -- `
-
-#### Description
-`jni` jumps to an immediate value stored at `dc0` if the `iflag` bit is `0`. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path. To indicate that the interrupt has been seen, `iflag` is set to `0`.
-
-#### Side Effects
-- PC is moved to immediate value if `iflag` is `0`
-- `dc0` is incremented by `1` or `2`
-- `iflag` is set to `0`
+- PC is moved to `pc + imm`.
 
 ----------
 
@@ -183,129 +146,19 @@ subr:
 
 #### Side Effects
 - [cstack](architecture/cstack.html) is pushed
-  - DCs are preserved
-    - DCs can be modified individually if subroutine doesnt set a new DC, but uses the old one
-  - PC is preserved
-  - Whether an interrupt is being serviced or not is preserved
+  - Old PC is preserved.
+  - Indicates whether an interrupt is being serviced or not is preserved.
 
 #### Examples
 ```
-subr read0 call
-ret
+.subr call
+return
 
 subr:
-  ret
+  return
 ```
 - `( -- )`
-- The example calls `subr` before returning to the original caller
-
-----------
-
-## `jmp`
-`a -- `
-
-#### Description
-`jmp` jumps to the address `a`.
-
-#### Side Effects
-- PC is moved to `a`
-
-----------
-
-## `jeq`
-`a b -- `
-
-#### Description
-`jeq` jumps to an immediate value stored at `dc0` if `a` and `b` are equal. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path.
-
-#### Side Effects
-- PC is moved to immediate value if `a == b`
-- `dc0` is incremented by `1` or `2`
-
-----------
-
-## `jne`
-`a b -- `
-
-#### Description
-`jne` jumps to an immediate value stored at `dc0` if `a` and `b` are not equal. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path.
-
-#### Side Effects
-- PC is moved to immediate value if `a != b`
-- `dc0` is incremented by `1` or `2`
-
-----------
-
-## `les`
-`a b -- `
-
-#### Description
-`les` jumps to an immediate value stored at `dc0` if `a` is less than `b` in a signed comparison. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path.
-
-#### Side Effects
-- PC is moved to immediate value if `a < b`
-- `dc0` is incremented by `1` or `2`
-
-----------
-
-## `leq`
-`a b -- `
-
-#### Description
-`leq` jumps to an immediate value stored at `dc0` if `a` is less than or equal to `b` in a signed comparison. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path.
-
-#### Side Effects
-- PC is moved to immediate value if `a <= b`
-- `dc0` is incremented by `1` or `2`
-
-----------
-
-## `lesu`
-`a b -- `
-
-#### Description
-`lesu` jumps to an immediate value stored at `dc0` if `a` is less than `b` in an unsigned comparison. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path.
-
-#### Side Effects
-- PC is moved to immediate value if `a < b`
-- `dc0` is incremented by `1` or `2`
-
-----------
-
-## `lequ`
-`a b -- `
-
-#### Description
-`lequ` jumps to an immediate value stored at `dc0` if `a` is less than or equal to `b` in an unsigned comparison. This also increments `dc0` by `1` if the branch is successful and `2` otherwise so that an alternate `dc0` can be loaded by the alternate path.
-
-#### Side Effects
-- PC is moved to immediate value if `a <= b`
-- `dc0` is incremented by `1` or `2`
-
-----------
-
-## `loop`
-`n e -- `
-
-#### Description
-`loop` pushes a new loop into onto the [lstack](architecture/lstack.html). `n` represents the number of iterations of the loop, while `e` represents the end address of the loop. The loop index (`i0`) begins at `0`. The loop will also track only `dc0` and restore it on each iteration, but on a break `dc0` will not be set to after the loop.
-
-#### Side Effects
-- [lstack](architecture/lstack.html) is pushed
-- `dc0` is preserved on each iteration
-
-----------
-
-## `loopi`
-`n -- `
-
-#### Description
-`loopi` pushes a new loop into onto the [lstack](architecture/lstack.html). `n` represents the number of iterations of the loop. The end address is taken from `dc0` and `dc0` is incremented. The loop index (`i0`) begins at `0`. The loop will also track only `dc0` and restore it on each iteration, but on a break `dc0` will not be set to after the loop.
-
-#### Side Effects
-- [lstack](architecture/lstack.html) is pushed
-- `dc0` is incremented
-- `dc0` is preserved on each iteration
+- The example calls `subr` before returning to the original caller.
 
 ----------
 
@@ -329,8 +182,236 @@ subr:
 
 ----------
 
-## `reset`
-`d p -- `
+## `beq`
+`a b -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. The immediate value is signed and is the relative offset to branch by.
 
 #### Description
-Resets the whole processor, setting `d` as the new DC0 and `p` as the new PC. Everything is reinitialized, such as stack depth.
+`beq` performs a relative branch if `a == b`. The `pc` to branch to is `pc + imm`.
+
+#### Side Effects
+- PC is moved to `pc + imm` value if `a == b`.
+
+----------
+
+## `bne`
+`a b -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. The immediate value is signed and is the relative offset to branch by.
+
+#### Description
+`bne` performs a relative branch if `a != b`. The `pc` to branch to is `pc + imm`.
+
+#### Side Effects
+- PC is moved to `pc + imm` value if `a != b`.
+
+----------
+
+## `bles`
+`a b -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. The immediate value is signed and is the relative offset to branch by.
+
+#### Description
+`bles` performs a relative branch if `a < b` where both operands are signed. The `pc` to branch to is `pc + imm`.
+
+#### Side Effects
+- PC is moved to `pc + imm` value if `a < b`.
+
+----------
+
+## `bleq`
+`a b -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. The immediate value is signed and is the relative offset to branch by.
+
+#### Description
+`bleq` performs a relative branch if `a <= b` where both operands are signed. The `pc` to branch to is `pc + imm`.
+
+#### Side Effects
+- PC is moved to `pc + imm` value if `a <= b`.
+
+----------
+
+## `blesu`
+`a b -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. The immediate value is signed and is the relative offset to branch by.
+
+#### Description
+`blesu` performs a relative branch if `a < b` where both operands are unsigned. The `pc` to branch to is `pc + imm`.
+
+#### Side Effects
+- PC is moved to `pc + imm` value if `a < b`.
+
+----------
+
+## `blequ`
+`a b -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. The immediate value is signed and is the relative offset to branch by.
+
+#### Description
+`blequ` performs a relative branch if `a <= b` where both operands are unsigned. The `pc` to branch to is `pc + imm`.
+
+#### Side Effects
+- PC is moved to `pc + imm` value if `a <= b`.
+
+----------
+
+## `bc`
+` -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. The immediate value is signed and is the relative offset to branch by.
+
+#### Description
+`bc` performs a relative branch if the `c` bit is `1`. The `pc` to branch to is `pc + imm`.
+
+#### Side Effects
+- PC is moved to `pc + imm` value if `c` is `1`.
+
+----------
+
+## `bnc`
+` -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. The immediate value is signed and is the relative offset to branch by.
+
+#### Description
+`bnc` performs a relative branch if the `c` bit is `0`. The `pc` to branch to is `pc + imm`.
+
+#### Side Effects
+- PC is moved to `pc + imm` value if `c` is `0`.
+
+----------
+
+## `bo`
+` -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. The immediate value is signed and is the relative offset to branch by.
+
+#### Description
+`bo` performs a relative branch if the `o` bit is `1`. The `pc` to branch to is `pc + imm`.
+
+#### Side Effects
+- PC is moved to `pc + imm` value if `o` is `1`.
+
+----------
+
+## `bno`
+` -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. The immediate value is signed and is the relative offset to branch by.
+
+#### Description
+`bno` performs a relative branch if the `o` bit is `0`. The `pc` to branch to is `pc + imm`.
+
+#### Side Effects
+- PC is moved to `pc + imm` value if `o` is `0`.
+
+----------
+
+## `bi`
+` -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. The immediate value is signed and is the relative offset to branch by.
+
+#### Description
+`bi` performs a relative branch if the `i` bit is `1`. The `pc` to branch to is `pc + imm`.
+
+#### Side Effects
+- PC is moved to `pc + imm` value if `i` is `1`.
+
+----------
+
+## `bni`
+` -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. The immediate value is signed and is the relative offset to branch by.
+
+#### Description
+`bni` performs a relative branch if the `i` bit is `0`. The `pc` to branch to is `pc + imm`.
+
+#### Side Effects
+- PC is moved to `pc + imm` value if `i` is `0`.
+
+----------
+
+## `jmp`
+`a -- `
+
+#### Description
+`jmp` jumps to an address. The address `a` is the destination the PC is set to.
+
+#### Examples
+```
+.subr jmp
+
+subr:
+  return
+```
+- `( -- )`
+- The example calls `subr` with a tail call optimization to return to the original caller.
+
+----------
+
+## `loop`
+`n -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. The immediate value is unsigned and is the relative offset of the end of the loop.
+
+#### Description
+`loop` pushes a new loop into onto the [lstack](architecture/lstack.html). `n` represents the number of iterations of the loop, while the immediate value `imm` is the unsigned relative position of the end of the loop. The loop index (`i0`) begins at `0`.
+
+#### Side Effects
+- [lstack](architecture/lstack.html) is pushed.
+
+----------
+
+## `reset`
+`p -- `
+
+#### Description
+Resets the whole processor, setting `p` as the new PC. Everything is reinitialized, such as stack depth.
+
+----------
+
+## `bz`
+`a -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. The immediate value is signed and is the relative offset to branch by.
+
+#### Description
+`bz` performs a relative branch if `a == 0`. The `pc` to branch to is `pc + imm`.
+
+#### Side Effects
+- PC is moved to `pc + imm` value if `a == 0`.
+
+----------
+
+## `bnz`
+`a -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. The immediate value is signed and is the relative offset to branch by.
+
+#### Description
+`bnz` performs a relative branch if `a != 0`. The `pc` to branch to is `pc + imm`.
+
+#### Side Effects
+- PC is moved to `pc + imm` value if `a != 0`.

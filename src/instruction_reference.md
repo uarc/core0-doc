@@ -154,13 +154,13 @@
 |`A4`|usb|1|`b -- `|Unselect a UARC bus|
 |`A5`|intsend|1|`v -- `|Send value to selected buses|
 |`A6`|loop|3|`n -- `|`ls <- pc + 1, pc + imm, n, 0`|
-|`A7`|bzi|3|`n -- `|if `n == 0` then `pc += imm`|
-|`A8`|bnzi|3|`n -- `|if `n != 0` then `pc += imm`|
-|`A9`|writep|5|`v -- `|Writes `v` to instruction memory at `imm`|
-|`AA`|reset|1|`p -- `|`pc = p`|
-|`AB`|drop|1|`_ -- `|Drops one element from the stack|
-|`AC`|expect|3|`v -- `|Send v to bus `imm`; `cv <- response`|
-|`AD`|RESERVED|1|`_ -- `| |
+|`A7`|bz|3|`n -- `|if `n == 0` then `pc += imm`|
+|`A8`|bnz|3|`n -- `|if `n != 0` then `pc += imm`|
+|`A9`|writepi|1 + WORD|`v -- `|Writes `v` to instruction memory at `imm`|
+|`AA`|writepri|3|`v -- `|Writes `v` to instruction memory at `pc + imm`|
+|`AB`|reset|1|`p -- `|`pc = p`|
+|`AC`|drop|1|`_ -- `|Drops one element from the stack|
+|`AD`|expect|3|`v -- `|Send v to bus `imm`; `cv <- response`|
 |`AE`|RESERVED|1|`_ -- `| |
 |`AF`|RESERVED|1|`_ -- `| |
 |`B0`|RESERVED|1|`_ _ -- `| |
