@@ -138,7 +138,7 @@ h80000000 1 asr
 `a -- (a + imm)`
 
 #### Immediate (WORD)
-As an immediate instruction, the initial opcode byte is followed by a full processor word. This word is signed.
+The initial opcode byte is followed by a full processor word. This word is signed.
 
 #### Description
 `addi` takes parameter `a` from the stack and adds it with the immediate value `imm`. The carry bit is set by this instruction, but is not consumed.
@@ -160,7 +160,7 @@ As an immediate instruction, the initial opcode byte is followed by a full proce
 `a -- (imm - a)`
 
 #### Immediate (WORD)
-As an immediate instruction, the initial opcode byte is followed by a full processor word. This word is signed.
+The initial opcode byte is followed by a full processor word. This word is signed.
 
 ####  Description
 `subi` subtracts the immediate value `imm` from `a`. This instruction can simultaneously be called 'immediate' and 'inverse'. It would be redundant to have an actual immediate subtract, since an immediate add of the negative number accomplishes the same thing, but there are situations where a number needs to be subtracted from an immediate value. This instruction can be used to negate a number in one instruction. The carry bit is set by this instruction to `1` when no borrow occurs. The carry bit is not consumed by this instruction.
@@ -182,7 +182,7 @@ As an immediate instruction, the initial opcode byte is followed by a full proce
 `a -- (a >>> imm)`
 
 #### Immediate (WORD)
-As an immediate instruction, the initial opcode byte is followed by one octet. The octet is unsigned and represents the shift amount.
+The initial opcode byte is followed by one octet. The octet is unsigned and represents the shift amount.
 
 #### Description
 `asri` shifts `a` by `imm` bits and sign extends the result. If `-1` is shifted right, it will continue to stay `-1`.

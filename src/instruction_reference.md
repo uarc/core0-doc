@@ -121,12 +121,12 @@
 |`80`|addi|1 + WORD|`a -- (a + imm)`|`c`, `o`|
 |`81`|subi|1 + WORD|`a -- (imm - a)`|`c`, `o`|
 |`82`|lsli|2|`a -- (a << imm)`| |
-|`83`|lsri|2|`a -- (a >> imm)`| |
-|`84`|csli|2|`a -- ((a << imm) or (a >> (imm - WORD)))`| |
-|`85`|asri|2|`a -- (a >>> imm)`| |
-|`86`|andi|1 + WORD|`a -- (a & b)`| |
-|`87`|ori|1 + WORD|`a -- (a or b)`| |
-|`88`|xori|1 + WORD|`a -- (a ^ b)`| |
+|`83`|csli|2|`a -- ((a << imm) or (a >> (imm - WORD)))`| |
+|`84`|asri|2|`a -- (a >>> imm)`| |
+|`85`|andi|1 + WORD|`a -- (a & b)`| |
+|`86`|ori|1 + WORD|`a -- (a or b)`| |
+|`87`|xori|1 + WORD|`a -- (a ^ b)`| |
+|`88`|RESERVED|1|` -- `| |
 |`89`|RESERVED|1|` -- `| |
 |`8A`|bc|3|` -- `|if `c` then `pc += imm`|
 |`8B`|bnc|3|` -- `|if `~c` then `pc += imm`|
