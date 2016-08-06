@@ -1,42 +1,57 @@
 # Memory Instructions
 
-## `ld0i`
+## `move#`
 ` -- `
 
+#### Immediate (WORD)
+The initial opcode byte is followed by an octet. The immediate value is signed.
+
 #### Description
-`ld0i` loads dc0 from the location pointed to by the current dc0. The old dc0 is incremented before being changed and the restored dc0 when returning from this call will be that value. This means that this instruction can be the first instruction of a function which needs a unique dc0.
+`move#` advances `dc#` by `imm` bytes, where `imm` can be negative, thus it can go backwards.
 
 ----------
 
-## `rread#`
+## `raread#`
 `a -- mem[dc# + a]`
 
 #### Description
-`rread#` performs a random read starting from `dc#` and indexing by `a`. The result is returned synchronously to the stack because it is assumed that this value is held in the cache, since memory at a dc is generally cached.
+`raread#` performs a random read starting from `dc#` and indexing by `a`. The result is returned synchronously to the stack because it is assumed that this value is held in the cache, since memory at a DC is generally cached.
 
 ----------
 
-## `reads`
-`a -- mem[a]`
+## `rereadi#`
+` -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by an octet. The immediate value is unsigned.
 
 #### Description
-`reads` performs a synchronous read, meaning that this operation does not complete until the value is on the stack. `a` is an absolute address.
+`rereadi#` performs a random read starting from `mem[dc#]` and indexing by `imm`. The result is placed on the conveyor because only the memory at the DC itself is cached.
+
+#### Side Effects
+- Word is asynchronously put on the conveyor.
 
 ----------
 
 ## `read#`
 ` -- mem[dc#]`
 
+#### Immediate (WORD)
+The initial opcode byte is followed by an octet. The immediate value is signed and is biased by `+1`.
+
 #### Description
-`read#` performs a read directly at `dc#`. Doing this increments `dc#` after the read.
+`read#` performs a read directly at `dc#`. `dc#` is then advanced by the signed immediate value `imm`.
 
 ----------
 
-## `readi`
-` -- mem[mem[dc#]]`
+## `rareadi#`
+` -- mem[dc# + imm]`
+
+#### Immediate (WORD)
+The initial opcode byte is followed by an octet. The immediate value is unsigned.
 
 #### Description
-`readi` performs an indirect, immediate read using the address at `dc0`. Doing this increments `dc0` after the read.
+`raread#` performs a random read starting from `dc#` and indexing by `imm`. The result is returned synchronously to the stack because it is assumed that this value is held in the cache, since memory at a DC is generally cached.
 
 ----------
 
@@ -44,31 +59,79 @@
 ` -- dc#`
 
 #### Description
-`get#` places the address dc# is currently pointing to onto the stack. This allows the programmer to manipulate the dc for allocating memory on a stack or advancing the dc between elements in a vector for use with `rread#`.
+`get#` places the address `dc#` onto the stack. This allows the programmer to manipulate the DC for dynamically allocating memory on a stack or performing pointer arithmetic for optimization problems.
 
 ----------
 
-## `write#`
+## `writepre#`
 `v -- `
 
+#### Immediate (WORD)
+The initial opcode byte is followed by an octet. The immediate value is signed and is not biased.
+
 #### Description
-`write#` performs a write directly at `dc#`. Doing this advances `dc#` depending on how it was set. If it was set with `setf`, then `dc#` will write and then increment. If it was set with `setb`, then `dc#` will decrement and then write. Due to this behavior, using setb allows a dc to be set up as a pushdown stack.
+`writepre#` performs a write directly at `dc#`. Doing this advances `dc#` by the signed immediate value `imm` before the write. This allows the DC to be set up as a stack.
 
 ----------
 
-## `setf#`
-`a -- `
+## `writepst#`
+`v -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by an octet. The immediate value is signed and is biased by `+1`.
 
 #### Description
-`setf#` sets `dc#` to `a`. It also sets `dc#` to be in post-increment write mode.
+`writepst#` performs a write directly at `dc#`. Doing this advances `dc#` by the signed immediate value `imm` after the write.
 
 ----------
 
-## `setb#`
+## `set#`
 `a -- `
 
 #### Description
-`setf#` sets `dc#` to `a`. It also sets `dc#` to be in pre-decrement write mode.
+`set#` sets `dc#` to `a`.
+
+----------
+
+## `rawritei#`
+`v -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by an octet. The immediate value is unsigned.
+
+#### Description
+`rawritei#` performs a random write relative to `dc#`. This means that `mem[dc# + imm] = v`. This may be cached.
+
+#### Side Effects
+- `mem[dc# + imm] = v`
+
+----------
+
+## `rewritei#`
+`v -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by an octet. The immediate value is unsigned.
+
+#### Description
+`rewritei#` performs a random write relative to `mem[dc#]`. This means that `mem[mem[dc#] + imm] = v`. This may be cached.
+
+#### Side Effects
+- `mem[mem[dc#] + imm] = v`
+
+----------
+
+## `reread#`
+`a -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by an octet. The immediate value is signed and biased by `+1`.
+
+#### Description
+`reread#` performs a random read relative to `mem[dc#]` or `a` depending on perspective. `dc#` is advanced by `imm`. The result is placed on the conveyor because only the memory at the DC itself is cached.
+
+#### Side Effects
+- `mem[mem[dc#] + a]` is asynchronously put on the conveyor.
 
 ----------
 
@@ -92,11 +155,17 @@ cv0
 
 ----------
 
-## `writei`
-`v -- `
+## `rewrite#`
+`v a -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by an octet. The immediate value is signed and biased by `+1`.
 
 #### Description
-`writei` performs an indirect, immediate write directly at the location `dc0`. Doing this always increments `dc0`. This is treated as an immediate read, despite the name, since an address is read from `dc0`.
+`rewrite#` performs a random write relative to `a` or `dc#` depending on perspective. This means that `mem[mem[dc#] + a] = v`. `dc#` is advanced by the immediate value. This may be cached.
+
+#### Side Effects
+- `mem[mem[dc#] + a] = v`
 
 ----------
 
@@ -108,17 +177,6 @@ cv0
 
 #### Side Effects
 - `mem[dc# + a] = v`
-
-----------
-
-## `rewrite#`
-`v a -- `
-
-#### Description
-`rewrite#` performs a random write relative to `a`. This means that `mem[mem[dc#] + a] = v`. This is treated as an immediate read, thus `dc#` will be incremented. This may be cached.
-
-#### Side Effects
-- `mem[mem[dc#] + a] = v`
 
 ----------
 
@@ -137,18 +195,46 @@ cv0
 `v a -- `
 
 #### Description
-`writep` performs a random write to program memory in little-endian byte-order. This means that `progmem[a] = v`. This may be cached. Program memory is ordered into octets, but this instruction can write several octets in one word, therefore the word byte-order is little-endian.
+`writep` performs a random write to program memory in little-endian byte-order. This means that `progmem[a] = v`. Program memory is ordered into octets, but this instruction can write several octets in one word, therefore the word byte-order is little-endian. The addresses are aligned to octets. This operation may not influence the instruction executed next.
 
 #### Side Effects
 - `progmem[a] = v`
 
 ----------
 
-## `writepi`
+## `writepo`
 `ins a -- `
 
 #### Description
-`writepi` performs a random write of an instruction to program memory using a program address. This means that `progmem[a] = ins`, but only the lowest 8 bits of `ins` are written. This may be cached. Program memory is ordered into octets, which are written and addressed individually by this word.
+`writepo` performs a random write of an octet to program memory using a program address. This means that `progmem[a] = ins`, but only the lowest 8 bits of `ins` are written. Program memory is ordered into octets, which are written and addressed individually by this word. The addresses are aligned to octets. This operation may not influence the instruction executed next.
 
 #### Side Effects
 - `progmem[a] = ins`
+
+----------
+
+## `writepi`
+`v -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by a word. The immediate value is a program address.
+
+#### Description
+`writepi` performs a random write to program memory in little-endian byte-order at the address specified by the immediate value `imm`. This means that `progmem[imm] = v`. Program memory is ordered into octets, but this instruction can write several octets in one word, therefore the word byte-order is little-endian. The addresses are aligned to octets. This operation may not influence the instruction executed next.
+
+#### Side Effects
+- `progmem[imm] = v`
+
+----------
+
+## `writepri`
+`v -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. The immediate value is a signed relative offset.
+
+#### Description
+`writepri` performs a random write to program memory in little-endian byte-order at the address `pc + imm`. This means that `progmem[pc + imm] = v`. Program memory is ordered into octets, but this instruction can write several octets in one word, therefore the word byte-order is little-endian. The addresses are aligned to octets. This operation may not influence the instruction executed next.
+
+#### Side Effects
+- `progmem[pc + imm] = v`

@@ -61,6 +61,17 @@ subr:
 
 ----------
 
+## `cv#`
+` -- cv#`
+
+#### Description
+`cv#` waits until the asynchronous operation that produces the value `cv#` completes, synchronizing with its completion, and placing the result on the stack.
+
+#### Side Effects
+- Execution is synchronized with the completion of operation that produced `cv#`.
+
+----------
+
 ## `iloop`
 ` -- `
 
