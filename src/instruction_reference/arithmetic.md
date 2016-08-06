@@ -1,17 +1,5 @@
 # Arithmetic Instructions
 
-## `add#`
-`a -- (a + mem[dc#])`
-
-#### Description
-`add#` adds the top of the [dstack](architecture/dstack.html) with the immediate value from `dc#`. The `o` and `c` bits are set, but not consumed. `dc#` is incremented.
-
-#### Side Effects
-- `c = (a + mem[dc#])[WORD]`
-- `o = (a[WORD - 1] ^ mem[dc#][WORD - 1]) ? 0 : a[WORD - 1] ^ (a + mem[dc#])[WORD - 1]`
-
-----------
-
 ## `inc`
 `a -- (a + 1)`
 
@@ -146,69 +134,61 @@ h80000000 1 asr
 
 ----------
 
-## `mul`
-`a b -- (a * b)`
+## `addi`
+`a -- (a + imm)`
+
+#### Immediate (WORD)
+As an immediate instruction, the initial opcode byte is followed by a full processor word. This word is signed.
 
 #### Description
-`mul` multiplies two signed numbers (`a` and `b`) with width `WORD` and produces a result with width `2 * WORD`. The lower `WORD` and the higher `WORD` bits (both including a sign bit) are placed on the [conveyor](architecture/conveyor.html).
+`addi` takes parameter `a` from the stack and adds it with the immediate value `imm`. The carry bit is set by this instruction, but is not consumed.
 
 #### Side Effects
-- The lowest `WORD` and highest `WORD` bits are placed onto the [conveyor](architecture/conveyor.html) in that order
-- `o` is `1` if any significant bits are placed into the conveyor
-
-#### Examples (with WORD of 32)
-```
-h80000000 2 mul cv1 cv0
-```
-- `( -- h80000000 hFFFFFFFE)`
-
-----------
-
-## `mulu`
-`a b -- (a * b)`
-
-#### Description
-`mulu` multiplies two unsigned numbers (`a` and `b`) with width `WORD` and produces a result with width `2 * WORD`. The lower `WORD` and higher `WORD` bits of the result are placed on the [conveyor](architecture/conveyor.html).
-
-#### Side Effects
-- The lowest `WORD` and highest `WORD` bits are placed onto the [conveyor](architecture/conveyor.html) in that order
+- `c = (a + imm)[WORD]`
+- `o = (a[WORD - 1] ^ imm[WORD - 1]) ? 0 : a[WORD - 1] ^ (a + imm)[WORD - 1]`
 
 #### Examples
 ```
-~0 2 mul cv1 cv0
+2 add:3
 ```
-- `( -- ~0 1)`
+- `( -- 5)`
+- Carry is set to 0
 
 ----------
 
-## `div`
-`a b -- `
+## `subi`
+`a -- (imm - a)`
 
-#### Description
-`div` divides two signed numbers (`a` and `b`) with width `WORD` and produces a result with width `2 * WORD`. The higher/whole `WORD` and the lower/fractional `WORD` bits of the result are placed on the [conveyor](architecture/conveyor.html). Both the higher and the lower results are signed.
+#### Immediate (WORD)
+As an immediate instruction, the initial opcode byte is followed by a full processor word. This word is signed.
+
+####  Description
+`subi` subtracts the immediate value `imm` from `a`. This instruction can simultaneously be called 'immediate' and 'inverse'. It would be redundant to have an actual immediate subtract, since an immediate add of the negative number accomplishes the same thing, but there are situations where a number needs to be subtracted from an immediate value. This instruction can be used to negate a number in one instruction. The carry bit is set by this instruction to `1` when no borrow occurs. The carry bit is not consumed by this instruction.
 
 #### Side Effects
-- The higher/whole `WORD` and lower/fractional `WORD` bits are placed onto the [conveyor](architecture/conveyor.html) in that order
+`c = (imm - a)[WORD]`
+
+#### Examples
+```
+3 subi:2
+```
+- `( -- -1)`
+- Carry is set to 0
+  - Which indicates a borrow
+
+  ----------
+
+## `asri`
+`a -- (a >>> imm)`
+
+#### Immediate (WORD)
+As an immediate instruction, the initial opcode byte is followed by one octet. The octet is unsigned and represents the shift amount.
+
+#### Description
+`asri` shifts `a` by `imm` bits and sign extends the result. If `-1` is shifted right, it will continue to stay `-1`.
 
 #### Examples (with WORD of 32)
 ```
-h80000000 2 div cv1 cv0
+h80000000 asri:1
 ```
-- `( -- hC0000000 hBFFFFFFF)`
-
-----------
-
-## `divu`
-`a b -- `
-
-#### Description
-`divu` divides two unsigned numbers (`a` and `b`) with width `WORD` and produces a result with width `2 * WORD`. The higher/whole `WORD` and the lower/fractional `WORD` bits of the result are placed on the [conveyor](architecture/conveyor.html).
-
-#### Side Effects
-- The higher/whole `WORD` and lower/fractional `WORD` bits are placed onto the [conveyor](architecture/conveyor.html) in that order
-
-#### Examples (with WORD of 32)
-```
-~0 2 divu cv1 cv0
-```
-- `( -- h7FFFFFFF h80000000)`
+- `( -- hC000000)`
