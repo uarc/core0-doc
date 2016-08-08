@@ -34,7 +34,7 @@ i0
 ` -- imm`
 
 #### Description
-`imm8` places the immediate 8-bit value on the stack.
+`imm8` places the immediate signed 8-bit value on the stack.
 
 #### Examples
 ```
@@ -48,13 +48,13 @@ i0
 ` -- imm`
 
 #### Description
-`imm16` places the immediate 16-bit value on the stack.
+`imm16` places the immediate signed 16-bit value on the stack.
 
 #### Examples
 ```
-30131
+-30131
 ```
-- `( -- 30131)`
+- `( -- -30131)`
 
 ----------
 
@@ -62,7 +62,7 @@ i0
 ` -- imm`
 
 #### Description
-`imm32` places the immediate 32-bit value on the stack.
+`imm32` places the immediate signed 32-bit value on the stack.
 
 #### Examples
 ```
@@ -76,7 +76,7 @@ i0
 ` -- imm`
 
 #### Description
-`imm64` places the immediate 64-bit value on the stack. This is only supported on u0-64. On u0-32, this has undefined behavior.
+`imm64` places the immediate signed 64-bit value on the stack. This is only supported on u0-64. On u0-32, this has undefined behavior.
 
 #### Examples
 ```
