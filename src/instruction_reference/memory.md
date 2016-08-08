@@ -4,7 +4,7 @@
 ` -- `
 
 #### Immediate (WORD)
-The initial opcode byte is followed by an octet. The immediate value is signed.
+The initial opcode byte is followed by an octet. The immediate value is signed and biased by `+1`.
 
 #### Description
 `move#` advances `dc#` by `imm` bytes, where `imm` can be negative, thus it can go backwards.
