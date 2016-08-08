@@ -87,7 +87,7 @@ The initial opcode byte is followed by two octets. The immediate value is unsign
 #### Examples
 ```
 iloop:+
-rot:0
+rot0
 :+
 ```
 - Enters an infinite loop with a NOP.
