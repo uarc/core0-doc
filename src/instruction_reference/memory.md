@@ -158,11 +158,8 @@ cv0
 ## `rewrite#`
 `v a -- `
 
-#### Immediate (WORD)
-The initial opcode byte is followed by an octet. The immediate value is signed and biased by `+1`.
-
 #### Description
-`rewrite#` performs a random write relative to `a` or `dc#` depending on perspective. This means that `mem[mem[dc#] + a] = v`. `dc#` is advanced by the immediate value. This may be cached.
+`rewrite#` performs a random write relative to `a` or `dc#` depending on perspective. This means that `mem[mem[dc#] + a] = v`. This may be cached.
 
 #### Side Effects
 - `mem[mem[dc#] + a] = v`

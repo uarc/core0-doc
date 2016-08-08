@@ -90,7 +90,7 @@
 |`5D`|csr|1|`a b -- ((a >> b) or (a << (b - WORD)))`| |
 |`5E`|asr|1|`a b -- (a >>> b)`| |
 |`5F`|and|1|`a b -- (a & b)`| |
-|`60` - `63`|rewrite#|2|`v a -- `|`mem[mem[dc#] + a] = v`|
+|`60` - `63`|rewrite#|1|`v a -- `|`mem[mem[dc#] + a] = v`|
 |`64` - `67`|rawrite#|1|`v a -- `|`mem[dc# + a] = v`|
 |`68`|write|1|`v a -- `|`mem[a] = v`|
 |`69`|writep|1|`v a -- `|`progmem[a] = v`|
