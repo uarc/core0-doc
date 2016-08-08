@@ -153,7 +153,7 @@
 |`A2`|reada|1|`a -- `|`cv <- mem[a]`|
 |`A3`|call|1|`a -- `|`pc = a`; push [cstack](architecture/cstack.html)|
 |`A4`|jmp|1|`a -- `|`pc = a`|
-|`A5`|iset|1|`p -- `|Set selected interrupt addresses to `p`|
+|`A5`|intset|1|`p -- `|Set selected interrupt addresses to `p`|
 |`A6`|seb|1|`b -- `|Set a single bus|
 |`A7`|slb|1|`b -- `|Select an additional UARC bus|
 |`A8`|usb|1|`b -- `|Unselect a UARC bus|
