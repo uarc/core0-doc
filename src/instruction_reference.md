@@ -13,10 +13,10 @@
       - Operates using specifically the DC of index `location`
   - `11OL LLLL` (Random access instructions)
     - `110L LLLL` (Rotate)
-      - [dstack](architecture/dstack.html) item of depth `location + 1` rotated to top of [dstack](architecture/dstack.html)
+      - [dstack](architecture/dstack.html) item of depth `location` rotated to top of [dstack](architecture/dstack.html)
       - Only elements above the rotate are pushed down
     - `111L LLLL` (Copy)
-      - [dstack](architecture/dstack.html) item of depth `location + 1` copied to top of [dstack](architecture/dstack.html)
+      - [dstack](architecture/dstack.html) item of depth `location` copied to top of [dstack](architecture/dstack.html)
       - Entire stack is pushed down
 
 - `O` - Opcode bit
