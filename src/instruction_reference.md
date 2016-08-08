@@ -3,7 +3,7 @@
 ### c0 Instruction Formats
 
 - `OOOO OOOO` (All instructions)
-  - `0SSO OOOO` (Normal instructions)
+  - `0SSO OOOO` / `10SS OOOO` (Normal instructions)
     - All normal instructions affect the entire stack according to the `S` bits
     - `0010 LLLL` (Conveyor instruction)
       - Reads and synchronizes with conveyor index `location`
@@ -11,11 +11,11 @@
       - Places the index from the loop of depth `location` on the [dstack](architecture/dstack.html)
     - `0SSO OOLL` (DC instructions)
       - Operates using specifically the DC of index `location`
-  - `1OLL LLLL` (Random access instructions)
-    - `10LL LLLL` (Rotate)
+  - `11OL LLLL` (Random access instructions)
+    - `110L LLLL` (Rotate)
       - [dstack](architecture/dstack.html) item of depth `location + 1` rotated to top of [dstack](architecture/dstack.html)
       - Only elements above the rotate are pushed down
-    - `11LL LLLL` (Copy)
+    - `111L LLLL` (Copy)
       - [dstack](architecture/dstack.html) item of depth `location + 1` copied to top of [dstack](architecture/dstack.html)
       - Entire stack is pushed down
 
@@ -24,10 +24,10 @@
 - `L` - Location bit
 
 ### Stack bits
-- `00` - The stack is not popped or pushed.
-- `01` - The stack is pushed once.
-- `10` - The stack is popped once.
-- `11` - The stack is popped twice.
+- `00` - The [dstack](architecture/dstack.html) is not popped or pushed.
+- `01` - The [dstack](architecture/dstack.html) is pushed once.
+- `10` - The [dstack](architecture/dstack.html) is popped once.
+- `11` - The [dstack](architecture/dstack.html) is popped twice.
 
 ## Key
 - `WORD` - Data word width in use
