@@ -149,7 +149,51 @@ The initial opcode byte is followed by a full processor word. This word is signe
 
 #### Examples
 ```
-2 add:3
+2 addi:3
+```
+- `( -- 5)`
+- Carry is set to 0
+
+----------
+
+## `addi8`
+`a -- (a + imm)`
+
+#### Immediate (WORD)
+The initial opcode byte is followed by one octet. This octet is signed.
+
+#### Description
+`addi8` takes parameter `a` from the stack and adds it with the immediate value `imm`. The carry bit is set by this instruction, but is not consumed.
+
+#### Side Effects
+- `c = (a + imm)[WORD]`
+- `o = (a[WORD - 1] ^ imm[WORD - 1]) ? 0 : a[WORD - 1] ^ (a + imm)[WORD - 1]`
+
+#### Examples
+```
+2 addi8:3
+```
+- `( -- 5)`
+- Carry is set to 0
+
+----------
+
+## `addi16`
+`a -- (a + imm)`
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. This immediate value is signed.
+
+#### Description
+`addi16` takes parameter `a` from the stack and adds it with the immediate value `imm`. The carry bit is set by this instruction, but is not consumed.
+
+#### Side Effects
+- `c = (a + imm)[WORD]`
+- `o = (a[WORD - 1] ^ imm[WORD - 1]) ? 0 : a[WORD - 1] ^ (a + imm)[WORD - 1]`
+
+#### Examples
+```
+2 addi16:3
 ```
 - `( -- 5)`
 - Carry is set to 0

@@ -117,15 +117,15 @@
 |`7E`|RESERVED|1|`_ _ -- `| |
 |`7F`|RESERVED|1|`_ _ -- `| |
 |`80`|addi|1 + WORD|`a -- (a + imm)`|`c`, `o`|
-|`81`|subi|1 + WORD|`a -- (imm - a)`|`c`, `o`|
-|`82`|lsli|2|`a -- (a << imm)`| |
-|`83`|csli|2|`a -- ((a << imm) or (a >> (imm - WORD)))`| |
-|`84`|asri|2|`a -- (a >>> imm)`| |
-|`85`|andi|1 + WORD|`a -- (a & b)`| |
-|`86`|ori|1 + WORD|`a -- (a or b)`| |
-|`87`|xori|1 + WORD|`a -- (a ^ b)`| |
-|`88`|RESERVED|1|` -- `| |
-|`89`|RESERVED|1|` -- `| |
+|`81`|addi8|2|`a -- (a + imm)`|`c`, `o`|
+|`82`|addi16|3|`a -- (a + imm)`|`c`, `o`|
+|`83`|subi|1 + WORD|`a -- (imm - a)`|`c`, `o`|
+|`84`|lsli|2|`a -- (a << imm)`| |
+|`85`|csli|2|`a -- ((a << imm) or (a >> (imm - WORD)))`| |
+|`86`|asri|2|`a -- (a >>> imm)`| |
+|`87`|andi|1 + WORD|`a -- (a & b)`| |
+|`88`|ori|1 + WORD|`a -- (a or b)`| |
+|`89`|xori|1 + WORD|`a -- (a ^ b)`| |
 |`8A`|bc|3|` -- `|if `c` then `pc += imm`|
 |`8B`|bnc|3|` -- `|if `~c` then `pc += imm`|
 |`8C`|bo|3|` -- `|if `o` then `pc += imm`|
