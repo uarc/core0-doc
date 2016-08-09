@@ -124,14 +124,11 @@ The initial opcode byte is followed by an octet. The immediate value is unsigned
 ## `reread#`
 `a -- `
 
-#### Immediate (WORD)
-The initial opcode byte is followed by an octet. The immediate value is signed and biased by `+1`.
-
 #### Description
-`reread#` performs a random read relative to `mem[dc#]` or `a` depending on perspective. `dc#` is advanced by `imm`. The result is placed on the conveyor because only the memory at the DC itself is cached.
+`reread#` performs a random read relative to `mem[dc#]` or `a` depending on perspective. The result is placed on the conveyor because only the memory at the DC itself is cached.
 
 #### Side Effects
-- `mem[mem[dc#] + a]` is asynchronously put on the conveyor.
+- `cv <- mem[mem[dc#] + a]`
 
 ----------
 

@@ -81,7 +81,7 @@
 |`48` - `4B`|set#|1|`a -- `|`dc# = a`|
 |`4C` - `4F`|rawritei#|2|`v -- `|`mem[dc# + imm] = v`|
 |`50` - `53`|rewritei#|2|`v -- `|`mem[mem[dc#] + imm] = v`|
-|`54` - `57`|reread#|2|`a -- `|`cv <- mem[mem[dc#] + a]`|
+|`54` - `57`|reread#|1|`a -- `|`cv <- mem[mem[dc#] + a]`|
 |`58`|add|1|`a b -- (a + b)`|`c`, `o`|
 |`59`|sub|1|`a b -- (a - b)`|`c`, `o`|
 |`5A`|lsl|1|`a b -- (a << b)`| |
