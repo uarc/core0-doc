@@ -150,7 +150,7 @@
 |`9F`|RESERVED|1|` -- _`| |
 |`A0`|or|1|`a b -- (a or b)`| |
 |`A1`|xor|1|`a b -- (a ^ b)`| |
-|`A2`|reada|1|`a -- `|`cv <- mem[a]`|
+|`A2`|read|1|`a -- `|`cv <- mem[a]`|
 |`A3`|call|1|`a -- `|`pc = a`; push [cstack](architecture/cstack.html)|
 |`A4`|jmp|1|`a -- `|`pc = a`|
 |`A5`|intset|1|`p -- `|Set selected interrupt addresses to `p`|

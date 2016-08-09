@@ -132,23 +132,23 @@ The initial opcode byte is followed by an octet. The immediate value is unsigned
 
 ----------
 
-## `reada`
+## `read`
 `a -- `
 
 #### Description
-`reada` performs an asynchronous read. This means that the value read will not necessarily complete before the next instruction and the result is not put on the stack. Instead, the value is promised in a slot on the [conveyor](architecture/conveyor.html). When this slot is read from, the read is synchronized and the result is placed on the stack.
+`read` performs an asynchronous read. This means that the value read will not necessarily complete before the next instruction and the result is not put on the stack. Instead, the value is promised in a slot on the [conveyor](architecture/conveyor.html). When this slot is read from, the read is synchronized and the result is placed on the stack.
 
 #### Side Effects
 - `cv <- mem[a]`
 
 #### Examples
 ```
-0 reada
+0 read
 # Do other stuff here
 cv0
 ```
 - `( -- mem[0])`
-- Between `reada` and `cv0`, any operations happen while the read is occurring.
+- Between `read` and `cv0`, any operations happen while the read is occurring.
 
 ----------
 
