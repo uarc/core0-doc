@@ -104,7 +104,7 @@ i0
 `v #.. -- #.. v`
 
 #### Description
-`rot#` rotates a value `0` to `31` elements deep in the stack to the top of the stack. The value is removed from that location and elements under that value are not shifted in the stack. `rot0` has no effect and uses a cycle doing nothing, and it is the recommended form of doing a NOP because it only consumes one octet.
+`rot#` rotates a value `0` to `31` elements deep in the stack to the top of the stack. The value is removed from that location and elements under that value are not shifted in the stack. `rot0` has no effect and uses a cycle doing nothing, but this is not the recommended method of performing a NOP, since significant power may be consumed internally due to the stack random access MUX.
 
 #### Examples
 ```
