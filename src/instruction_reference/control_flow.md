@@ -76,7 +76,7 @@ subr:
 ` -- `
 
 #### Immediate (WORD)
-The initial opcode byte is followed by two octets. The immediate value is unsigned and is added to the PC to find the relative position of the end of the loop.
+The initial opcode byte is followed by two octets. The immediate value is unsigned with a bias of `+4` and is added to the PC to find the relative position of the end of the loop.
 
 #### Description
 `iloop` pushes a new infinite loop into onto the [lstack](architecture/lstack.html). This loop, being infinite, will never end until the break instruction is issued. The loop index (`i0`) begins at `0` and will wrap around indefinitely.
@@ -383,7 +383,7 @@ subr:
 `n -- `
 
 #### Immediate (WORD)
-The initial opcode byte is followed by two octets. The immediate value is unsigned and is the relative offset of the end of the loop.
+The initial opcode byte is followed by two octets. The immediate value is unsigned a bias of `+4` and is the relative offset of the end of the loop.
 
 #### Description
 `loop` pushes a new loop into onto the [lstack](architecture/lstack.html). `n` represents the number of iterations of the loop, while the immediate value `imm` is the unsigned relative position of the end of the loop. The loop index (`i0`) begins at `0`.
