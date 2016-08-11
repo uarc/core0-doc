@@ -132,6 +132,17 @@ The initial opcode byte is followed by an octet. The immediate value is unsigned
 
 ----------
 
+## `index#`
+` -- (dc# + imm)`
+
+#### Immediate (WORD)
+The initial opcode byte is followed by an octet. The immediate value is unsigned.
+
+#### Description
+`index#` computes a relative address to `dc#`. This is useful for computing a pointer to something on the stack before passing it into another function. If the offset is greater than 256, use `get# addi16`, a two instruction combo.
+
+----------
+
 ## `read`
 `a -- `
 

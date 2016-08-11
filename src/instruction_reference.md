@@ -132,16 +132,13 @@
 |`8D`|bno|3|` -- `|if `~o` then `pc += imm`|
 |`8E`|bi|3|` -- `|if `i` then `pc += imm`; `i = 0`|
 |`8F`|bni|3|` -- `|if `~i` then `pc += imm`; `i = 0`|
-|`90`|imm8|2|` -- imm`| |
-|`91`|imm16|3|` -- imm`| |
-|`92`|imm32|5|` -- imm`| |
-|`93`|imm64|9|` -- imm`|Only supported on u0-64|
-|`94`|getp|1|` -- perm`|Get UARC permission|
-|`95`|geta|1|` -- addr`|Get UARC address|
-|`96`|RESERVED|1|` -- _`| |
-|`97`|RESERVED|1|` -- _`| |
-|`98`|RESERVED|1|` -- _`| |
-|`99`|RESERVED|1|` -- _`| |
+|`90` - `93`|index#|2|` -- (dc# + imm)`| |
+|`94`|imm8|2|` -- imm`| |
+|`95`|imm16|3|` -- imm`| |
+|`96`|imm32|5|` -- imm`| |
+|`97`|imm64|9|` -- imm`|Only supported on u0-64|
+|`98`|getp|1|` -- perm`|Get UARC permission|
+|`99`|geta|1|` -- addr`|Get UARC address|
 |`9A`|RESERVED|1|` -- _`| |
 |`9B`|RESERVED|1|` -- _`| |
 |`9C`|RESERVED|1|` -- _`| |
