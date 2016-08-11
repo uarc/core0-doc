@@ -107,7 +107,7 @@
 |`74`|set|1|`m s -- `|Clear ifile and set register `s` to `m`|
 |`75`|sel|1|`m s -- `|Ors `m` with register `s` of ifile|
 |`76`|setpa|1|`perm addr -- `|Sets UARC permission and address delegation|
-|`77`|expect|3|`v b -- `|Send `v` to bus `b`; `cv <- response`|
+|`77`|expect|1|`v b -- `|Send `v` to bus `b`; `cv <- response`|
 |`78`|sef|1|`a f -- `|Sets fault `f` handler to `a`|
 |`79`|reset|1|`p _ -- `|`pc = p`|
 |`7A`|ddrop|1|`_ _ -- `|Drops two elements from the stack|
