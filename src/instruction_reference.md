@@ -5,6 +5,9 @@
 - `OOOO OOOO` (All instructions)
   - `0SSO OOOO` / `10SS OOOO` (Normal instructions)
     - All normal instructions affect the entire stack according to the `S` bits
+      - Instructions `1011 0000` - `1011 0111` have an `SS` of `00`.
+        - These are used for preserving DCs between calls.
+      - Instructions `1011 1000` - `1011 1111` have an `SS` of `10`.
     - `0010 LLLL` (Conveyor instruction)
       - Reads and synchronizes with conveyor index `location`
     - `0011 10LL` (Loop index)
@@ -94,7 +97,7 @@
 |`64` - `67`|rawrite#|1|`v a -- `|`mem[dc# + a] = v`|
 |`68`|write|1|`v a -- `|`mem[a] = v`|
 |`69`|writep|1|`v a -- `|`progmem[a] = v`|
-|`6A`|writepo|1|`ins a -- `|`progmem[a] = ins`|
+|`6A`|writepo|1|`o a -- `|`progmem[a] = o`|
 |`6B`|beq|3|`a b -- `|if `a == b` then `pc += imm`|
 |`6C`|bne|3|`a b -- `|if `a != b` then `pc += imm`|
 |`6D`|bles|3|`a b -- `|if `a < b` then `pc += imm`|
@@ -159,23 +162,17 @@
 |`AB`|bz|3|`n -- `|if `n == 0` then `pc += imm`|
 |`AC`|bnz|3|`n -- `|if `n != 0` then `pc += imm`|
 |`AD`|writepi|1 + WORD|`v -- `|Writes `v` to instruction memory at `imm`|
-|`AE`|writepri|3|`v -- `|Writes `v` to instruction memory at `pc + imm`|
+|`AE`|writepri|3|`v -- `|`progmem[pc + imm] = v`|
 |`AF`|drop|1|`_ -- `|Drops one element from the stack|
-|`B0`|RESERVED|1|`_ _ -- `| |
-|`B1`|RESERVED|1|`_ _ -- `| |
-|`B2`|RESERVED|1|`_ _ -- `| |
-|`B3`|RESERVED|1|`_ _ -- `| |
-|`B4`|RESERVED|1|`_ _ -- `| |
-|`B5`|RESERVED|1|`_ _ -- `| |
-|`B6`|RESERVED|1|`_ _ -- `| |
-|`B7`|RESERVED|1|`_ _ -- `| |
-|`B8`|RESERVED|1|`_ _ -- `| |
-|`B9`|RESERVED|1|`_ _ -- `| |
-|`BA`|RESERVED|1|`_ _ -- `| |
-|`BB`|RESERVED|1|`_ _ -- `| |
-|`BC`|RESERVED|1|`_ _ -- `| |
-|`BD`|RESERVED|1|`_ _ -- `| |
-|`BE`|RESERVED|1|`_ _ -- `| |
-|`BF`|RESERVED|1|`_ _ -- `| |
+|`B0` - `B3`|push#|1|` -- `|Pushes `dc#` onto the astack|
+|`B4` - `B7`|pop#|1|` -- `|Pops `dc#` from the astack|
+|`B8`|ba|3|`b -- `|Branch if an interrupt is available on bus `b`|
+|`B9`|bna|3|`b -- `|Branch if an interrupt is not available on bus `b`|
+|`BA`|writepori|3|`o -- `|`progmem[pc + imm] = o`|
+|`BB`|RESERVED|1|`_ -- `| |
+|`BC`|RESERVED|1|`_ -- `| |
+|`BD`|RESERVED|1|`_ -- `| |
+|`BE`|RESERVED|1|`_ -- `| |
+|`BF`|RESERVED|1|`_ -- `| |
 |`C0` - `DF`|rot#|`v #.. -- #.. v`| |
 |`E0` - `FF`|copy#|`v #.. -- v #.. v`| |

@@ -426,3 +426,31 @@ The initial opcode byte is followed by two octets. The immediate value is signed
 
 #### Side Effects
 - PC is moved to `pc + imm` value if `a != 0`.
+
+----------
+
+## `ba`
+`b -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. The immediate value is signed and is the relative offset to branch by.
+
+#### Description
+`ba` performs a relative branch if an interrupt is available on bus `b`. The `pc` to branch to is `pc + imm`.
+
+#### Side Effects
+- PC is moved to `pc + imm` value if an interrupt is available on bus `b`.
+
+----------
+
+## `bna`
+`b -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. The immediate value is signed and is the relative offset to branch by.
+
+#### Description
+`bna` performs a relative branch if an interrupt is not available on bus `b`. The `pc` to branch to is `pc + imm`.
+
+#### Side Effects
+- PC is moved to `pc + imm` value if an interrupt is not available on bus `b`.

@@ -200,7 +200,7 @@ cv0
 `v a -- `
 
 #### Description
-`writep` performs a random write to program memory in little-endian byte-order. This means that `progmem[a] = v`. Program memory is ordered into octets, but this instruction can write several octets in one word, therefore the word byte-order is little-endian. The addresses are aligned to octets. This operation may not influence the instruction executed next.
+`writep` performs a random write to program memory in little-endian byte-order. This means that `progmem[a] = v`. Program memory is ordered into octets, but multiple octets may be written at once, therefore the word byte-order is little-endian. The addresses are aligned to octets. This operation may not influence the instruction executed next.
 
 #### Side Effects
 - `progmem[a] = v`
@@ -208,13 +208,13 @@ cv0
 ----------
 
 ## `writepo`
-`ins a -- `
+`o a -- `
 
 #### Description
-`writepo` performs a random write of an octet to program memory using a program address. This means that `progmem[a] = ins`, but only the lowest 8 bits of `ins` are written. Program memory is ordered into octets, which are written and addressed individually by this word. The addresses are aligned to octets. This operation may not influence the instruction executed next.
+`writepo` performs a random write of an octet to program memory using a program address. This means that `progmem[a] = o`, but only the lowest 8 bits of `o` are written. Program memory is ordered into octets, which are written and addressed individually by this word. The addresses are aligned to octets. This operation may not influence the instruction executed next.
 
 #### Side Effects
-- `progmem[a] = ins`
+- `progmem[a] = o`
 
 ----------
 
@@ -225,7 +225,7 @@ cv0
 The initial opcode byte is followed by a word. The immediate value is a program address.
 
 #### Description
-`writepi` performs a random write to program memory in little-endian byte-order at the address specified by the immediate value `imm`. This means that `progmem[imm] = v`. Program memory is ordered into octets, but this instruction can write several octets in one word, therefore the word byte-order is little-endian. The addresses are aligned to octets. This operation may not influence the instruction executed next.
+`writepi` performs a random write to program memory in little-endian byte-order at the address specified by the immediate value `imm`. This means that `progmem[imm] = v`. Program memory is ordered into octets, but multiple octets may be written at once, therefore the word byte-order is little-endian. The addresses are aligned to octets. This operation may not influence the instruction executed next.
 
 #### Side Effects
 - `progmem[imm] = v`
@@ -239,7 +239,43 @@ The initial opcode byte is followed by a word. The immediate value is a program 
 The initial opcode byte is followed by two octets. The immediate value is a signed relative offset.
 
 #### Description
-`writepri` performs a random write to program memory in little-endian byte-order at the address `pc + imm`. This means that `progmem[pc + imm] = v`. Program memory is ordered into octets, but this instruction can write several octets in one word, therefore the word byte-order is little-endian. The addresses are aligned to octets. This operation may not influence the instruction executed next.
+`writepri` performs a random write to program memory in little-endian byte-order at the address `pc + imm`. This means that `progmem[pc + imm] = v`. Program memory is ordered into octets, but multiple octets may be written at once, therefore the word byte-order is little-endian. The addresses are aligned to octets. This operation may not influence the instruction executed next.
 
 #### Side Effects
 - `progmem[pc + imm] = v`
+
+----------
+
+## `push#`
+` -- `
+
+#### Description
+`push#` pushes `dc#` to the astack. It remains in the register but can be popped with `pop#`.
+
+#### Side Effects
+- `as <- dc#`
+
+----------
+
+## `pop#`
+` -- `
+
+#### Description
+`pop#` pops `dc#` from the astack. The value `dc#` is filled with is the last thing which was put onto the astack with `pop#`. If the astack is empty, the behavior is undefined.
+
+#### Side Effects
+- `as -> dc#`
+
+----------
+
+## `writepori`
+`o -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. The immediate value is a signed relative offset.
+
+#### Description
+`writepori` performs a random write of a single octet to program memory in little-endian byte-order at the address `pc + imm`. This means that `progmem[pc + imm] = o`, but only the lowest octet of the word is written. Program memory is ordered into octets, but multiple octets may be written at once, therefore the word byte-order is little-endian. The addresses are aligned to octets. This operation may not influence the instruction executed next.
+
+#### Side Effects
+- `progmem[pc + imm] = o`
