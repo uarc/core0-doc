@@ -149,6 +149,17 @@ The initial opcode byte is followed by two octets. The immediate value is signed
 
 ----------
 
+## `discard`
+` -- `
+
+#### Description
+`discard` pops the [lstack](../architecture/lstack.html) without going to the end like with break. This permits returning inside of a loop, but it must be called for every loop.
+
+#### Side Effects
+- lstack is popped.
+
+----------
+
 ## `call`
 `a -- `
 
