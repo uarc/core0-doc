@@ -73,7 +73,7 @@
 |`1C`|jmpi|1 + WORD|` -- `|`pc = imm`|
 |`1D`|bra|3|` -- `|`pc += imm`|
 |`1E`|discard|1|` -- `|Discard the top loop without going to the end|
-|`1F`|RESERVED|1|` -- `| |
+|`1F`|callri|3|` -- `|`pc += imm`; push [cstack](architecture/cstack.html)|
 |`20` - `2F`|cv#|1|` -- cv#`|cv# synchronizes|
 |`30` - `33`|read#|2|` -- mem[dc#]`|`dc# += imm`|
 |`34` - `37`|rareadi#|2|` -- mem[dc# + imm]`| |

@@ -160,6 +160,33 @@ The initial opcode byte is followed by two octets. The immediate value is signed
 
 ----------
 
+## `callri`
+` -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. This value is the signed offset to branch by.
+
+#### Description
+`callri` is an immediate relative call. The immediate value is the offset to branch by.
+
+#### Side Effects
+- [cstack](architecture/cstack.html) is pushed
+  - Old PC is preserved.
+  - Whether an interrupt is being serviced or not is preserved.
+
+#### Examples
+```
+callri:subr
+return
+
+subr:
+  return
+```
+- `( -- )`
+- The example calls `subr` before returning to the original caller
+
+----------
+
 ## `call`
 `a -- `
 
