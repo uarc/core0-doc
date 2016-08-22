@@ -98,23 +98,23 @@
 |`68`|write|1|`v a -- `|`mem[a] = v`|
 |`69`|writep|1|`v a -- `|`progmem[a] = v`|
 |`6A`|writepo|1|`o a -- `|`progmem[a] = o`|
-|`6B`|beq|3|`a b -- `|if `a == b` then `pc += imm`|
-|`6C`|bne|3|`a b -- `|if `a != b` then `pc += imm`|
-|`6D`|bles|3|`a b -- `|if `a < b` then `pc += imm`|
-|`6E`|bleq|3|`a b -- `|if `a <= b` then `pc += imm`|
-|`6F`|blesu|3|`a b -- `|if `a < b` then `pc += imm`|
-|`70`|blequ|3|`a b -- `|if `a <= b` then `pc += imm`|
-|`71`|recv|1|`n a -- `|Stream in to `a`; `cv <- bus`|
-|`72`|send|1|`n a -- `|Stream `n` words to buses from `a`|
-|`73`|incept|1|`n a -- `|Incept target cores; see send|
-|`74`|set|1|`m s -- `|Clear ifile and set register `s` to `m`|
-|`75`|sel|1|`m s -- `|Ors `m` with register `s` of ifile|
-|`76`|setpa|1|`perm addr -- `|Sets UARC permission and address delegation|
-|`77`|expect|1|`v b -- `|Send `v` to bus `b`; `cv <- response`|
-|`78`|sef|1|`a f -- `|Sets fault `f` handler to `a`|
-|`79`|reset|1|`p _ -- `|`pc = p`|
-|`7A`|ddrop|1|`_ _ -- `|Drops two elements from the stack|
-|`7B`|RESERVED|1|`_ _ -- `| |
+|`6B`|writeps|1|`s a -- `|`progmem[a] = s`|
+|`6C`|beq|3|`a b -- `|if `a == b` then `pc += imm`|
+|`6D`|bne|3|`a b -- `|if `a != b` then `pc += imm`|
+|`6E`|bles|3|`a b -- `|if `a < b` then `pc += imm`|
+|`6F`|bleq|3|`a b -- `|if `a <= b` then `pc += imm`|
+|`70`|blesu|3|`a b -- `|if `a < b` then `pc += imm`|
+|`71`|blequ|3|`a b -- `|if `a <= b` then `pc += imm`|
+|`72`|recv|1|`n a -- `|Stream in to `a`; `cv <- bus`|
+|`73`|send|1|`n a -- `|Stream `n` words to buses from `a`|
+|`74`|incept|1|`n a -- `|Incept target cores; see send|
+|`75`|set|1|`m s -- `|Clear ifile and set register `s` to `m`|
+|`76`|sel|1|`m s -- `|Ors `m` with register `s` of ifile|
+|`77`|setpa|1|`perm addr -- `|Sets UARC permission and address delegation|
+|`78`|expect|1|`v b -- `|Send `v` to bus `b`; `cv <- response`|
+|`79`|sef|1|`a f -- `|Sets fault `f` handler to `a`|
+|`7A`|reset|1|`p _ -- `|`pc = p`|
+|`7B`|ddrop|1|`_ _ -- `|Drops two elements from the stack|
 |`7C`|RESERVED|1|`_ _ -- `| |
 |`7D`|RESERVED|1|`_ _ -- `| |
 |`7E`|RESERVED|1|`_ _ -- `| |
@@ -169,7 +169,7 @@
 |`B8`|ba|3|`b -- `|Branch if an interrupt is available on bus `b`|
 |`B9`|bna|3|`b -- `|Branch if an interrupt is not available on bus `b`|
 |`BA`|writepori|3|`o -- `|`progmem[pc + imm] = o`|
-|`BB`|RESERVED|1|`_ -- `| |
+|`BB`|writepsri|3|`s -- `|`progmem[pc + imm] = s`|
 |`BC`|RESERVED|1|`_ -- `| |
 |`BD`|RESERVED|1|`_ -- `| |
 |`BE`|RESERVED|1|`_ -- `| |

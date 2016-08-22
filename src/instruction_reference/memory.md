@@ -218,6 +218,17 @@ cv0
 
 ----------
 
+## `writeps`
+`s a -- `
+
+#### Description
+`writeps` performs a random write of two octets `s` to program memory using a program address. This means that `progmem[a] = s`, but only the lowest 16 bits of `s` are written. Program memory is ordered into octets, which are written and addressed individually by this word. The addresses are aligned to octets. This writes in little-endian byte-order. This operation may not influence the instruction executed next.
+
+#### Side Effects
+- `progmem[a] = s`
+
+----------
+
 ## `writepi`
 `v -- `
 
@@ -279,3 +290,17 @@ The initial opcode byte is followed by two octets. The immediate value is a sign
 
 #### Side Effects
 - `progmem[pc + imm] = o`
+
+----------
+
+## `writepsri`
+`s -- `
+
+#### Immediate (WORD)
+The initial opcode byte is followed by two octets. The immediate value is a signed relative offset.
+
+#### Description
+`writepsri` performs a random write of a single octet to program memory in little-endian byte-order at the address `pc + imm`. This means that `progmem[pc + imm] = s`, but only the lowest 16 bits of the word is written. Program memory is ordered into octets, but multiple octets may be written at once, therefore the word byte-order is little-endian. The addresses are aligned to octets. This operation may not influence the instruction executed next.
+
+#### Side Effects
+- `progmem[pc + imm] = s`
