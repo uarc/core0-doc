@@ -113,7 +113,7 @@
 |`77`|setpa|1|`perm addr -- `|Sets UARC permission and address delegation|
 |`78`|expect|1|`v b -- `|Send `v` to bus `b`; `cv <- response`|
 |`79`|sef|1|`a f -- `|Sets fault `f` handler to `a`|
-|`7A`|reset|1|`p _ -- `|`pc = p`|
+|`7A`|reset|1|`_ _ -- `|Resets the core|
 |`7B`|ddrop|1|`_ _ -- `|Drops two elements from the stack|
 |`7C`|RESERVED|1|`_ _ -- `| |
 |`7D`|RESERVED|1|`_ _ -- `| |

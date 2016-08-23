@@ -432,10 +432,10 @@ The initial opcode byte is followed by two octets. The immediate value is unsign
 ----------
 
 ## `reset`
-`p -- `
+`0 0 -- `
 
 #### Description
-Resets the whole processor, setting `p` as the new PC. Everything is reinitialized, such as stack depth.
+Resets the whole processor, setting `0` as the new PC. Everything is reinitialized, such as stack depth. Set both parameters to `0` to ensure forwards compatibility if the parameters are altered.
 
 ----------
 
