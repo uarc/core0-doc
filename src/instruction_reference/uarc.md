@@ -146,6 +146,28 @@ This can be used for all multi-cycle operations, such as square root, multiply, 
 
 ----------
 
+## `sendp`
+`n a -- `
+
+#### Description
+`sendp` sends a stream to all selected UARC buses. `n` is the number of words able to be streamed out and `a` is the address at which those words are to be streamed from. This streams from program memory one processor word at a time.
+
+#### Side Effects
+- Execution is synchronized with the completion of the stream operation.
+
+----------
+
+## `inceptp`
+`n a -- `
+
+#### Description
+`inceptp` sends a stream to all selected UARC buses. `n` is the number of words able to be streamed out and `a` is the address at which those words are to be streamed from program memory. This will only work on a core which is not presently running or the core has **permission** over the core and the stream will become the instructions to be executed by the target core. By incepting cores again, the system can maintain **permission** over cores allocated on a chip for a process and prevent those cores from incepting cores they aren't supposed to. If a chip is to be given up by the system to a process, the system can incept all cores with the **permission** of the process and run an idle routine.
+
+#### Side Effects
+- Execution is synchronized with the completion of the stream operation.
+
+----------
+
 ## `getp`
 ` -- perm`
 

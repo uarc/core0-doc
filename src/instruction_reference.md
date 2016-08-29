@@ -106,8 +106,8 @@
 |`70`|blesu|3|`a b -- `|if `a < b` then `pc += imm`|
 |`71`|blequ|3|`a b -- `|if `a <= b` then `pc += imm`|
 |`72`|recv|1|`n a -- `|Stream in to `a`; `cv <- bus`|
-|`73`|send|1|`n a -- `|Stream `n` words to buses from `a`|
-|`74`|incept|1|`n a -- `|Incept target cores; see send|
+|`73`|send|1|`n a -- `|Stream `n` words to buses from `mem[a]`|
+|`74`|incept|1|`n a -- `|Incept target cores from main mem; see send|
 |`75`|set|1|`m s -- `|Clear ifile and set register `s` to `m`|
 |`76`|sel|1|`m s -- `|Ors `m` with register `s` of ifile|
 |`77`|setpa|1|`perm addr -- `|Sets UARC permission and address delegation|
@@ -115,8 +115,8 @@
 |`79`|sef|1|`a f -- `|Sets fault `f` handler to `a`|
 |`7A`|reset|1|`_ _ -- `|Resets the core|
 |`7B`|ddrop|1|`_ _ -- `|Drops two elements from the stack|
-|`7C`|RESERVED|1|`_ _ -- `| |
-|`7D`|RESERVED|1|`_ _ -- `| |
+|`7C`|sendp|1|`n a -- `|Stream `n` words to buses from `progmem[a]`|
+|`7D`|inceptp|1|`n a -- `|Incept target cores from program mem; see send|
 |`7E`|RESERVED|1|`_ _ -- `| |
 |`7F`|RESERVED|1|`_ _ -- `| |
 |`80`|addi|1 + WORD|`a -- (a + imm)`|`c`, `o`|
